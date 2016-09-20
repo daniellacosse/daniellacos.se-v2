@@ -2,3 +2,4 @@
 node_modules
 server.dist.js
 npm-debug.log
+_CACHE

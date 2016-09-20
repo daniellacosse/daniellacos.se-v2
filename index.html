@@ -3,10 +3,37 @@
   <head>
     <title>daniellacos.se</title>
 
+    <style media="screen">
+      * {
+        padding: 0;
+        margin: 0;
+        border: 0;
+        box-sizing: border-box;
+        vertical-align: baseline;
+        font-family: HelveticaNeue, Helvetica, "Helvetica", sans-serif;
+      }
+
+      html, body {
+        width: 100%;
+        height: 100%;
+      }
+    </style>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     @META_TAGS@
   </head>
   <body>
     @HTML_CONTENT@
+
+    <!-- TODO: Live Reload isn't what I think, I think. -->
+    <!-- <script src="http://localhost:35729/livereload.js"></script> -->
+
+    <script>
+      (function(){
+        window._RUNTIME_DATA_ = JSON.parse("@RUNTIME_DATA@");
+      })();
+    </script>
 
     <script>(function(){@RUNTIME_SCRIPT@})();</script>
   </body>

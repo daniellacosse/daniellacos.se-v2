@@ -1,3 +1,5 @@
+var LiveReloadPlugin = require("webpack-livereload-plugin");
+
 module.exports = {
   target: "node",
   entry: "./server.babel.js",
@@ -23,5 +25,8 @@ module.exports = {
         loader: "json-loader"
       }
     ]
-  }
+  },
+  plugins: [
+    new LiveReloadPlugin()
+  ]
 };
