@@ -4,9 +4,6 @@
 i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
-* caching (!)
-  * load from ./\_CACHE if there & valid
-  * `npm run clear` to clear cache
 * frontend css
   * favicon & other assets (if any) (iconfont-loader)
   * load on scroll (img & iframe)

@@ -1,6 +1,16 @@
 import { isArray, isString, isFunction } from "lodash"
+import {
+  mkdirSync,
+  readdirSync,
+  unlinkSync,
+  writeFileSync,
+  readFileSync
+} from "fs"
 
 import { loadScripts, buildApplication } from "./Template"
+
+export const CACHE_DIRECTORY = "./_CACHE"
+export const DAY_MS          = 24 * 60 * 60 * 1000
 
 export const attachRoutes = (app, routes) => {
   let _keys = Object.keys(routes)
@@ -10,9 +20,10 @@ export const attachRoutes = (app, routes) => {
     const Route = routes[_keys[_len]]
 
     app.get(Route.path, (request, response) => {
-      new Route(request, response)
-        .handler()
-        .catch(console.trace)
+      const handledRoute = new Route(request, response).handler()
+
+      if (handledRoute.catch)
+        handledRoute.catch(console.trace)
     })
   }
 }
@@ -36,11 +47,75 @@ export default class PageRoute {
   }
 
   _loadCache(params) {
-    // TODO
+    const cacheDirectory = this._tryCacheDir()
+    const cacheHash      = this._cacheHash(params)
+
+    // scan for valid cachefiles to return
+    const validCacheDocuments = cacheDirectory
+      .filter(filename => {
+        // extract timestamp from filename
+        const $timestamp = parseInt(
+          filename.match(/\$(.+)$/)[1]
+        )
+
+        return (
+          filename.startsWith(cacheHash) &&
+          this._isValidTimestamp($timestamp)
+        )
+      })
+
+    if (!validCacheDocuments.length) return null
+
+    return readFileSync(
+      `./${CACHE_DIRECTORY}/${validCacheDocuments[0]}`,
+      { encoding: "utf8" }
+    )
   }
 
   _saveCache(params, content) {
-    // TODO
+    const cacheDirectory = this._tryCacheDir()
+    const cacheHash      = this._cacheHash(params)
+
+    // delete old documents
+    cacheDirectory
+      .filter(filename => filename.startsWith(cacheHash))
+      .forEach(filename => unlinkSync(`./${CACHE_DIRECTORY}/${filename}`))
+
+    // write fresh cache file
+    return writeFileSync(
+      `./${CACHE_DIRECTORY}/${cacheHash}\$${Date.now()}`, content
+    )
+  }
+
+  // TODO: don't hit the file system twice
+  _tryCacheDir() {
+    let cacheDirectory;
+
+    try {
+      cacheDirectory = readdirSync(CACHE_DIRECTORY)
+    } catch (error) {
+      mkdirSync(CACHE_DIRECTORY)
+
+      cacheDirectory = []
+    }
+
+    return cacheDirectory
+  }
+
+  _isValidTimestamp(timestamp) {
+    return timestamp > Date.now() - DAY_MS * this.constructor.cacheLifeInDays
+  }
+
+  _cacheHash(params) {
+    let cacheHash = this.constructor.path.replace("/", "-")
+    let paramKeys = Object.keys(params).sort()
+    let _len = paramKeys.length
+    while (_len--) {
+      const key = paramKeys[_len]
+      cacheHash += `${key}:${params[key]}-`
+    }
+
+    return cacheHash
   }
 
   _setupHandler({ prefetch, params, dispatch }) {

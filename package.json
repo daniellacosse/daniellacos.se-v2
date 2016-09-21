@@ -3,12 +3,13 @@
   "version": "2.0.0",
   "main": "server.dist.js",
   "scripts": {
-    "test": "ava",
     "build": "webpack",
-    "start": "node server.dist.js",
+    "clear": "rm -rf _CACHE",
     "debug": "node-debug server.dist.js",
     "init": "npm run build && npm start",
-    "secrets": "atom .secrets"
+    "secrets": "atom .secrets",
+    "start": "node server.dist.js",
+    "test": "ava"
   },
   "author": "Daniel LaCosse <d@niellacos.se> (http://daniellacos.se)",
   "devDependencies": {
