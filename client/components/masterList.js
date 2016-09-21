@@ -4,14 +4,19 @@ const LIST_ITEM_STYLE = {
   width: "100%",
   height: "100px",
   background: "red",
-  overflow: "hidden"
+  overflow: "hidden",
+  cursor: "pointer",
+  transform: "rotate(0)",
+  transition: "background 250ms ease"
 }
 
 function $renderListItem({ title }) {
   return $createElement({
     name: "li",
     text: title,
-    style: LIST_ITEM_STYLE
+    style: LIST_ITEM_STYLE,
+    onMouseOver: "this.style.background='green'",
+    onMouseOut: "this.style.background='red'"
   })
 }
 
