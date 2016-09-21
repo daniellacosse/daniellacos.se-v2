@@ -75,7 +75,13 @@ function $renderAppView(contents) {
 }
 
 function addToStorage(data = window._RUNTIME_DATA_) {
-  window.sessionStorage = Object.assign({}, window.sessionStorage, data)
+  const dataKeys = Object.keys(data)
+
+  let _len = dataKeys.length
+  while (_len--) {
+    const key = dataKeys[_len]
+    sessionStorage.setItem(key, JSON.stringify(data[key]))
+  }
 }
 
 ///\\\///\\\ MAIN SCRIPT ///\\\///\\\

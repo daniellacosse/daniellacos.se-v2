@@ -1,3 +1,4 @@
+// TODO: minify/uglify (in production)
 // import { flow } from "lodash"
 // import { minify } from "html-minifier"
 // import { parse, uglify } from "uglify-js"
@@ -17,7 +18,7 @@ export const scriptTemplate = "@RUNTIME_SCRIPT@"
 // ]);
 
 export const loadScript = (filename) => {
-  const readString = readFileSync(`./source/${filename}.js`).toString("utf8")
+  const readString = readFileSync(`./client/${filename}.js`).toString("utf8")
 
   return transform(readString).code;
 }
@@ -30,11 +31,14 @@ export const loadScripts = (scripts) => {
 
 export const buildTemplate = ({ file, meta, script, data, html }) => {
   // const script = compressScript(script)
-  const builtHTML = readFileSync(file)
+
+  const builtHTML = readFileSync(`./assets/${file}.html`)
     .toString("utf8")
     .replace(metaTemplate, meta || "")
     .replace(htmlTemplate, html || "")
-    .replace(dataTemplate, data || "{}")
+    // DOUBLE STRINGIFYYYYYY
+    // (to DEFINITELY escape all quotation characters)
+    .replace(dataTemplate, JSON.stringify(JSON.stringify(data)) || "{}")
     .replace(scriptTemplate, script || "")
 
   // return minify(builtHTML)
@@ -42,5 +46,5 @@ export const buildTemplate = ({ file, meta, script, data, html }) => {
 }
 
 export const buildApplication = (templates = {}) => {
-  return buildTemplate({ ...templates, file: "./index.html" })
+  return buildTemplate({ ...templates, file: "index" })
 }

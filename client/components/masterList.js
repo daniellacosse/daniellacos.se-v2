@@ -3,13 +3,15 @@ const LIST_ITEM_STYLE = {
   padding: "20px",
   width: "100%",
   height: "100px",
-  background: "red"
+  background: "red",
+  overflow: "hidden"
 }
 
-function $renderListItem(item) {
+function $renderListItem({ title }) {
   return $createElement({
     name: "li",
-    text: "TEST ITEM"
+    text: title,
+    style: LIST_ITEM_STYLE
   })
 }
 
@@ -20,8 +22,8 @@ const MASTER_LIST_STYLE = {
 }
 
 function $renderMasterList() {
-  const documents = (sessionStorage && sessionStorage.documents)
-    ? sessionStorage.documents
+  const documents = (sessionStorage && sessionStorage.getItem("documents"))
+    ? JSON.parse(sessionStorage.getItem("documents"))
     : []
 
   return $createElement({

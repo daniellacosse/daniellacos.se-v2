@@ -1,4 +1,4 @@
-import { isArray, isString } from "lodash"
+import { isArray, isString, isFunction } from "lodash"
 
 import { loadScripts, buildApplication } from "./Template"
 
@@ -10,7 +10,9 @@ export const attachRoutes = (app, routes) => {
     const Route = routes[_keys[_len]]
 
     app.get(Route.path, (request, response) => {
-      new Route(request, response).handler();
+      new Route(request, response)
+        .handler()
+        .catch(console.trace)
     })
   }
 }
@@ -22,21 +24,32 @@ export default class PageRoute {
   }
 
   handler() {
-    const dispatch = this.dispatch()
+    const loadCache = this._loadCache(this.params)
+    if (loadCache) return this.response.send(loadCache)
 
-    // TODO: if response in cache with timestamp < this.cacheLifeInDays
-      // send cached response
-      // else prefetch (if there's something to prefetch), run through dispatch, compress, save in cache, then send
+    return this._setupHandler(this)
+      .then(HTMLString => {
+        this._saveCache(this.params, HTMLString)
 
-    // manner of dispatch determined by return type
-    if (isArray(dispatch)) {
-      this.response.send(
-        buildApplication({
-          script: loadScripts(dispatch)
-        })
-      )
-    } else if (isString(dispatch)) {
-      this.response.send(dispatch)
-    }
+        return this.response.send(HTMLString)
+      })
+  }
+
+  _loadCache(params) {
+    // TODO
+  }
+
+  _saveCache(params, content) {
+    // TODO
+  }
+
+  _setupHandler({ prefetch, params, dispatch }) {
+    return new Promise((resolve, reject) => {
+      if (!isFunction(prefetch)) resolve(dispatch())
+
+      prefetch(params)
+        .then(data => resolve(dispatch(data)))
+        .catch(reject)
+    })
   }
 }
