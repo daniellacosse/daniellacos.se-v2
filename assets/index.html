@@ -1,8 +1,35 @@
 <!DOCTYPE html>
-<html>
+<html itemscope itemtype="http://schema.org/@ITEM_TYPE@">
   <head>
-    <title>daniellacos.se</title>
+    <title>@TITLE@</title>
 
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="@FAVICON@">
+
+    <meta name="description" content="@DESCRIPTION@" />
+    <link rel="canonical" href="@CANONICAL_URL@" />
+
+    <!-- Schema.org markup for Google+ -->
+    <meta itemprop="name" content="@TITLE@">
+    <meta itemprop="description" content="@DESCRIPTION@">
+    <meta itemprop="image" content="@PREVIEW_IMAGE@">
+
+    <!-- Twitter Card data -->
+    <meta name="twitter:card" content="@ITEM_TYPE@">
+    <meta name="twitter:title" content="@TITLE@">
+    <meta name="twitter:description" content="@DESCRIPTION@">
+    <meta name="twitter:image" content="@PREVIEW_IMAGE@">
+    <meta name="twitter:creator" content="@daniellacosse">
+
+    <!-- Open Graph data -->
+    <meta property="og:url" content="@CANONICAL_URL@" />
+    <meta property="og:type" content="@ITEM_TYPE@" />
+    <meta property="og:title" content="@TITLE@" />
+    <meta property="og:description" content="@DESCRIPTION@" />
+    <meta property="og:image" content="@PREVIEW_IMAGE@" />
+    <meta property="og:site_name" content="daniellacos.se" />
+
+    <!-- TODO: global CSS buildpoint -->
     <style media="screen">
       * {
         padding: 0;
@@ -66,28 +93,14 @@
         src: url("@NEVISFONT@")
       }
     </style>
-
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="icon" type="image/x-icon" href="@FAVICON@">
-
-    @META_TAGS@
-
-    <script>
-      @SCRIPT_LIBRARY@
-    </script>
   </head>
   <body>
-    @HTML_CONTENT@
-
-    <!-- TODO: Live Reload isn't what I think, I think. -->
-    <!-- <script src="http://localhost:35729/livereload.js"></script> -->
-
     <script>
       (function(){
         window._RUNTIME_DATA_ = JSON.parse(@RUNTIME_DATA@);
       })();
     </script>
 
-    <script>(function(){@RUNTIME_SCRIPT@})();</script>
+    <script>@RUNTIME_SCRIPTS@</script>
   </body>
 </html>

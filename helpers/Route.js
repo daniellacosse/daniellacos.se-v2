@@ -35,12 +35,16 @@ export default class PageRoute {
   }
 
   handler() {
+    const hasCache = !!this.constructor.cacheLifeInDays
+
     const loadCache = this._loadCache(this.params)
-    if (loadCache) return this.response.send(loadCache)
+    if (hasCache && loadCache)
+      return this.response.send(loadCache)
 
     return this._setupHandler(this)
       .then(HTMLString => {
-        this._saveCache(this.params, HTMLString)
+        if (hasCache)
+          this._saveCache(this.params, HTMLString)
 
         return this.response.send(HTMLString)
       })

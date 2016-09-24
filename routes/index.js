@@ -3,6 +3,9 @@ import { buildApplication } from "helpers/Template"
 import { fetchTweets, fetchTumblrs }     from "helpers/API"
 import { getJPGURL, sanitizeFontIcons }                     from "helpers/Asset"
 
+export HealthRoute from "./health"
+export PermalinkRoute from "./permalink"
+
 export class IndexRoute extends PageRoute {
   static path = "/"
   static cacheLifeInDays = 1
@@ -21,20 +24,26 @@ export class IndexRoute extends PageRoute {
     while (_len--)
       documents = documents.concat(data[_len])
 
-    // documents fuzzy sort by date
-
+    // TODO documents fuzzy sort by date
     return buildApplication({
+      meta: {
+        type: "CreativeWork",
+        title: "daniellacos.se",
+        description: "",
+        previewImage: "",
+        url: "http://daniellacos.se/"
+      },
       data: {
         documents,
         avatarURL: getJPGURL("avatar"),
         fontIcons: sanitizeFontIcons()
       },
-      scripts: [ "rootView" ],
-      libraries: [
+      scripts: [
         "homeLink",
         "infoSidebar",
         "masterList",
-        "detailPanel"
+        "detailPanel",
+        "rootView"
       ]
     })
   }

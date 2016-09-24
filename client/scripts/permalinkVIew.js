@@ -1,9 +1,11 @@
-/// DEPENDENCIES
+(function(){
+  /// DEPENDENCIES
   /*
-    detailPanel
+  detailPanel
   */
-///
+  ///
 
-console.log("daniellacos.se v2.0.0");
+  console.log("daniellacos.se v2.0.0");
 
-addToStorage();
+  addToStorage();
+})();

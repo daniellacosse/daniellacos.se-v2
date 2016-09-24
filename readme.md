@@ -5,21 +5,30 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
 * productionizing
-  * environments
-  * aws & docker
+  * staging environment
+  * aws deploy script
+
+* permalink route
+* sharing
 
 * known bugs (check TODOs)
-* tests
-
-* permalink
-* create meta tags
+  * hiding tooltips properly
+  * the fucking icon font travesty
+  * don't squish the articles so much
 
 * resize, scroll, keypress window event listeners
+  * save scroll depth
+  * "infinite scrolling"
+  * responsiveness (but I don't think we need to do too much)
+  * navigate with arrow keys
+
 * preprocess image & iframe body tags.
  * load on scroll (img & iframe)
 
 * debugging/error handling
 * reload server on file change (webpack-dev-server?)
+
+* tests
 
 * attach more sources/documents/infinite scrolling
   * XHRHttpRequest to server
@@ -39,11 +48,13 @@ i'm sick of these frameworks. let's cut out the "muddle man"
     google drive public folder?
 
     ** sane 'favorites' management **
+    ** sane 'duplicates' management **
 
   categories
-    embed - audio
-    embed - video
-    embed - code frame/repository
-    embed - gist(?)
-    image gallery
-    article
+    favorites
+    text
+    media
+    code
+    gallery
+
+  (icons for media/gallery/sharing)

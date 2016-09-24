@@ -1,66 +1,76 @@
-// TODO: minify/uglify (in production)
-// import { flow } from "lodash"
-// import { minify } from "html-minifier"
-// import { parse, uglify } from "uglify-js"
 import { readFileSync } from "fs"
 import { transform } from "babel-core"
+import { minify } from "html-minifier"
 
 import { getFaviconURL, getIconFontURL, getWebFontURL } from "./Asset"
 
-export const metaTemplate    = "@META_TAGS@"
-export const htmlTemplate    = "@HTML_CONTENT@"
-export const dataTemplate    = "@RUNTIME_DATA@"
+export const dataTemplate = "@RUNTIME_DATA@"
 export const faviconTemplate = "@FAVICON@"
-export const libraryTemplate = "@SCRIPT_LIBRARY@"
-export const scriptTemplate  = "@RUNTIME_SCRIPT@"
+export const scriptTemplate  = "@RUNTIME_SCRIPTS@"
 export const iconFontTemplate = "@ICONFONT@"
 export const nevisFontTemplate = "@NEVISFONT@"
 
-// export const compressScript = flow([
-//   parse,
-//   uglify.ast_mangle,
-//   uglify.ast_squeeze,
-//   uglify.gen_code
-// ]);
+export const typeTemplate = "@ITEM_TYPE@"
+export const titleTemplate = "@TITLE@"
+export const descriptionTemplate = "@DESCRIPTION@"
+export const previewImageTemplate = "@PREVIEW_IMAGE@"
+export const URLTemplate = "@CANONICAL_URL@"
 
-export const loadScript = (filename) => {
-  const readString = readFileSync(`./client/${filename}.js`).toString("utf8")
+export const buildScript = (files, options = {}) => {
+  const { isProductionBuild } = options;
 
-  return transform(readString).code;
+  let readString = readFileSync(`./client/_essentials_.js`).toString("utf8")
+  let _len = files.length
+  while(_len--) {
+    const filename = files[_len]
+
+    readString += readFileSync(`./client/${filename}.js`).toString("utf8")
+  }
+
+  const presets = isProductionBuild
+    ? ["es2015", "stage-0", "babili"]
+    : ["es2015", "stage-0"]
+
+  return transform(readString, { presets }).code;
 }
 
-export const loadScripts = (scripts) => {
-  const files = scripts.map((script) => `scripts/${script}`)
+export const buildTemplate = ({ file, meta, scripts, data, meta }) => {
+  const isProductionBuild = (process.env.NODE_ENV === "production")
+  const sanitizedData = (!!data)
+    ? JSON.stringify(JSON.stringify(data))
+    : "{}"
 
-  return files.map(loadScript).join("\n// --- PAGE BREAK --- //\n")
-}
+  const sanitizedScript = buildScript(scripts || [], { isProductionBuild })
 
-export const loadLibraries = (scripts) => {
-  const files = [
-    "libraries/_essentials_",
-    ...scripts.map((script) => `libraries/${script}`)
-  ]
+  const buildPoints = {
+    [dataTemplate]: sanitizedData,
+    [scriptTemplate]: sanitizedScript,
+    [faviconTemplate]: getFaviconURL(),
+    [iconFontTemplate]: getIconFontURL(),
+    [nevisFontTemplate]: getWebFontURL("nevis"),
 
-  return files.map(loadScript).join("\n// --- PAGE BREAK --- //\n")
-}
+    [typeTemplate]: meta.type,
+    [titleTemplate]: meta.title,
+    [descriptionTemplate]: meta.description,
+    [previewImageTemplate]: meta.previewImage,
+    [URLTemplate]: meta.url
+  }
 
-export const buildTemplate = ({ file, meta, scripts, libraries, data, html }) => {
-  // const script = compressScript(script)
-  const builtHTML = readFileSync(`./assets/${file}.html`)
+  let templateToBuild = readFileSync(`./assets/${file}.html`)
     .toString("utf8")
-    .replace(metaTemplate, meta || "")
-    .replace(htmlTemplate, html || "")
-    // DOUBLE STRINGIFYYYYYY
-    // (to DEFINITELY escape all quotation characters)
-    .replace(dataTemplate,    JSON.stringify(JSON.stringify(data)) || "{}")
-    .replace(faviconTemplate, getFaviconURL())
-    .replace(scriptTemplate,  loadScripts(scripts) || "")
-    .replace(libraryTemplate, loadLibraries(libraries) || "")
-    .replace(iconFontTemplate, getIconFontURL())
-    .replace(nevisFontTemplate, getWebFontURL("nevis"))
 
-  // return minify(builtHTML)
-  return builtHTML
+  let buildPointKeys = Object.keys(buildPoints)
+  let _len = buildPointKeys.length
+  while(_len--) {
+    const key = buildPointKeys[_len]
+    const buildPointSource = buildPoints[key]
+
+    templateToBuild.replace(key, buildPointSource)
+  }
+
+  return (isProductionBuild)
+    ? minify(templateToBuild)
+    : templateToBuild
 }
 
 export const buildApplication = (templates = {}) => {
