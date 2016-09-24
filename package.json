@@ -6,7 +6,7 @@
     "build": "webpack",
     "clear": "rm -rf _CACHE",
     "debug": "node-debug server.dist.js",
-    "init": "npm run build && npm start",
+    "init": "npm run clear && npm run build && npm start",
     "secrets": "atom .secrets",
     "start": "node server.dist.js",
     "test": "ava"
@@ -18,6 +18,8 @@
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-stage-0": "^6.5.0",
     "concurrently": "^2.2.0",
+    "iconfont-loader": "0.0.1",
+    "icons-loader": "0.0.6",
     "json-loader": "^0.5.4",
     "webpack": "^1.13.2",
     "webpack-livereload-plugin": "^0.8.2"

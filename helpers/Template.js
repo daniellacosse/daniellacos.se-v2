@@ -5,10 +5,16 @@
 import { readFileSync } from "fs"
 import { transform } from "babel-core"
 
-export const metaTemplate = "@META_TAGS@"
-export const htmlTemplate = "@HTML_CONTENT@"
-export const dataTemplate = "@RUNTIME_DATA@"
-export const scriptTemplate = "@RUNTIME_SCRIPT@"
+import { getFaviconURL, getIconFontURL, getWebFontURL } from "./Asset"
+
+export const metaTemplate    = "@META_TAGS@"
+export const htmlTemplate    = "@HTML_CONTENT@"
+export const dataTemplate    = "@RUNTIME_DATA@"
+export const faviconTemplate = "@FAVICON@"
+export const libraryTemplate = "@SCRIPT_LIBRARY@"
+export const scriptTemplate  = "@RUNTIME_SCRIPT@"
+export const iconFontTemplate = "@ICONFONT@"
+export const nevisFontTemplate = "@NEVISFONT@"
 
 // export const compressScript = flow([
 //   parse,
@@ -24,22 +30,34 @@ export const loadScript = (filename) => {
 }
 
 export const loadScripts = (scripts) => {
-  const files = [ "_essentials_", ...scripts ]
+  const files = scripts.map((script) => `scripts/${script}`)
 
-  return files.map(loadScript).join("// --- PAGE BREAK --- //\n")
+  return files.map(loadScript).join("\n// --- PAGE BREAK --- //\n")
 }
 
-export const buildTemplate = ({ file, meta, script, data, html }) => {
-  // const script = compressScript(script)
+export const loadLibraries = (scripts) => {
+  const files = [
+    "libraries/_essentials_",
+    ...scripts.map((script) => `libraries/${script}`)
+  ]
 
+  return files.map(loadScript).join("\n// --- PAGE BREAK --- //\n")
+}
+
+export const buildTemplate = ({ file, meta, scripts, libraries, data, html }) => {
+  // const script = compressScript(script)
   const builtHTML = readFileSync(`./assets/${file}.html`)
     .toString("utf8")
     .replace(metaTemplate, meta || "")
     .replace(htmlTemplate, html || "")
     // DOUBLE STRINGIFYYYYYY
     // (to DEFINITELY escape all quotation characters)
-    .replace(dataTemplate, JSON.stringify(JSON.stringify(data)) || "{}")
-    .replace(scriptTemplate, script || "")
+    .replace(dataTemplate,    JSON.stringify(JSON.stringify(data)) || "{}")
+    .replace(faviconTemplate, getFaviconURL())
+    .replace(scriptTemplate,  loadScripts(scripts) || "")
+    .replace(libraryTemplate, loadLibraries(libraries) || "")
+    .replace(iconFontTemplate, getIconFontURL())
+    .replace(nevisFontTemplate, getWebFontURL("nevis"))
 
   // return minify(builtHTML)
   return builtHTML

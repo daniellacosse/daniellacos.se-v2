@@ -5,8 +5,8 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
 * frontend css
-  * favicon & other assets (if any) (iconfont-loader)
-  * load on scroll (img & iframe)
+  * favicon & other assets (if any) (icons-loader)
+    * data URL everything
 * productionizing
   * environments
   * aws & docker
@@ -14,6 +14,10 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 * permalink
   * create meta tags
+
+* resize, scroll, keypress window event listeners
+* preprocess image & iframe body tags.
+ * load on scroll (img & iframe)
 
 * debugging/error handling
 * reload server on file change (webpack-dev-server?)

@@ -1,6 +1,7 @@
 import PageRoute                         from "helpers/Route"
-import { buildApplication, loadScripts } from "helpers/Template"
+import { buildApplication } from "helpers/Template"
 import { fetchTweets, fetchTumblrs }     from "helpers/API"
+import { getJPGURL, sanitizeFontIcons }                     from "helpers/Asset"
 
 export class IndexRoute extends PageRoute {
   static path = "/"
@@ -20,16 +21,21 @@ export class IndexRoute extends PageRoute {
     while (_len--)
       documents = documents.concat(data[_len])
 
-    // documents sort by date
+    // documents fuzzy sort by date
 
     return buildApplication({
-      data: { documents },
-      script: loadScripts([
-        "components/infoSidebar",
-        "components/masterList",
-        "components/detailPanel",
-        "scripts/rootView"
-      ])
+      data: {
+        documents,
+        avatarURL: getJPGURL("avatar"),
+        fontIcons: sanitizeFontIcons()
+      },
+      scripts: [ "rootView" ],
+      libraries: [
+        "homeLink",
+        "infoSidebar",
+        "masterList",
+        "detailPanel"
+      ]
     })
   }
 }

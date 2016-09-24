@@ -1,4 +1,5 @@
-var LiveReloadPlugin = require("webpack-livereload-plugin");
+var LiveReloadPlugin = require("webpack-livereload-plugin")
+var IconsPlugin = require("icons-loader/IconsPlugin")
 
 module.exports = {
   target: "node",
@@ -9,7 +10,7 @@ module.exports = {
   },
   resolve: {
     root: [ __dirname ],
-    extensions : ["", ".js", ".json"]
+    extensions : ["", ".js", ".json", ".svg"]
   },
   module: {
     loaders: [
@@ -23,10 +24,17 @@ module.exports = {
       }, {
         test:  /\.json$/,
         loader: "json-loader"
+      }, {
+        test: /\.svg$/,
+        loader: "icons-loader"
       }
     ]
   },
   plugins: [
-    new LiveReloadPlugin()
+    new LiveReloadPlugin(),
+    new IconsPlugin({
+      fontName: "daniellacosse-icons",
+      formats: [ "woff" ]
+    })
   ]
 };

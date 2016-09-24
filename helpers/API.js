@@ -17,9 +17,9 @@ export const fetchTweets = ({ count, since }) => {
       pathname: "/statuses/user_timeline.json",
       query: {
         contributor_details: false,
-        exclude_replies: true,
-        include_rts: false,
-        trim_user: true,
+        exclude_replies:     true,
+        include_rts:         false,
+        trim_user:           true,
         count
       }
     },
@@ -41,14 +41,14 @@ export const fetchTumblrs = ({ count, since }) => {
       hostname: TUMBLR_API_HOST,
       pathname: "/posts/text",
       query: {
-        limit: count,
+        limit:  count,
         offset: since,
         filter: "raw"
       }
     },
     format: ({ response }) => {
       return response.posts.map(
-        ({ id, post_url, date, tags, title, body }) => ({ id, url: post_url, date, tags, title, body, type: "article", source: TUMBLR_SOURCE })
+        ({ id, post_url, date, tags, title, body }) => ({ id, url: post_url, date, tags, title, body, type: "text", source: TUMBLR_SOURCE })
       )
     },
     error: ({ meta, response }) => {
@@ -56,7 +56,7 @@ export const fetchTumblrs = ({ count, since }) => {
 
       return `${TUMBLR_SOURCE}: ${meta.msg} (${meta.status})`
     }
-  }) // TODO: then, curate into documents
+  })
 }
 
 // TODO: 'fetchDocuments'
