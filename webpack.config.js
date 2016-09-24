@@ -1,4 +1,3 @@
-var LiveReloadPlugin = require("webpack-livereload-plugin")
 var IconsPlugin = require("icons-loader/IconsPlugin")
 
 module.exports = {
@@ -31,7 +30,6 @@ module.exports = {
     ]
   },
   plugins: [
-    new LiveReloadPlugin(),
     new IconsPlugin({
       fontName: "daniellacosse-icons",
       formats: [ "woff" ]

@@ -1,0 +1,6 @@
+{
+  "env": {
+    "development": { "presets": ["es2015", "stage-0"] },
+    "production": { "presets": ["es2015", "stage-0", "babili"] }
+  }
+}
