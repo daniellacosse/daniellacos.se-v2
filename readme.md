@@ -4,16 +4,15 @@
 i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
-* frontend css
-  * favicon & other assets (if any) (icons-loader)
-    * data URL everything
 * productionizing
   * environments
   * aws & docker
-  * tests
+
+* known bugs (check TODOs)
+* tests
 
 * permalink
-  * create meta tags
+* create meta tags
 
 * resize, scroll, keypress window event listeners
 * preprocess image & iframe body tags.
