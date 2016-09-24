@@ -5,7 +5,6 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
 * productionizing
-  * staging environment
   * aws deploy script
 
 * browser support
@@ -17,6 +16,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
   * hiding tooltips properly
   * the fucking icon font travesty
   * don't squish the articles so much
+  * babel & compressor not working
 
 * resize, scroll, keypress window event listeners
   * save scroll depth

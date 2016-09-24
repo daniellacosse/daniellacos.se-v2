@@ -7,3 +7,8 @@ _CACHE
 
 # not a fan of this
 /*.woff
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
