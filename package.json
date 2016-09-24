@@ -2,6 +2,13 @@
   "name": "daniellacos.se",
   "version": "2.0.0",
   "main": "server.dist.js",
+  "private": true,
+  "license": "UNLICENSED",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/daniellacosse/daniellacos.se-v2.git"
+  },
+  "license": "",
   "scripts": {
     "build": "webpack",
     "clear": "rm -rf _CACHE",
@@ -9,7 +16,9 @@
     "init": "npm run clear && npm run build && npm start",
     "secrets": "atom .secrets",
     "start": "node server.dist.js",
-    "test": "ava"
+    "test": "ava",
+    "deploy": "eb deploy",
+    "deploy-production": "eb deploy daniellacosse-production"
   },
   "author": "Daniel LaCosse <d@niellacos.se> (http://daniellacos.se)",
   "devDependencies": {
