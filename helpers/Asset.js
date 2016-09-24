@@ -1,4 +1,5 @@
 import { readFileSync, readdirSync } from "fs"
+import minifyCssString from 'minify-css-string'
 
 import * as icons from "assets/icons"
 
@@ -39,6 +40,14 @@ export function sanitizeFontIcons() {
   }
 
   return sanitizedFontIcons
+}
+
+export function getApplicationCSS() {
+  const cssString = readFileSync("./assets/index.css").toString("utf8")
+
+  return (process.env.NODE_ENV === "production")
+    ? minifyCssString(cssString)
+    : cssString
 }
 
 export default function getAssetURL(filename, mimetype) {

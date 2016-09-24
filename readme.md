@@ -8,6 +8,8 @@ i'm sick of these frameworks. let's cut out the "muddle man"
   * staging environment
   * aws deploy script
 
+* browser support
+
 * permalink route
 * sharing
 
@@ -28,11 +30,12 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 * debugging/error handling
 * reload server on file change (webpack-dev-server?)
 
-* tests
-
 * attach more sources/documents/infinite scrolling
   * XHRHttpRequest to server
   * hardest part of this whole thing is ensuring feed is consistent and ordered from all sources
+* filter toggles
+
+* tests?
 
   NOTES: list of sources
     tumblr

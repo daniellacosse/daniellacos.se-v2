@@ -1,11 +1,17 @@
 import { readFileSync } from "fs"
 import { transform } from "babel-core"
-import { minify } from "html-minifier"
+import Minimizer from "minimize"
 
-import { getFaviconURL, getIconFontURL, getWebFontURL } from "./Asset"
+import {
+  getFaviconURL,
+  getIconFontURL,
+  getWebFontURL,
+  getApplicationCSS
+} from "./Asset"
 
 export const dataTemplate = "@RUNTIME_DATA@"
 export const faviconTemplate = "@FAVICON@"
+export const cssTemplate = "@GLOBAL_CSS@"
 export const scriptTemplate  = "@RUNTIME_SCRIPTS@"
 export const iconFontTemplate = "@ICONFONT@"
 export const nevisFontTemplate = "@NEVISFONT@"
@@ -19,33 +25,36 @@ export const URLTemplate = "@CANONICAL_URL@"
 export const buildScript = (files, options = {}) => {
   const { isProductionBuild } = options;
 
-  let readString = readFileSync(`./client/_essentials_.js`).toString("utf8")
+  let readString = readFileSync(`./client/libraries/_essentials_.js`).toString("utf8")
   let _len = files.length
   while(_len--) {
-    const filename = files[_len]
+    const filename = files.reverse()[_len]
 
     readString += readFileSync(`./client/${filename}.js`).toString("utf8")
   }
 
-  const presets = isProductionBuild
-    ? ["es2015", "stage-0", "babili"]
-    : ["es2015", "stage-0"]
-
-  return transform(readString, { presets }).code;
+  return transform(readString, {
+      env: {
+        production: {
+          minified: true,
+          comments: false,
+        }
+      }
+    }).code;
 }
 
-export const buildTemplate = ({ file, meta, scripts, data, meta }) => {
-  const isProductionBuild = (process.env.NODE_ENV === "production")
+export const buildTemplate = ({ file, meta, scripts, data }) => {
   const sanitizedData = (!!data)
     ? JSON.stringify(JSON.stringify(data))
     : "{}"
 
-  const sanitizedScript = buildScript(scripts || [], { isProductionBuild })
+  const sanitizedScript = buildScript(scripts || [])
 
   const buildPoints = {
     [dataTemplate]: sanitizedData,
     [scriptTemplate]: sanitizedScript,
     [faviconTemplate]: getFaviconURL(),
+    [cssTemplate]: getApplicationCSS(),
     [iconFontTemplate]: getIconFontURL(),
     [nevisFontTemplate]: getWebFontURL("nevis"),
 
@@ -56,20 +65,20 @@ export const buildTemplate = ({ file, meta, scripts, data, meta }) => {
     [URLTemplate]: meta.url
   }
 
-  let templateToBuild = readFileSync(`./assets/${file}.html`)
-    .toString("utf8")
+  let templateToBuild = readFileSync(`./assets/${file}.html`).toString("utf8")
 
   let buildPointKeys = Object.keys(buildPoints)
   let _len = buildPointKeys.length
   while(_len--) {
     const key = buildPointKeys[_len]
     const buildPointSource = buildPoints[key]
+    const regex = new RegExp(key, "g")
 
-    templateToBuild.replace(key, buildPointSource)
+    templateToBuild = templateToBuild.replace(regex, buildPointSource)
   }
 
-  return (isProductionBuild)
-    ? minify(templateToBuild)
+  return (process.env.NODE_ENV === "production")
+    ? new Minimizer().parse(templateToBuild)
     : templateToBuild
 }
 

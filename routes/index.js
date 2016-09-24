@@ -39,11 +39,11 @@ export class IndexRoute extends PageRoute {
         fontIcons: sanitizeFontIcons()
       },
       scripts: [
-        "homeLink",
-        "infoSidebar",
-        "masterList",
-        "detailPanel",
-        "rootView"
+        "libraries/homeLink",
+        "libraries/infoSidebar",
+        "libraries/masterList",
+        "libraries/detailPanel",
+        "scripts/rootView"
       ]
     })
   }

@@ -11,6 +11,7 @@ const PORT        = process.env.PORT || 9999
 secrets("./.secrets")
 attachRoutes(APPLICATION, routes)
 
+// TODO: compression seems to be broken
 APPLICATION.use(compression())
 APPLICATION.listen(PORT, () => {
   console.log(
