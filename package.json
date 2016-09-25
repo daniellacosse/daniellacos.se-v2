@@ -12,12 +12,12 @@
     "build": "webpack",
     "clear": "rm -rf _CACHE",
     "debug": "node-debug server.dist.js",
+    "deploy-production": "",
+    "deploy": "",
     "init": "npm run clear && npm run build && npm start",
     "secrets": "atom .secrets",
     "start": "node server.dist.js",
-    "test": "ava",
-    "deploy": "eb deploy",
-    "deploy-production": "eb deploy daniellacosse-production"
+    "test": "ava"
   },
   "author": "Daniel LaCosse <d@niellacos.se> (http://daniellacos.se)",
   "devDependencies": {
