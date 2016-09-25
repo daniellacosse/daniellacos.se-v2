@@ -4,9 +4,6 @@
 i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
-* productionizing
-  * aws deploy script
-
 * browser support
   * if IE, alternate message, link to chrome
   * noscript, display alternate message
@@ -16,6 +13,14 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 * permalink route
 * sharing
+
+* attach more sources/documents/infinite scrolling
+  * XHRHttpRequest to server
+  * hardest part of this whole thing is ensuring feed is consistent and ordered from all sources
+* filter toggles
+
+* productionizing
+  * aws deploy script
 
 * known bugs (check TODOs)
   * hiding tooltips properly
@@ -35,11 +40,6 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 * debugging/error handling
 * reload server on file change (webpack-dev-server?)
-
-* attach more sources/documents/infinite scrolling
-  * XHRHttpRequest to server
-  * hardest part of this whole thing is ensuring feed is consistent and ordered from all sources
-* filter toggles
 
 * tests?
 
