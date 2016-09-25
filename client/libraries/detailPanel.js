@@ -17,7 +17,7 @@ const DETAIL_CONTAINER_STYLE = {
   "position": "relative",
   "transform": "rotate(0)",
   "padding": "15px",
-  "min-width": "315px",
+  "min-width": "285px",
   "z-index": "5"
 }
 
@@ -47,14 +47,14 @@ function $renderDetailPanelActiveDocument() {
     $createElement({ name: "h1", text: title }),
     $createElement({
       name: "time",
-      text: new Date(date).toLocaleDateString(),
+      text: date,
       style: {
-        "font-size": "12px",
-        "opacity": "0.5",
+        "font-size": "18px",
+        "opacity": "0.25",
         "display": "block",
-        "padding": "5px 0 15px 0",
+        "padding": "7px 0 18px 0",
         "border-bottom": "1px solid black",
-        "margin-bottom": "30px"
+        "margin-bottom": "32px"
       }
     }),
     $createElement({ name: "section", innerHTML: body })

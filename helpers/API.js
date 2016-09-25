@@ -52,9 +52,18 @@ export const fetchTumblrs = ({ count, since }) => {
     },
     format: ({ response }) => {
       return response.posts.map(
-        ({ id, post_url, date, tags, title, body }) => ({
-          id, url: post_url, date, tags, title, body, type: "text", source: TUMBLR_SOURCE
-        })
+        ({ id, post_url, date, tags, title, body }) => {
+          return {
+            id,
+            url: post_url,
+            date: new Date(date).toLocaleDateString(),
+            tags,
+            title,
+            body,
+            type: "text",
+            source: TUMBLR_SOURCE
+          }
+        }
       )
     },
     error: ({ meta, response }) => {

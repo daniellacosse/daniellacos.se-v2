@@ -26,6 +26,7 @@ p, blockquote {
 }
 
 p.caption {
+  margin-top: 5px;
   font-size: 14px;
 }
 
@@ -40,10 +41,11 @@ p, blockquote {
   font-size: 16px;
 }
 
-p img {
+p img, figure img {
   display: block;
   margin: 0 auto -15px auto;
   max-height: 365px;
+  width: 100%;
   border-radius: 5px;
 }
 

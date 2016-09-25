@@ -5,9 +5,12 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
 * browser support
-  * if IE, alternate message, link to chrome
-
-  * run in safari/firefox/opera for any needed prefixes
+  * IE
+    * don't bother: alternate message, link to chrome
+  * safari
+    * text flash on transition (backface-visibility issue, probably)
+  * mobile
+    * doesn't quite fit
 
 * permalink route
 * sharing
@@ -22,9 +25,12 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 * known bugs (check TODOs)
   * hiding tooltips properly
+    * make them pointy on one end
+  * camelcase property leak
   * the fucking icon font travesty
-  * don't squish the articles so much
-  * babel & compressor not working
+  * don't squish the articles so much on resize
+  * babel & compressor not working (opera)
+  * close arrow button doesn't pin to top
   * improve deploy script further
 
 * resize, scroll, keypress window event listeners
@@ -36,10 +42,10 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 * preprocess image & iframe body tags.
  * load on scroll (img & iframe)
 
-* debugging/error handling
-* reload server on file change (webpack-dev-server?)
-
-* tests?
+* for show:
+  * debugging/error handling
+  * reload server on file change (webpack-dev-server?)
+  * tests
 
   NOTES: list of sources
     tumblr

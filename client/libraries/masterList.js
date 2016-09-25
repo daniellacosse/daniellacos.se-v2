@@ -100,6 +100,8 @@ const LIST_ITEM_STYLE = {
   "overflow": "hidden",
   "cursor": "pointer",
   "position": "relative",
+  "display": "flex",
+  "align-items": "center",
   "border-bottom": "1px solid black",
   "font-size": "12px",
   "font-weight": "bold",
@@ -130,30 +132,22 @@ function $renderMasterListItem({ title, type, date }, index) {
       {
         name: "li",
         children: [
-          $createElement({
-            style: {
-              "display": "flex",
-              "align-items": "center",
-              "margin-top": "-13px"
-            },
-            children: [
-              $createIcon(type, { "padding-right": "5px" }),
-              $createElement({
-                name: "b",
-                text: title
-              })
-            ]
+          $createIcon(type, {
+            "font-size": "15px",
+            "margin-right": "10px"
           }),
           $createElement({
-            name: "time",
-            text: new Date(date).toLocaleDateString(),
-            style: {
-              "opacity": "0.5",
-              "font-weight": "normal",
-              "position": "absolute",
-              "bottom": "7px",
-              "left": "10px"
-            }
+            children: [
+              $createElement({ name: "b", text: `${title} — ` }),
+              $createElement({
+                name: "time",
+                text: date,
+                style: {
+                  "opacity": "0.5",
+                  "font-weight": "normal"
+                }
+              })
+            ]
           })
         ]
       }
