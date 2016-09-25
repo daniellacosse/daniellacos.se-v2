@@ -6,8 +6,6 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 ### TODO:
 * browser support
   * if IE, alternate message, link to chrome
-  * noscript, display alternate message
-  * also fallback for linear gradient
 
   * run in safari/firefox/opera for any needed prefixes
 
