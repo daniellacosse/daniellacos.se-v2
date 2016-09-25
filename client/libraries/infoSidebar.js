@@ -35,6 +35,8 @@ function $renderInfoSidebarFilterToggleList() {
     children: [
       $renderInfoSidebarFilterToggleIcon("star", "favorites"),
       $renderInfoSidebarFilterToggleIcon("text"),
+      $renderInfoSidebarFilterToggleIcon("gallery"),
+      $renderInfoSidebarFilterToggleIcon("media"),
       $renderInfoSidebarFilterToggleIcon("code")
     ]
   })

@@ -1,5 +1,6 @@
 const DETAIL_PANEL_ID = "DetailPanel"
 const DETAIL_CONTAINER_ID = `${DETAIL_PANEL_ID}-container`
+const DETAIL_SHARE_BUTTON_ID = `${DETAIL_PANEL_ID}-shareButton`
 
 const DETAIL_PANEL_STYLE = {
   "width": "100%",
@@ -35,7 +36,8 @@ function $renderDetailPanel() {
      id: DETAIL_CONTAINER_ID,
      children: [
        detailPanel,
-       $renderMasterListCollapseButton()
+       $renderMasterListCollapseButton(),
+       $renderActiveDocumentShareButton()
      ]
   })
 }
@@ -85,4 +87,30 @@ function $renderDetailPanelActiveDocument() {
   }
 
   return requriedChildren
+}
+
+const DETAIL_SHARE_BUTTON_STYLE = {
+  "position": "fixed",
+  "top": "15px",
+  "right": "15px",
+  "opacity": "0.25",
+  "transform": "rotate(0)",
+  "cursor": "pointer",
+  "transition": `opacity ${DASE_DURATION} ${DASE_BEZIER}`
+}
+
+function $renderActiveDocumentShareButton() {
+  return $createElement({
+    name: "button",
+    id: DETAIL_SHARE_BUTTON_ID,
+    style: DETAIL_SHARE_BUTTON_STYLE,
+    onMouseOver: "this.style.opacity=1",
+    onMouseOut: "this.style.opacity=0.25",
+    children: [
+      $createIcon("share", {
+        "color": DASE_GREEN,
+        "font-size": "20px"
+      })
+    ]
+  })
 }

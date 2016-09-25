@@ -4,21 +4,15 @@
 i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
-* browser support
-  * IE
-    * don't bother: alternate message, link to chrome
-  * safari
-    * text flash on transition (backface-visibility issue, probably)
-  * mobile
-    * doesn't quite fit
-
+* media/gallery/sharing icons
 * permalink route
 * sharing
 
+* favorites — "star"
+* filter toggles
 * attach more sources/documents/infinite scrolling
   * XHRHttpRequest to server
   * hardest part of this whole thing is ensuring feed is consistent and ordered from all sources
-* filter toggles
 
 * productionizing
   * aws deploy script
@@ -38,6 +32,14 @@ i'm sick of these frameworks. let's cut out the "muddle man"
   * "infinite scrolling"
   * responsiveness (but I don't think we need to do too much)
   * navigate with arrow keys
+
+* browser support
+  * IE
+    * don't bother: alternate message, link to chrome
+  * safari
+    * text flash on transition (backface-visibility issue, probably)
+  * mobile
+    * doesn't quite fit
 
 * preprocess image & iframe body tags.
  * load on scroll (img & iframe)
