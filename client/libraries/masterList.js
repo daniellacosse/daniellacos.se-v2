@@ -15,7 +15,7 @@ const MASTER_LIST_STYLE = {
   "position": "relative",
   "box-shadow": "-3px 0px 8px 1px rgba(0, 0, 0, 0.2)",
   "background": "rgba(255, 255, 255, 0.75)",
-  "transform": "rotate(0)",
+  "transform": "rotateZ(0)",
   "transition": `all ${DASE_DURATION} ${DASE_BEZIER}`
 }
 
@@ -165,7 +165,7 @@ const MASTER_LIST_COLLAPSE_BUTTON_STYLE = {
   "font-size": "16px",
   "opacity": "0.25",
   "color": DASE_GREEN,
-  "transform": "rotate(0)",
+  "transform": "rotateZ(0)",
   "transition": `all ${DASE_DURATION} ${DASE_BEZIER}`
 }
 

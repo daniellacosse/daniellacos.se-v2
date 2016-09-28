@@ -1,19 +1,20 @@
-import PageRoute                         from "helpers/Route"
-import { buildApplication } from "helpers/Template"
-import { fetchTweets, fetchTumblrs }     from "helpers/API"
-import { getJPGURL, sanitizeFontIcons }                     from "helpers/Asset"
+import Route from "helpers/route"
+import { buildApplication } from "helpers/template"
+import { fetchTweets, fetchTumblrs, fetchSounds } from "helpers/api"
+import { getJPGURL, sanitizeFontIcons }from "helpers/asset"
 
 export HealthRoute from "./health"
 export PermalinkRoute from "./permalink"
 
-export class IndexRoute extends PageRoute {
+export class IndexRoute extends Route {
   static path = "/"
   static cacheLifeInDays = 1
 
   prefetch() {
     return Promise.all([
       // fetchTweets  ({ count: 10 }),
-      fetchTumblrs ({ count: 3 })
+      fetchTumblrs({ count: 3 }),
+      fetchSounds({ count: 5 })
     ])
   }
 
@@ -24,7 +25,6 @@ export class IndexRoute extends PageRoute {
     while (_len--)
       documents = documents.concat(data[_len])
 
-    // TODO documents fuzzy sort by date
     return buildApplication({
       meta: {
         type: "CreativeWork",
@@ -34,7 +34,13 @@ export class IndexRoute extends PageRoute {
         url: "http://daniellacos.se/"
       },
       data: {
-        documents,
+        documents: documents.sort((a, b) => {
+          const dateA = new Date(a.date)
+          const dateB = new Date(b.date)
+
+          if (dateA == dateB) return 0
+          return (dateA > dateB) ? -1 : 1
+        }),
         avatarURL: getJPGURL("avatar"),
         fontIcons: sanitizeFontIcons()
       },

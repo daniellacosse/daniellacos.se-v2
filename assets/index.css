@@ -7,6 +7,8 @@
   box-sizing: border-box;
   vertical-align: baseline;
   font-family: HelveticaNeue, Helvetica, "Helvetica", sans-serif;
+  backface-visibility: hidden;
+  transform: rotateZ(0);
 }
 
 html {

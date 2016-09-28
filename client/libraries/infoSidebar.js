@@ -58,7 +58,7 @@ const FILTER_TOGGLE_ICON_STYLE = {
   "opacity": "0.5",
   "padding": "10px",
   "cursor": "pointer",
-  "transform": "rotate(0)",
+  "transform": "rotateZ(0)",
   "transition": `opacity ${DASE_DURATION} ${DASE_BEZIER}`
 }
 

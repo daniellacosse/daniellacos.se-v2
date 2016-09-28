@@ -4,7 +4,6 @@
 i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
-* media/gallery/sharing icons
 * permalink route
 * sharing
 
@@ -21,11 +20,9 @@ i'm sick of these frameworks. let's cut out the "muddle man"
   * hiding tooltips properly
     * make them pointy on one end
   * camelcase property leak
-  * the fucking icon font travesty
   * don't squish the articles so much on resize
   * babel & compressor not working (opera)
   * close arrow button doesn't pin to top
-  * improve deploy script further
 
 * resize, scroll, keypress window event listeners
   * save scroll depth
@@ -46,17 +43,16 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 * for show:
   * debugging/error handling
-  * reload server on file change (webpack-dev-server?)
   * tests
 
   NOTES: list of sources
-    tumblr
-    twitter
+    tumblr (X)
+    twitter (~)
     medium (soon)
     vine   (maybe?)
     youtube
     vimeo
-    soundcloud
+    soundcloud (X)
     github (repo/gist)
 
     s3 - there has to be a better option here

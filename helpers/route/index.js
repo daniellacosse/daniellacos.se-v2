@@ -7,28 +7,11 @@ import {
   readFileSync
 } from "fs"
 
-import { loadScripts, buildApplication } from "./Template"
+import { loadScripts, buildApplication } from "../template"
 
-export const CACHE_DIRECTORY = "./_CACHE"
-export const DAY_MS          = 24 * 60 * 60 * 1000
+export attachRoutes from "./attachRoutes"
 
-export const attachRoutes = (app, routes) => {
-  let _keys = Object.keys(routes)
-  let _len = _keys.length
-
-  while(_len--) {
-    const Route = routes[_keys[_len]]
-
-    app.get(Route.path, (request, response) => {
-      const handledRoute = new Route(request, response).handler()
-
-      if (handledRoute.catch)
-        handledRoute.catch(console.trace)
-    })
-  }
-}
-
-export default class PageRoute {
+export default class Route {
   constructor(request, response) {
     this.params = request.params;
     this.response = response;

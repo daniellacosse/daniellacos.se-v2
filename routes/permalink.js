@@ -1,7 +1,7 @@
-import PageRoute                        from "helpers/Route"
-import { buildApplication, loadScript } from "helpers/Template"
+import Route from "helpers/route"
+import { buildApplication, loadScript } from "helpers/template"
 
-export default class PermalinkRoute extends PageRoute {
+export default class PermalinkRoute extends Route {
   static path = "/:type/:hash"
   static cacheLifeInDays = 6
 

@@ -1,6 +1,6 @@
-import PageRoute                         from "helpers/Route"
+import Route from "helpers/route"
 
-export default class HealthRoute extends PageRoute {
+export default class HealthRoute extends Route {
   static path = "/health"
 
   dispatch() {

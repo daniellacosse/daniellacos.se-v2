@@ -4,6 +4,7 @@ server.dist.js
 npm-debug.log
 _CACHE
 .secrets
+.dist
 
 # not a fan of this
 /*.woff

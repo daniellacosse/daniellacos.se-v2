@@ -16,7 +16,7 @@ const DETAIL_CONTAINER_STYLE = {
   "box-shadow": "-3px 0px 8px 1px rgba(0, 0, 0, 0.2)",
   "background": "white",
   "position": "relative",
-  "transform": "rotate(0)",
+  "transform": "rotateZ(0)",
   "padding": "15px",
   "min-width": "285px",
   "z-index": "5"
@@ -94,7 +94,7 @@ const DETAIL_SHARE_BUTTON_STYLE = {
   "top": "15px",
   "right": "15px",
   "opacity": "0.25",
-  "transform": "rotate(0)",
+  "transform": "rotateZ(0)",
   "cursor": "pointer",
   "transition": `opacity ${DASE_DURATION} ${DASE_BEZIER}`
 }
