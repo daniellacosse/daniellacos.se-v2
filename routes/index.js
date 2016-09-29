@@ -1,6 +1,6 @@
-import Route from "helpers/route"
+import Route from "helpers/routing"
 import { buildApplication } from "helpers/template"
-import { fetchTweets, fetchTumblrs, fetchSounds } from "helpers/api"
+import { tumblrFetch, soundcloudFetch } from "helpers/api"
 import { getJPGURL, sanitizeFontIcons }from "helpers/asset"
 
 export HealthRoute from "./health"
@@ -13,8 +13,8 @@ export class IndexRoute extends Route {
   prefetch() {
     return Promise.all([
       // fetchTweets  ({ count: 10 }),
-      fetchTumblrs({ count: 3 }),
-      fetchSounds({ count: 5 })
+      tumblrFetch({ count: 3 }),
+      soundcloudFetch({ count: 5 })
     ])
   }
 

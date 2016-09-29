@@ -1,4 +1,4 @@
-import Route from "helpers/route"
+import Route from "helpers/routing"
 import { buildApplication, loadScript } from "helpers/template"
 
 export default class PermalinkRoute extends Route {

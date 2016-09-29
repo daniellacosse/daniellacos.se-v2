@@ -5,6 +5,7 @@ npm-debug.log
 _CACHE
 .secrets
 .dist
+.dist.tar.gz
 
 # not a fan of this
 /*.woff

@@ -4,7 +4,6 @@ import webpack from "webpack";
 import babel       from "gulp-babel";
 import clean       from "gulp-clean";
 import concat      from "gulp-concat";
-import connect     from "gulp-connect";
 import gzip        from "gulp-gzip";
 import iconfont    from "gulp-iconfont";
 import minify_css  from "gulp-minify-css";
@@ -13,32 +12,31 @@ import notify      from "gulp-notify";
 import open        from "gulp-open";
 import packer      from "webpack-stream";
 import plumber     from "gulp-plumber";
+import server      from "gulp-live-server";
 import sync        from "gulp-sync";
 import tar         from "gulp-tar";
 
+const gulpsync = sync(gulp);
 const DESTINATION = ".dist";
 
-gulp.task("default", sync(gulp).sync([
+gulp.task("default", gulpsync.sync([
   "cleanup",
-  [
-    "build-client",
-    "build-server"
-  ],
-  "serve", [
-    "watch",
-    "launch-browser"
-  ]
+  "build-client",
+  "build-server",
+  "watch-files",
+  "init-server",
+  "launch-browser"
 ]));
 
-gulp.task("production", sync(gulp).sync([
+gulp.task("production", gulpsync.sync([
   "cleanup",
   [
-    "build-client",
+    "build-production-client",
     "build-production-server"
-  ], [
-    "compress-dist"
   ],
-  "cleanup"
+  [
+    "compress-dist"
+  ]
 ]));
 
 gulp.task("build-client", [
@@ -46,17 +44,24 @@ gulp.task("build-client", [
   "application-css",
   "application-html",
   "generate-iconfont",
-  "copy-images",
-  "copy-secrets",
-  "copy-fonts",
-  "copy-package-json"
+  "copy-assets",
+  "copy-config"
 ]);
 
-gulp.task("watch", () => {
+gulp.task("build-production-client", [
+  "application-production-scripts",
+  "application-production-css",
+  "application-production-html",
+  "generate-iconfont",
+  "copy-assets",
+  "copy-config"
+]);
+
+gulp.task("watch-files", () => {
   gulp.watch(get("helpers/**/*.js"), ["build-server"]);
   gulp.watch(get("routes/**/*.js"), ["build-server"]);
   gulp.watch(get("client/**/*.js"), ["build-client"]);
-  gulp.watch(get("assets"), ["build-client"]);
+  gulp.watch(get("assets/**/*"), ["build-client"]);
 });
 
 gulp.task("cleanup", () => {
@@ -64,15 +69,15 @@ gulp.task("cleanup", () => {
 });
 
 gulp.task("compress-dist", () => {
-  return gulp.src(DESTINATION)
+  return gulp.src(`${DESTINATION}/**/*`)
     .pipe(
-      tar("daniellacosse.tar")
+      tar(".dist.tar")
     )
     .pipe(
       gzip()
     )
-    .pipe(
-      gulp.dest("~/Desktop")
+    .pipe( // TODO: send to god
+      gulp.dest(".")
     )
 });
 
@@ -83,14 +88,8 @@ gulp.task("build-server", () => {
     )
     .pipe(
       packer(
-        packer_settings({
-          minify: false,
-          sourcemap: true
-        })
+        packer_settings({ minify: false })
       )
-    )
-    .pipe(
-      connect.reload()
     )
     .pipe(
       gulp.dest(DESTINATION)
@@ -104,9 +103,7 @@ gulp.task("build-production-server", () => {
     )
     .pipe(
       packer(
-        packer_settings({
-          minify: true
-        })
+        packer_settings({ minify: true })
       )
     )
     .pipe(
@@ -116,12 +113,9 @@ gulp.task("build-production-server", () => {
 
 ///\\\///\\\ ASSET TASKS ///\\\///\\\
 gulp.task("application-html", () => {
-  return gulp.src(get("index.html"))
+  return gulp.src(get_asset("index.html"))
     .pipe(
       plumber(handle_error)
-    )
-    .pipe(
-      minify_html()
     )
     .pipe(
       gulp.dest(`${DESTINATION}/assets`)
@@ -129,14 +123,9 @@ gulp.task("application-html", () => {
 });
 
 gulp.task("application-css", () => {
-  return minify_css(
-      get_asset("index.css")
-    )
+  return gulp.src(get_asset("index.css"))
     .pipe(
       plumber(handle_error)
-    )
-    .pipe(
-      connect.reload()
     )
     .pipe(
       gulp.dest(`${DESTINATION}/assets`)
@@ -155,7 +144,45 @@ gulp.task("application-scripts", () => {
       plumber(handle_error)
     )
     .pipe(
-      connect.reload()
+      gulp.dest(`${DESTINATION}/client`)
+    );
+});
+
+gulp.task("application-production-html", () => {
+  return gulp.src(get("index.html"))
+    .pipe(
+      plumber(handle_error)
+    )
+    .pipe(
+      minify_html()
+    )
+    .pipe(
+      gulp.dest(`${DESTINATION}/assets`)
+    );
+});
+
+gulp.task("application-production-css", () => {
+  return minify_css(
+      get_asset("index.css")
+    )
+    .pipe(
+      plumber(handle_error)
+    )
+    .pipe(
+      gulp.dest(`${DESTINATION}/assets`)
+    );
+});
+
+// TODO: concat essentials
+gulp.task("application-production-scripts", () => {
+  return gulp.src(get("client/**/*.js"))
+    .pipe(
+      babel({
+        presets: [ "stage-0", "es2015", "babili" ]
+      })
+    )
+    .pipe(
+      plumber(handle_error)
     )
     .pipe(
       gulp.dest(`${DESTINATION}/client`)
@@ -178,29 +205,25 @@ gulp.task("generate-iconfont", () => {
     );
 });
 
-gulp.task("copy-fonts", () => {
-  return gulp.src(get_asset("fonts/**/*.woff")).pipe( gulp.dest(`${DESTINATION}/assets/fonts`) );
+gulp.task("copy-assets", () => {
+  return gulp.src([
+    get_asset("*.jpg"),
+    get_asset("*.ico"),
+    get_asset("fonts/**/*.woff")
+  ]).pipe( gulp.dest(`${DESTINATION}/assets`) );
 });
 
-gulp.task("copy-images", () => {
-  return gulp.src(get_asset("*.jpg")).pipe( gulp.dest(`${DESTINATION}/assets`) );
-});
-
-gulp.task("copy-secrets", () => {
-  return gulp.src(".secrets").pipe( gulp.dest(DESTINATION) );
-});
-
-gulp.task("copy-package-json", () => {
-  return gulp.src("package.json").pipe( gulp.dest(DESTINATION) );
+gulp.task("copy-config", () => {
+  return gulp.src([ ".secrets", "package.json" ]).pipe( gulp.dest(DESTINATION) );
 });
 
 ///\\\///\\\ SERVE AND LAUNCH ///\\\///\\\
-gulp.task("serve", () => {
-  connect.server({
-    root: "dist",
-    port: process.env.PORT || 9999,
-    livereload: true
-  });
+gulp.task("init-server", () => {
+  const LIVE_SERVER = server.new(`${DESTINATION}/server.js`);
+
+  LIVE_SERVER.start();
+
+  gulp.watch(DESTINATION, server.start);
 });
 
 gulp.task("launch-browser", () => {
@@ -213,10 +236,10 @@ gulp.task("launch-browser", () => {
 });
 
 ///\\\///\\\ HELPERS ///\\\///\\\
-function packer_settings(options) {
-  let plugins;
+function packer_settings({ minify }) {
+  let plugins = [];
 
-  if (options.minify) {
+  if (minify) {
     plugins = [
       new webpack.optimize.UglifyJsPlugin({
         compress: {
@@ -232,6 +255,12 @@ function packer_settings(options) {
 
   return {
     target: "node",
+    // externals: {
+    //   express: true
+    // },
+    output: {
+      filename: "server.js"
+    },
     resolve: {
       root: [ __dirname ],
       extensions : ["", ".js", ".json"]
@@ -243,14 +272,17 @@ function packer_settings(options) {
           exclude: /node_modules/,
           loader: "babel-loader",
           query: {
-            presets: ["es2015", "stage-0"]
+            presets: minify
+              ? ["es2015", "stage-0", "babili"]
+              : ["es2015", "stage-0"]
           }
         }, {
           test:  /\.json$/,
           loader: "json-loader"
         }
       ]
-    }
+    },
+    plugins
   };
 }
 

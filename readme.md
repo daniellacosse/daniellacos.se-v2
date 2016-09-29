@@ -14,7 +14,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
   * hardest part of this whole thing is ensuring feed is consistent and ordered from all sources
 
 * productionizing
-  * aws deploy script
+  * deploy script (gulp)
 
 * known bugs (check TODOs)
   * hiding tooltips properly

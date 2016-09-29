@@ -15,7 +15,7 @@
     "deploy": "",
     "init": "npm run clear && npm run build && npm start",
     "secrets": "atom .secrets",
-    "start": "node .dist/server.js",
+    "start": "",
     "test": "ava"
   },
   "author": "Daniel LaCosse <d@niellacos.se> (http://daniellacos.se)",
@@ -23,6 +23,7 @@
     "babel": "^6.5.2",
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
+    "babel-preset-babili": "0.0.3",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-stage-0": "^6.5.0",
     "gulp": "^3.9.1",
@@ -32,6 +33,7 @@
     "gulp-connect": "^5.0.0",
     "gulp-gzip": "^1.4.0",
     "gulp-iconfont": "^8.0.1",
+    "gulp-live-server": "0.0.30",
     "gulp-minify-css": "^1.2.4",
     "gulp-minify-html": "^1.0.6",
     "gulp-notify": "^2.2.0",
@@ -46,7 +48,7 @@
   "dependencies": {
     "compression": "^1.6.2",
     "express": "^4.14.0",
-    "lodash": "^4.16.0",
+    "lodash": "^4.16.2",
     "node-env-file": "^0.1.8",
     "oauth": "^0.9.14",
     "request": "^2.75.0"
