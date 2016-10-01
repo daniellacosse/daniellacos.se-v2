@@ -236,8 +236,6 @@ const MASTER_LIST_PROPERTIES$OPEN = {
   onMouseOut: "$masterListCollapseButtonMouseOut()"
 }
 
-
-
 function $renderMasterListCollapseButton() {
   const isClosedProperties = retrieve(MASTER_LIST_IS_CLOSED_KEY)
     ? MASTER_LIST_PROPERTIES$CLOSED

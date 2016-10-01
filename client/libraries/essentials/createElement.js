@@ -1,8 +1,30 @@
+function locateFreeRegistrySlot({ name, className }) {
+  let registryString = ""
+
+  if (name) registryString += `${name || "div"}-`
+  if (className) registryString += `${className}-`
+
+  let keyNumber = 0
+  let testKey = `${registryString}${keyNumber}`
+  let activeRegistrySlot = window._COMPONENT_REGISTRY_[testKey]
+
+  while(!!activeRegistrySlot) {
+    keyNumber++
+    testKey = `${registryString}${keyNumber}`
+    activeRegistrySlot = window._COMPONENT_REGISTRY_[testKey]
+  }
+
+  return testKey
+}
+
 function $createElement(properties) {
-  const { name, id } = properties
+  let { name, id } = properties
 
   if (!window._COMPONENT_REGISTRY_)
     window._COMPONENT_REGISTRY_ = {};
+
+  if (!id)
+    id = locateFreeRegistrySlot(properties)
 
   window._COMPONENT_REGISTRY_[id] = document.createElement(name || "div");
 
@@ -14,7 +36,7 @@ function $createIcon(iconName, properties = {}) {
     ...properties,
     ...{
       name: "i",
-      class: `icon-${iconName}`
+      className: `icon-${iconName}`
     }
   })
 }

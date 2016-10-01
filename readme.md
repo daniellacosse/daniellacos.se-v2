@@ -20,7 +20,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 * known bugs (check TODOs)
   * hiding tooltips properly
     * make them pointy on one end
-  * camelcase property leak
+  * (~) camelcase property leak
   * don't squish the articles so much on resize
   * close arrow/share button doesn't pin to top
 

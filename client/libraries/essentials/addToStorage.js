@@ -5,7 +5,6 @@ function addToStorage(data = window._RUNTIME_DATA_, isForced) {
   while (_len--) {
     const key = dataKeys[_len]
 
-    if (!sessionStorage.getItem(key) || isForced)
-      sessionStorage.setItem(key, JSON.stringify(data[key]))
+    sessionStorage.setItem(key, JSON.stringify(data[key]))
   }
 }

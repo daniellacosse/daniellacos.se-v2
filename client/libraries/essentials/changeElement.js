@@ -1,5 +1,7 @@
 function $changeElement(id, delta) {
   const { innerHTML, text, children } = delta;
+  if (!window._COMPONENT_STYLE_REGISTRY_)
+    window._COMPONENT_STYLE_REGISTRY_ = {}
 
   if (
     innerHTML && text ||
@@ -10,6 +12,7 @@ function $changeElement(id, delta) {
   }
 
   let element = window._COMPONENT_REGISTRY_[id]
+  let elementStyle = window._COMPONENT_STYLE_REGISTRY_[id] || {}
   let _keys = Object.keys(delta)
   let _len = _keys.length
 
@@ -23,24 +26,12 @@ function $changeElement(id, delta) {
         break
       case "style":
         const styleDelta = delta["style"]
-        const currentStyle = element.style
-        const currentStyleKeys = Object.keys(currentStyle)
+        const currentStyleKeys = Object.keys(elementStyle)
 
-        let validCurrentStyle = {}
-        let _len2 = currentStyleKeys.length
+        console.log("id:", id);
+        console.log("styleDelta, currentStyleKeys:", styleDelta, elementStyle);
 
-        while(_len2--) {
-          const key = currentStyleKeys[_len2]
-          const style = currentStyle[key]
-
-          if (style && style != " ") {
-            validCurrentStyle[
-              key.replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase()
-            ] = style
-          }
-        }
-
-        const mergedStyle = { ...validCurrentStyle, ...styleDelta }
+        const mergedStyle = { ...currentStyleKeys, ...styleDelta }
         const styleKeys = Object.keys(mergedStyle)
 
         let styleString = ""
@@ -52,6 +43,8 @@ function $changeElement(id, delta) {
 
           styleString += `${key}:${style};`
         }
+
+        window._COMPONENT_STYLE_REGISTRY_[id] = mergedStyle;
 
         element.setAttribute("style", styleString)
         break
