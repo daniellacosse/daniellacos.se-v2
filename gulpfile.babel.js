@@ -41,6 +41,7 @@ gulp.task("production", gulpsync.sync([
 
 gulp.task("build-client", [
   "application-scripts",
+  "concat-application-script-essentials",
   "application-css",
   "application-html",
   "generate-iconfont",
@@ -50,6 +51,7 @@ gulp.task("build-client", [
 
 gulp.task("build-production-client", [
   "application-production-scripts",
+  "concat-application-production-script-essentials",
   "application-production-css",
   "application-production-html",
   "generate-iconfont",
@@ -73,9 +75,7 @@ gulp.task("compress-dist", () => {
     .pipe(
       tar(".dist.tar")
     )
-    .pipe(
-      gzip()
-    )
+    .pipe(gzip())
     .pipe( // TODO: send to god
       gulp.dest(".")
     )
@@ -132,10 +132,27 @@ gulp.task("application-css", () => {
     );
 });
 
-// TODO: concat essentials
-gulp.task("application-scripts", () => {
-  return gulp.src(get("client/**/*.js"))
+gulp.task("concat-application-script-essentials", () => {
+  return gulp.src(get("client/libraries/essentials/*.js"))
+    .pipe(concat("_essentials_.js"))
     .pipe(
+      babel({
+        presets: [ "stage-0", "es2015" ]
+      })
+    )
+    .pipe(
+      plumber(handle_error)
+    )
+    .pipe(
+      gulp.dest(`${DESTINATION}/client/libraries`)
+    );
+});
+
+gulp.task("application-scripts", () => {
+  return gulp.src([
+      get("client/**/*.js"),
+      `!${get("client/libraries/essentials/*.js")}`
+    ]).pipe(
       babel({
         presets: [ "stage-0", "es2015" ]
       })
@@ -173,10 +190,11 @@ gulp.task("application-production-css", () => {
     );
 });
 
-// TODO: concat essentials
 gulp.task("application-production-scripts", () => {
-  return gulp.src(get("client/**/*.js"))
-    .pipe(
+  return gulp.src([
+      get("client/**/*.js"),
+      `!${get("client/libraries/essentials/*.js")}`
+    ]).pipe(
       babel({
         presets: [ "stage-0", "es2015", "babili" ]
       })
@@ -186,6 +204,24 @@ gulp.task("application-production-scripts", () => {
     )
     .pipe(
       gulp.dest(`${DESTINATION}/client`)
+    );
+});
+
+gulp.task("concat-application-production-script-essentials", () => {
+  return gulp.src(get("client/libraries/essentials/*.js"))
+    .pipe(
+      concat("_essentials_.js")
+    )
+    .pipe(
+      babel({
+        presets: [ "stage-0", "es2015", "babili" ]
+      })
+    )
+    .pipe(
+      plumber(handle_error)
+    )
+    .pipe(
+      gulp.dest(`${DESTINATION}/client/libraries`)
     );
 });
 
