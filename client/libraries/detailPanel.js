@@ -1,6 +1,7 @@
 const DETAIL_PANEL_ID = "DetailPanel"
 const DETAIL_CONTAINER_ID = `${DETAIL_PANEL_ID}-container`
 const DETAIL_SHARE_BUTTON_ID = `${DETAIL_PANEL_ID}-shareButton`
+const DETAIL_SHARE_BUTTON_ICON_ID = `${DETAIL_SHARE_BUTTON_ICON_ID}-icon`
 
 const DETAIL_PANEL_STYLE = {
   "width": "100%",
@@ -20,6 +21,16 @@ const DETAIL_CONTAINER_STYLE = {
   "padding": "15px",
   "min-width": "285px",
   "z-index": "5"
+}
+
+const DETAIL_SHARE_BUTTON_STYLE = {
+  "position": "fixed",
+  "top": "15px",
+  "right": "15px",
+  "opacity": "0.25",
+  "transform": "rotateZ(0)",
+  "cursor": "pointer",
+  "transition": `opacity ${DASE_DURATION} ${DASE_BEZIER}`
 }
 
 function $renderDetailPanel() {
@@ -89,16 +100,6 @@ function $renderDetailPanelActiveDocument() {
   return requriedChildren
 }
 
-const DETAIL_SHARE_BUTTON_STYLE = {
-  "position": "fixed",
-  "top": "15px",
-  "right": "15px",
-  "opacity": "0.25",
-  "transform": "rotateZ(0)",
-  "cursor": "pointer",
-  "transition": `opacity ${DASE_DURATION} ${DASE_BEZIER}`
-}
-
 function $renderActiveDocumentShareButton() {
   return $createElement({
     name: "button",
@@ -108,8 +109,11 @@ function $renderActiveDocumentShareButton() {
     onMouseOut: "this.style.opacity=0.25",
     children: [
       $createIcon("share", {
-        "color": DASE_GREEN,
-        "font-size": "20px"
+        id: DETAIL_SHARE_BUTTON_ICON_ID,
+        style: {
+          "color": DASE_GREEN,
+          "font-size": "20px"
+        }
       })
     ]
   })

@@ -1,12 +1,15 @@
-function $changeElement(element, delta) {
+function $changeElement(id, delta) {
+  const { innerHTML, text, children } = delta;
+
   if (
-    delta.innerHTML && delta.text ||
-    delta.innerHTML && delta.children ||
-    delta.text && delta.children
+    innerHTML && text ||
+    innerHTML && children ||
+    text && children
   ) {
     console.warn("It is not recommended to change the innerHTML/text/children in the same call to $changeElement")
   }
 
+  let element = window._COMPONENT_REGISTRY_[id]
   let _keys = Object.keys(delta)
   let _len = _keys.length
 
@@ -19,7 +22,7 @@ function $changeElement(element, delta) {
         element.setAttribute("className", delta[key])
         break
       case "style":
-        const styleObject = delta["style"]
+        const styleDelta = delta["style"]
         const currentStyle = element.style
         const currentStyleKeys = Object.keys(currentStyle)
 
@@ -30,13 +33,14 @@ function $changeElement(element, delta) {
           const key = currentStyleKeys[_len2]
           const style = currentStyle[key]
 
-          if (style && style != " ")
-            validCurrentStyle[key] = style
+          if (style && style != " ") {
+            validCurrentStyle[
+              key.replace(/([a-z\d])([A-Z])/g, '$1-$2').toLowerCase()
+            ] = style
+          }
         }
 
-        const mergedStyle = Object.assign(
-          {}, validCurrentStyle, styleObject
-        )
+        const mergedStyle = { ...validCurrentStyle, ...styleDelta }
         const styleKeys = Object.keys(mergedStyle)
 
         let styleString = ""
@@ -70,23 +74,19 @@ function $changeElement(element, delta) {
     }
   }
 
+  window._COMPONENT_REGISTRY_[id] = element
+
   return element
 }
 
-function $changeElementByID(elementID, delta) {
-  const element = document.getElementById(elementID)
-
-  return $changeElement(element, delta)
-}
-
-function $changeElementsByID(IDHash) {
-  const elementIDs = Object.keys(IDHash)
+function $changeElements(idHash = {}) {
+  const elementIDs = Object.keys(idHash)
 
   let _len = elementIDs.length
   while(_len--) {
-    const ID = elementIDs[_len]
-    const delta = IDHash[ID]
+    const id = elementIDs[_len]
+    const delta = idHash[id]
 
-    $changeElementByID(ID, delta)
+    $changeElement(id, delta)
   }
 }

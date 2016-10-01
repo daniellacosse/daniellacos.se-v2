@@ -1,0 +1,46 @@
+@font-face {
+	font-family: "daniellacosse-icons";
+	src: url('./daniellacosse-icons.eot');
+	src: url('./daniellacosse-icons.eot?#iefix') format('eot'),
+		url('./daniellacosse-icons.woff2') format('woff2'),
+		url('./daniellacosse-icons.woff') format('woff'),
+		url('./daniellacosse-icons.ttf') format('truetype'),
+		url('./daniellacosse-icons.svg#daniellacosse-icons') format('svg');
+}
+
+.icon:before {
+	font-family: "daniellacosse-icons";
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	font-style: normal;
+	font-variant: normal;
+	font-weight: normal;
+	/* speak: none; only necessary if not using the private unicode range (firstGlyph option) */
+	text-decoration: none;
+	text-transform: none;
+}
+
+
+.icon-code:before {
+	content: "\E001";
+}
+
+.icon-gallery:before {
+	content: "\E002";
+}
+
+.icon-media:before {
+	content: "\E003";
+}
+
+.icon-share:before {
+	content: "\E004";
+}
+
+.icon-star:before {
+	content: "\E005";
+}
+
+.icon-text:before {
+	content: "\E006";
+}

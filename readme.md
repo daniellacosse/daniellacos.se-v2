@@ -40,7 +40,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
  * load on scroll (img & iframe)
 
 * for show:
-  * debugging/error handling
+  * sourcemaps
   * tests
 
   NOTES: list of sources

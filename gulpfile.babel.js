@@ -6,6 +6,7 @@ import clean       from "gulp-clean";
 import concat      from "gulp-concat";
 import gzip        from "gulp-gzip";
 import iconfont    from "gulp-iconfont";
+import iconfontCSS from "gulp-iconfont-css";
 import minify_css  from "gulp-minify-css";
 import minify_html from "gulp-minify-html";
 import notify      from "gulp-notify";
@@ -18,6 +19,9 @@ import tar         from "gulp-tar";
 
 const gulpsync = sync(gulp);
 const DESTINATION = ".dist";
+const COMPRESSED_DESTINATION = `${DESTINATION}.tar.gz`;
+const CACHE = "_CACHE";
+const ICONFONT_NAME = "daniellacosse-icons";
 
 gulp.task("default", gulpsync.sync([
   "cleanup",
@@ -28,36 +32,59 @@ gulp.task("default", gulpsync.sync([
   "launch-browser"
 ]));
 
-gulp.task("production", gulpsync.sync([
+gulp.task("deploy", gulpsync.sync([
   "cleanup",
-  [
-    "build-production-client",
-    "build-production-server"
-  ],
-  [
-    "compress-dist"
+  "build-production-client",
+  "build-production-server",
+  "send-to-god"
+]));
+
+gulp.task("build-client", gulpsync.sync([
+  "generate-iconfont", [
+    "application-scripts",
+    "concat-application-script-essentials",
+    "application-css",
+    "application-html",
+    "copy-assets",
+    "copy-config"
   ]
 ]));
 
-gulp.task("build-client", [
-  "application-scripts",
-  "concat-application-script-essentials",
-  "application-css",
-  "application-html",
-  "generate-iconfont",
-  "copy-assets",
-  "copy-config"
-]);
+gulp.task("build-production-client", gulpsync.sync([
+  "generate-iconfont", [
+    "application-production-scripts",
+    "concat-application-production-script-essentials",
+    "application-production-css",
+    "application-production-html",
+    "copy-assets",
+    "copy-config"
+  ]
+]));
 
-gulp.task("build-production-client", [
-  "application-production-scripts",
-  "concat-application-production-script-essentials",
-  "application-production-css",
-  "application-production-html",
-  "generate-iconfont",
-  "copy-assets",
-  "copy-config"
-]);
+///\\\///\\\ SERVER TASKS ///\\\///\\\
+gulp.task("init-server", () => {
+  let LIVE_SERVER;
+
+  const constructServer = () => {
+    if (LIVE_SERVER) LIVE_SERVER.stop()
+
+    LIVE_SERVER = server("./server.js", { cwd: `${__dirname}/${DESTINATION}` });
+    return LIVE_SERVER.start();
+  }
+
+  return constructServer().then(() => {
+    return gulp.watch(`${DESTINATION}/server.js`, constructServer)
+  });
+});
+
+gulp.task("launch-browser", () => {
+  return gulp.src(__filename)
+    .pipe(
+      open({
+        uri: "http://localhost:9999"
+      })
+    );
+});
 
 gulp.task("watch-files", () => {
   gulp.watch(get("helpers/**/*.js"), ["build-server"]);
@@ -67,10 +94,19 @@ gulp.task("watch-files", () => {
 });
 
 gulp.task("cleanup", () => {
-  return gulp.src(DESTINATION, { read: false }).pipe( clean() );
+  return gulp.src([
+    DESTINATION,
+    CACHE,
+    COMPRESSED_DESTINATION
+  ], {
+    read: false
+  })
+  .pipe(
+    clean()
+  );
 });
 
-gulp.task("compress-dist", () => {
+gulp.task("send-to-god", () => {
   return gulp.src(`${DESTINATION}/**/*`)
     .pipe(
       tar(".dist.tar")
@@ -111,7 +147,7 @@ gulp.task("build-production-server", () => {
     );
 });
 
-///\\\///\\\ ASSET TASKS ///\\\///\\\
+///\\\///\\\ CLIENT TASKS ///\\\///\\\
 gulp.task("application-html", () => {
   return gulp.src(get_asset("index.html"))
     .pipe(
@@ -123,9 +159,12 @@ gulp.task("application-html", () => {
 });
 
 gulp.task("application-css", () => {
-  return gulp.src(get_asset("index.css"))
+  return gulp.src(get_asset("*.css"))
     .pipe(
       plumber(handle_error)
+    )
+    .pipe(
+      concat("index.css")
     )
     .pipe(
       gulp.dest(`${DESTINATION}/assets`)
@@ -210,15 +249,15 @@ gulp.task("application-production-scripts", () => {
 gulp.task("concat-application-production-script-essentials", () => {
   return gulp.src(get_client("libraries/essentials/*.js"))
     .pipe(
+      plumber(handle_error)
+    )
+    .pipe(
       concat("_essentials_.js")
     )
     .pipe(
       babel({
         presets: [ "stage-0", "es2015", "babili" ]
       })
-    )
-    .pipe(
-      plumber(handle_error)
     )
     .pipe(
       gulp.dest(`${DESTINATION}/client/libraries`)
@@ -231,13 +270,19 @@ gulp.task("generate-iconfont", () => {
       plumber(handle_error)
     )
     .pipe(
+      iconfontCSS({
+        fontName: ICONFONT_NAME,
+        targetPath: "../icons.css"
+      })
+    )
+    .pipe(
       iconfont({
-        fontName: "daniellacosse-icons",
+        fontName: ICONFONT_NAME,
         formats: [ "woff" ]
       })
     )
     .pipe(
-      gulp.dest(`${DESTINATION}/assets`)
+      gulp.dest("assets/fonts")
     );
 });
 
@@ -251,31 +296,6 @@ gulp.task("copy-assets", () => {
 
 gulp.task("copy-config", () => {
   return gulp.src([ ".secrets", "package.json" ]).pipe( gulp.dest(DESTINATION) );
-});
-
-///\\\///\\\ SERVE AND LAUNCH ///\\\///\\\
-gulp.task("init-server", () => {
-  let LIVE_SERVER;
-
-  const constructServer = () => {
-    if (LIVE_SERVER) LIVE_SERVER.stop()
-
-    LIVE_SERVER = server("./server.js", { cwd: `${__dirname}/${DESTINATION}` });
-    return LIVE_SERVER.start();
-  }
-
-  return constructServer().then(() => {
-    return gulp.watch(`${DESTINATION}/server.js`, constructServer)
-  });
-});
-
-gulp.task("launch-browser", () => {
-  return gulp.src(__filename)
-    .pipe(
-      open({
-        uri: "http://localhost:9999"
-      })
-    );
 });
 
 ///\\\///\\\ HELPERS ///\\\///\\\
