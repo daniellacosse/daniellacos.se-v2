@@ -20,16 +20,9 @@ function $changeElement(id, delta) {
     const key = _keys[_len]
 
     switch (key) {
-      case "class":
-      case "className":
-        element.setAttribute("className", delta[key])
-        break
       case "style":
         const styleDelta = delta["style"]
         const currentStyleKeys = Object.keys(elementStyle)
-
-        console.log("id:", id);
-        console.log("styleDelta, currentStyleKeys:", styleDelta, elementStyle);
 
         const mergedStyle = { ...currentStyleKeys, ...styleDelta }
         const styleKeys = Object.keys(mergedStyle)

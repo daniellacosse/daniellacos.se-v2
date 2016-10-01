@@ -1,8 +1,8 @@
-function locateFreeRegistrySlot({ name, className }) {
+function locateFreeRegistrySlot(properties = {}) {
   let registryString = ""
 
-  if (name) registryString += `${name || "div"}-`
-  if (className) registryString += `${className}-`
+  if (properties.name)  registryString += `${properties.name || "div"}-`
+  if (properties.class) registryString += `${properties.class}-`
 
   let keyNumber = 0
   let testKey = `${registryString}${keyNumber}`
@@ -35,8 +35,7 @@ function $createIcon(iconName, properties = {}) {
   return $createElement({
     ...properties,
     ...{
-      name: "i",
-      className: `icon-${iconName}`
+      name: "i", class: `icon icon-${iconName}`
     }
   })
 }
