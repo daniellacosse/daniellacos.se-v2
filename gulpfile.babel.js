@@ -73,7 +73,7 @@ gulp.task("init-server", () => {
   }
 
   return constructServer().then(() => {
-    return gulp.watch(`${DESTINATION}/server.js`, constructServer)
+    return gulp.watch(`${DESTINATION}/**/*`, constructServer)
   });
 });
 

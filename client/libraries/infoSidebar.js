@@ -4,13 +4,7 @@ function openToggleIcon(iconID) {
 
   $changeElements({
     [iconID]: {
-      style: {
-        ...FILTER_TOGGLE_ICON_STYLE$HOVER,
-        ...{
-          "font-family": "daniellacosse-icons",
-          "font-style": "normal"
-        }
-      }
+      style: FILTER_TOGGLE_ICON_STYLE$HOVER,
     },
     [tooltipID]: {
       style: FILTER_TOGGLE_TOOLTIP_STYLE$HOVER
@@ -23,13 +17,7 @@ function closeToggleIcon(iconID) {
 
   $changeElements({
     [iconID]: {
-      style: {
-        ...FILTER_TOGGLE_ICON_STYLE,
-        ...{
-          "font-family": "daniellacosse-icons",
-          "font-style": "normal"
-        }
-      }
+      style: FILTER_TOGGLE_ICON_STYLE,
     },
     [tooltipID]: {
       style: FILTER_TOGGLE_TOOLTIP_STYLE
@@ -54,7 +42,7 @@ function $renderInfoSidebar() {
     id: INFO_SIDEBAR_ID,
     style: INFO_SIDEBAR_STYLE,
     children: [
-      $renderInfoFilterToggleList(),
+      // $renderInfoFilterToggleList(),
       $renderHomeLink()
     ]
   })
@@ -121,17 +109,14 @@ const FILTER_TOGGLE_TOOLTIP_STYLE = {
   "border-radius": "10px",
   "padding": "0 15px",
   "opacity": "0",
-  "visibility": "none",
   "transform": "translateY(50%)",
-  "transition": `all ${DASE_DURATION} ${DASE_BEZIER} 50ms`,
-  "z-index": "10"
+  "transition": `all ${DASE_DURATION} ${DASE_BEZIER} 50ms`
 }
 
 const FILTER_TOGGLE_TOOLTIP_STYLE$HOVER = {
   ...FILTER_TOGGLE_TOOLTIP_STYLE,
   ...{
     "opacity": "1",
-    "visibility": "visible",
     "left": "calc(100% + 10px)"
   }
 }

@@ -19,8 +19,7 @@ const DETAIL_CONTAINER_STYLE = {
   "position": "relative",
   "transform": "rotateZ(0)",
   "padding": "15px",
-  "min-width": "285px",
-  "z-index": "5"
+  "min-width": "285px"
 }
 
 const DETAIL_SHARE_BUTTON_STYLE = {

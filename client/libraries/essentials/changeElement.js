@@ -24,7 +24,7 @@ function $changeElement(id, delta) {
         const styleDelta = delta["style"]
         const currentStyleKeys = Object.keys(elementStyle)
 
-        const mergedStyle = { ...currentStyleKeys, ...styleDelta }
+        const mergedStyle = { ...elementStyle, ...styleDelta }
         const styleKeys = Object.keys(mergedStyle)
 
         let styleString = ""
