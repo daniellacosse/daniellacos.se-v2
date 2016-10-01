@@ -16,7 +16,8 @@
     "init": "npm run clear && npm run build && npm start",
     "secrets": "atom .secrets",
     "start": "",
-    "test": "ava"
+    "test": "ava",
+    "debug": "node-debug .dist/server.js"
   },
   "author": "Daniel LaCosse <d@niellacos.se> (http://daniellacos.se)",
   "devDependencies": {
@@ -48,9 +49,10 @@
   "dependencies": {
     "compression": "^1.6.2",
     "express": "^4.14.0",
+    "got": "^6.5.0",
     "lodash": "^4.16.2",
     "node-env-file": "^0.1.8",
     "oauth": "^0.9.14",
-    "request": "^2.75.0"
+    "optimize-js": "^1.0.1"
   }
 }

@@ -2,7 +2,7 @@ import Connection from "oauth"
 
 import fetch from "./index"
 
-export default ({ url, format, error }) => {
+export default ({ url, source, format, error }) => {
   const fetchConnector = new Connection.OAuth(
     null,
     null,
@@ -20,7 +20,7 @@ export default ({ url, format, error }) => {
         URLString,
         process.env[`${source}_ACCESS_KEY`],
         process.env[`${source}_ACCESS_SECRET`],
-        (err, request, body) => callback(err, body)
+        callback
       )
     }
   })

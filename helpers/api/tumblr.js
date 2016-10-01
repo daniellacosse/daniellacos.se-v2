@@ -1,4 +1,4 @@
-import publicFetch from "./public"
+import privateFetch from "./private"
 
 import {
   TUMBLR_SOURCE, TUMBLR_API_HOST
@@ -9,13 +9,13 @@ const format = ({ response }) => {
     ({ id, post_url, date, tags, title, body }) => {
       return {
         id,
-        url: post_url,
-        date: new Date(date).toLocaleDateString(),
-        tags,
-        title,
-        body,
         type: "text",
-        source: TUMBLR_SOURCE
+        source: TUMBLR_SOURCE,
+        url: post_url,
+        title,
+        date: new Date(date).toLocaleDateString(),
+        body,
+        tags
       }
     }
   )
@@ -28,16 +28,14 @@ const error = ({ meta, response }) => {
 }
 
 export default ({ count, since } = {}) => {
-  return publicFetch({
-    url: {
-      protocol: "https",
-      hostname: TUMBLR_API_HOST,
-      pathname: "/posts/text",
-      query: {
-        limit: count,
-        offset: since,
-        filter: "raw"
-      }
-    }, format, error
-  })
+  return privateFetch({ format, error, source: TUMBLR_SOURCE, url: {
+    protocol: "https",
+    hostname: TUMBLR_API_HOST,
+    pathname: "/posts/text",
+    query: {
+      limit: count,
+      offset: since,
+      filter: "raw"
+    }
+  }})
 }

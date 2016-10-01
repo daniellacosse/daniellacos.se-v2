@@ -1,6 +1,0 @@
-export code from "./code.svg"
-export gallery from "./gallery.svg"
-export media from "./media.svg"
-export share from "./share.svg"
-export star from "./star.svg"
-export text from "./text.svg"

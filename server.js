@@ -8,11 +8,12 @@ import { attachRoutes }     from "helpers/routing"
 const APPLICATION = express()
 const PORT        = process.env.PORT || 9999
 
+// TODO: compression seems to be broken
+APPLICATION.use(compression())
+
 secrets("./.secrets")
 attachRoutes(APPLICATION, routes)
 
-// TODO: compression seems to be broken
-APPLICATION.use(compression())
 APPLICATION.listen(PORT, () => {
   console.log(
     `daniellacos.se live @ localhost:${PORT}`

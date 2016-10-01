@@ -10,6 +10,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 * favorites — "star"
 * filter toggles
 * attach more sources/documents/infinite scrolling
+  * count? omnipoint
   * XHRHttpRequest to server
   * hardest part of this whole thing is ensuring feed is consistent and ordered from all sources
 
@@ -21,13 +22,12 @@ i'm sick of these frameworks. let's cut out the "muddle man"
     * make them pointy on one end
   * camelcase property leak
   * don't squish the articles so much on resize
-  * babel & compressor not working (opera)
-  * close arrow button doesn't pin to top
+  * close arrow/share button doesn't pin to top
 
 * resize, scroll, keypress window event listeners
   * save scroll depth
   * "infinite scrolling"
-  * responsiveness (but I don't think we need to do too much)
+  * responsiveness (mobile doesn't quite fit - but I don't think we need to do too much)
   * navigate with arrow keys
 
 * browser support
@@ -35,8 +35,6 @@ i'm sick of these frameworks. let's cut out the "muddle man"
     * don't bother: alternate message, link to chrome
   * safari
     * text flash on transition (backface-visibility issue, probably)
-  * mobile
-    * doesn't quite fit
 
 * preprocess image & iframe body tags.
  * load on scroll (img & iframe)

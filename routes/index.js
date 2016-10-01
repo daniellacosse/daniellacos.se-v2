@@ -1,7 +1,7 @@
 import Route from "helpers/routing"
 import { buildApplication } from "helpers/template"
 import { tumblrFetch, soundcloudFetch } from "helpers/api"
-import { getJPGURL, sanitizeFontIcons }from "helpers/asset"
+import { getJPEG }from "helpers/asset"
 
 export HealthRoute from "./health"
 export PermalinkRoute from "./permalink"
@@ -13,8 +13,8 @@ export class IndexRoute extends Route {
   prefetch() {
     return Promise.all([
       // fetchTweets  ({ count: 10 }),
-      tumblrFetch({ count: 3 }),
-      soundcloudFetch({ count: 5 })
+      tumblrFetch({ count: 3 })
+      // soundcloudFetch({ count: 5 })
     ])
   }
 
@@ -41,8 +41,7 @@ export class IndexRoute extends Route {
           if (dateA == dateB) return 0
           return (dateA > dateB) ? -1 : 1
         }),
-        avatarURL: getJPGURL("avatar"),
-        fontIcons: sanitizeFontIcons()
+        avatarURL: getJPEG("avatar")
       },
       scripts: [
         "libraries/homeLink",

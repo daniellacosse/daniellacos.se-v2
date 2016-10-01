@@ -133,7 +133,7 @@ gulp.task("application-css", () => {
 });
 
 gulp.task("concat-application-script-essentials", () => {
-  return gulp.src(get("client/libraries/essentials/*.js"))
+  return gulp.src(get_client("libraries/essentials/*.js"))
     .pipe(concat("_essentials_.js"))
     .pipe(
       babel({
@@ -150,8 +150,8 @@ gulp.task("concat-application-script-essentials", () => {
 
 gulp.task("application-scripts", () => {
   return gulp.src([
-      get("client/**/*.js"),
-      `!${get("client/libraries/essentials/*.js")}`
+          get_client("**/*.js"),
+      `!${get_client("libraries/essentials/*.js")}`
     ]).pipe(
       babel({
         presets: [ "stage-0", "es2015" ]
@@ -192,8 +192,8 @@ gulp.task("application-production-css", () => {
 
 gulp.task("application-production-scripts", () => {
   return gulp.src([
-      get("client/**/*.js"),
-      `!${get("client/libraries/essentials/*.js")}`
+          get_client("**/*.js"),
+      `!${get_client("libraries/essentials/*.js")}`
     ]).pipe(
       babel({
         presets: [ "stage-0", "es2015", "babili" ]
@@ -208,7 +208,7 @@ gulp.task("application-production-scripts", () => {
 });
 
 gulp.task("concat-application-production-script-essentials", () => {
-  return gulp.src(get("client/libraries/essentials/*.js"))
+  return gulp.src(get_client("libraries/essentials/*.js"))
     .pipe(
       concat("_essentials_.js")
     )
@@ -237,7 +237,7 @@ gulp.task("generate-iconfont", () => {
       })
     )
     .pipe(
-      gulp.dest(`${DESTINATION}/assets/fonts`)
+      gulp.dest(`${DESTINATION}/assets`)
     );
 });
 
@@ -255,11 +255,18 @@ gulp.task("copy-config", () => {
 
 ///\\\///\\\ SERVE AND LAUNCH ///\\\///\\\
 gulp.task("init-server", () => {
-  const LIVE_SERVER = server.new(`${DESTINATION}/server.js`);
+  let LIVE_SERVER;
 
-  LIVE_SERVER.start();
+  const constructServer = () => {
+    if (LIVE_SERVER) LIVE_SERVER.stop()
 
-  gulp.watch(DESTINATION, server.start);
+    LIVE_SERVER = server("./server.js", { cwd: `${__dirname}/${DESTINATION}` });
+    return LIVE_SERVER.start();
+  }
+
+  return constructServer().then(() => {
+    return gulp.watch(`${DESTINATION}/server.js`, constructServer)
+  });
 });
 
 gulp.task("launch-browser", () => {
@@ -291,9 +298,6 @@ function packer_settings({ minify }) {
 
   return {
     target: "node",
-    // externals: {
-    //   express: true
-    // },
     output: {
       filename: "server.js"
     },
@@ -327,7 +331,11 @@ function get(filepath) {
 }
 
 function get_asset(filepath) {
-  return `./assets/${filepath}`;
+  return get(`assets/${filepath}`);
+}
+
+function get_client(filepath) {
+  return get(`client/${filepath}`);
 }
 
 function destination(filename) {

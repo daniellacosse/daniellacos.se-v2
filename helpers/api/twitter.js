@@ -17,20 +17,17 @@ const error = ({ errors }) => {
   }).join(", ")
 }
 
-
 export default ({ count, since } = {}) => {
-  return privateFetch({
-    url: {
-      protocol: "https",
-      hostname: TWITTER_API_HOST,
-      pathname: "/statuses/user_timeline.json",
-      query: {
-        contributor_details: false,
-        exclude_replies: true,
-        include_rts: false,
-        trim_user: true,
-        count
-      }
-    }, format, error
-  })
+  return privateFetch({ format, error, source: TWITTER_SOURCE, url: {
+    protocol: "https",
+    hostname: TWITTER_API_HOST,
+    pathname: "/statuses/user_timeline.json",
+    query: {
+      contributor_details: false,
+      exclude_replies: true,
+      include_rts: false,
+      trim_user: true,
+      count
+    }
+  }})
 }

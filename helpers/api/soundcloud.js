@@ -1,6 +1,6 @@
 import URL from "url"
 
-import publicFetch from "./public"
+import { publicFetch } from "./index"
 import {
   SOUNDCLOUD_SOURCE, SOUNDCLOUD_API_HOST
 } from "../constants"
@@ -11,8 +11,10 @@ const format = (data) => {
   }) => {
     return {
       id,
-      title,
+      type: "media",
+      source: SOUNDCLOUD_SOURCE,
       url: permalink_url,
+      title,
       previewImage: artwork_url,
       frameUrl: URL.format({
         protocol: "https",
@@ -25,9 +27,7 @@ const format = (data) => {
       }),
       body: description,
       date: new Date(created_at).toLocaleDateString(),
-      tags: tag_list,
-      type: "media",
-      source: SOUNDCLOUD_SOURCE
+      tags: tag_list
     }
   })
 
@@ -38,20 +38,19 @@ const format = (data) => {
 }
 
 const error = (data) => {
+  if (!data) return `${SOUNDCLOUD_SOURCE}: No data!`
   if (!data.statusCode) return null
 
   return `${SOUNDCLOUD_SOURCE}: ${data} (${statusCode})`
 }
 
 export default ({ count, since } = {}) => {
-  return publicFetch({
-    url: {
-      protocol: "https",
-      hostname: SOUNDCLOUD_API_HOST,
-      pathname: "/tracks",
-      query: {
-        client_id: process.env["SOUNDCLOUD_CONSUMER_KEY"]
-      }
-    }, format, error
-  })
+  return publicFetch({ format, error, url: {
+    protocol: "https",
+    hostname: SOUNDCLOUD_API_HOST,
+    pathname: "/tracks",
+    query: {
+      client_id: process.env["SOUNDCLOUD_CONSUMER_KEY"]
+    }
+  }})
 }
