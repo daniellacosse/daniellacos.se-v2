@@ -2,7 +2,13 @@ import Connection from "oauth"
 
 import fetch from "./index"
 
-export default ({ url, source, format, error, version }) => {
+export default ({
+  url,
+  source,
+  format,
+  error,
+  version
+}) => {
   const fetchConnector = new Connection.OAuth(
     null,
     null,
@@ -14,7 +20,9 @@ export default ({ url, source, format, error, version }) => {
   )
 
   return fetch({
-    error, format, url,
+    error,
+    format,
+    url,
     fetcher: (URLString, callback) => {
       return fetchConnector.get(
         URLString,

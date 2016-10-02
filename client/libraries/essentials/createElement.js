@@ -1,14 +1,14 @@
 function locateFreeRegistrySlot(properties = {}) {
   let registryString = ""
 
-  if (properties.name)  registryString += `${properties.name || "div"}-`
+  if (properties.name) registryString += `${properties.name || "div"}-`
   if (properties.class) registryString += `${properties.class}-`
 
   let keyNumber = 0
   let testKey = `${registryString}${keyNumber}`
   let activeRegistrySlot = window._COMPONENT_REGISTRY_[testKey]
 
-  while(!!activeRegistrySlot) {
+  while (!!activeRegistrySlot) {
     keyNumber++
     testKey = `${registryString}${keyNumber}`
     activeRegistrySlot = window._COMPONENT_REGISTRY_[testKey]
@@ -18,7 +18,10 @@ function locateFreeRegistrySlot(properties = {}) {
 }
 
 function $createElement(properties) {
-  let { name, id } = properties
+  let {
+    name,
+    id
+  } = properties
 
   if (!window._COMPONENT_REGISTRY_)
     window._COMPONENT_REGISTRY_ = {};
@@ -34,9 +37,8 @@ function $createElement(properties) {
 function $createIcon(iconName, properties = {}) {
   return $createElement({
     ...properties,
-    ...{
-      name: "i", class: `icon icon-${iconName}`
-    }
+    name: "i",
+    class: `icon icon-${iconName}`
   })
 }
 

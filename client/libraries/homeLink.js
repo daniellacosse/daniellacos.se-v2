@@ -20,8 +20,9 @@ function $renderHomeLink() {
     href: "/",
     id: HOME_LINK_ID,
     style: Object.assign(
-      HOME_LINK_STYLE,
-      { "background-image": `url(${retrieve("avatarURL")})` }
+      HOME_LINK_STYLE, {
+        "background-image": `url(${retrieve("avatarURL")})`
+      }
     ),
     onMouseOver: "this.style.opacity='1'",
     onMouseOut: "this.style.opacity='0.7'"

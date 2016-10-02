@@ -1,13 +1,24 @@
-import { publicFetch } from "./index"
+import {
+  publicFetch
+} from "./index"
 
 import {
-  VINE_SOURCE, VINE_API_HOST
+  VINE_SOURCE,
+  VINE_API_HOST,
+  VINE_TIMELINE
 } from "../constants"
 
 const formatFactory = (count) => {
-  return ({ data }) => {
+  return ({
+    data
+  }) => {
     const mappedData = data.records.map(({
-      id, description, created, entities, permalinkUrl, thumbnailUrl
+      id,
+      description,
+      created,
+      entities,
+      permalinkUrl,
+      thumbnailUrl
     }) => {
       return {
         id,
@@ -18,10 +29,15 @@ const formatFactory = (count) => {
         previewImage: thumbnailUrl,
         frameHeight: 400,
         frameUrl: `${permalinkUrl}/embed/wide`,
-        date: new Date(created).toLocaleDateString(),
+        date: new Date(created)
+          .toLocaleDateString(),
         tags: entities
-          .filter(({ type }) => type === "tag")
-          .map(({ title }) => title)
+          .filter(({
+            type
+          }) => type === "tag")
+          .map(({
+            title
+          }) => title)
       }
     })
 
@@ -32,16 +48,25 @@ const formatFactory = (count) => {
   }
 }
 
-const error = ({ code }) => {
+const error = ({
+  code
+}) => {
   if (!code) return null;
 
   return `${VINE_SOURCE}: (${code})`;
 }
 
-export default ({ count, since } = {}) => {
-  return publicFetch({ format: formatFactory(count), error, url: {
-    protocol: "https",
-    hostname: VINE_API_HOST,
-    pathname: "/timelines/users/1144912139522359296",
-  }})
+export default ({
+  count,
+  since
+} = {}) => {
+  return publicFetch({
+    format: formatFactory(count),
+    error,
+    url: {
+      protocol: "https",
+      hostname: VINE_API_HOST,
+      pathname: `/timelines/users/${VINE_TIMELINE}`,
+    }
+  })
 }

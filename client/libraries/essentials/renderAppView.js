@@ -1,6 +1,6 @@
 function $renderAppView(contents) {
   const mainContainer = $createElement({
-    name:  "article",
+    name: "article",
     id: "daniellacos.se-app",
     children: contents,
     style: {

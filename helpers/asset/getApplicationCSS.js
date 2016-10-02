@@ -1,5 +1,8 @@
-import { readFileSync } from "fs"
+import {
+  readFileSync
+} from "fs"
 
 export default function getApplicationCSS() {
-  return readFileSync("./assets/index.css").toString("utf8")
+  return readFileSync("./assets/index.css")
+    .toString("utf8")
 }

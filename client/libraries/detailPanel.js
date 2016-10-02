@@ -41,10 +41,10 @@ function $renderDetailPanel() {
   });
 
   return $createElement({
-     name: "section",
-     style: DETAIL_CONTAINER_STYLE,
-     id: DETAIL_CONTAINER_ID,
-     children: [
+    name: "section",
+    style: DETAIL_CONTAINER_STYLE,
+    id: DETAIL_CONTAINER_ID,
+    children: [
        detailPanel,
        $renderMasterListCollapseButton(),
       //  $renderActiveDocumentShareButton()
@@ -53,7 +53,14 @@ function $renderDetailPanel() {
 }
 
 function $renderDetailPanelActiveDocument() {
-  const { title, body, date, tags, frameUrl, frameHeight } = retrieveActiveDocument()
+  const {
+    title,
+    body,
+    date,
+    tags,
+    frameUrl,
+    frameHeight
+  } = retrieveActiveDocument()
   const frame = () => {
     return $createElement({
       name: "iframe",
@@ -87,7 +94,8 @@ function $renderDetailPanelActiveDocument() {
 
   if (title) {
     children.push($createElement({
-      name: "h1", text: title
+      name: "h1",
+      text: title
     }))
   }
 

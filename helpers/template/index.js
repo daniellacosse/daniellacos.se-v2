@@ -1,6 +1,12 @@
-import { readFileSync } from "fs"
+import {
+  readFileSync
+} from "fs"
 
-import { getFavicon, getWebFont, getApplicationCSS } from "../asset"
+import {
+  getFavicon,
+  getWebFont,
+  getApplicationCSS
+} from "../asset"
 
 import {
   DATA_TEMPLATE,
@@ -21,10 +27,15 @@ import buildScript from "./script"
 export buildApplication from "./application"
 export buildScript from "./script"
 
-export default ({ file, meta, scripts, data }) => {
-  const sanitizedData = (!!data)
-    ? JSON.stringify(JSON.stringify(data))
-    : "{}"
+export default ({
+  file,
+  meta,
+  scripts,
+  data
+}) => {
+  const sanitizedData = (!!data) ?
+    JSON.stringify(JSON.stringify(data)) :
+    "{}"
 
   const sanitizedScript = buildScript(scripts || [])
 
@@ -42,12 +53,13 @@ export default ({ file, meta, scripts, data }) => {
     [PREVIEW_IMAGE_TEMPLATE]: meta.previewImage,
     [URL_TEMPLATE]: meta.url
   }
-  
-  let templateToBuild = readFileSync(`./assets/${file}.html`).toString("utf8")
+
+  let templateToBuild = readFileSync(`./assets/${file}.html`)
+    .toString("utf8")
 
   let buildPointKeys = Object.keys(buildPoints)
   let _len = buildPointKeys.length
-  while(_len--) {
+  while (_len--) {
     const key = buildPointKeys[_len]
     const buildPointSource = buildPoints[key]
     const regex = new RegExp(key, "g")

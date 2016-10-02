@@ -91,9 +91,7 @@ const FILTER_TOGGLE_ICON_STYLE = {
 
 const FILTER_TOGGLE_ICON_STYLE$HOVER = {
   ...FILTER_TOGGLE_ICON_STYLE,
-  ...{
-    "opacity": "1"
-  }
+  "opacity": "1"
 }
 
 // TODO: obscuring tooltip bug
@@ -115,10 +113,8 @@ const FILTER_TOGGLE_TOOLTIP_STYLE = {
 
 const FILTER_TOGGLE_TOOLTIP_STYLE$HOVER = {
   ...FILTER_TOGGLE_TOOLTIP_STYLE,
-  ...{
-    "opacity": "1",
-    "left": "calc(100% + 10px)"
-  }
+  "opacity": "1",
+  "left": "calc(100% + 10px)"
 }
 
 function $renderInfoToggleIcon(type, typeText) {

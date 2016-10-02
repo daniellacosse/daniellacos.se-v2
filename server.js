@@ -1,14 +1,15 @@
-import express              from "express"
-import compression          from "compression"
-import secrets              from "node-env-file"
+import express from "express"
+import compression from "compression"
+import secrets from "node-env-file"
 
-import * as routes          from "routes"
-import { attachRoutes }     from "helpers/routing"
+import * as routes from "routes"
+import {
+  attachRoutes
+} from "helpers/routing"
 
 const APPLICATION = express()
-const PORT        = process.env.PORT || 9999
+const PORT = process.env.PORT || 9999
 
-// TODO: compression seems to be broken
 APPLICATION.use(compression())
 
 secrets("./.secrets")

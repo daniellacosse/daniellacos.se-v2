@@ -1,21 +1,21 @@
 import gulp from "gulp";
 import webpack from "webpack";
 
-import babel       from "gulp-babel";
-import clean       from "gulp-clean";
-import concat      from "gulp-concat";
-import gzip        from "gulp-gzip";
-import iconfont    from "gulp-iconfont";
+import babel from "gulp-babel";
+import clean from "gulp-clean";
+import concat from "gulp-concat";
+import gzip from "gulp-gzip";
+import iconfont from "gulp-iconfont";
 import iconfontCSS from "gulp-iconfont-css";
-import minify_css  from "gulp-minify-css";
+import minify_css from "gulp-minify-css";
 import minify_html from "gulp-minify-html";
-import notify      from "gulp-notify";
-import open        from "gulp-open";
-import packer      from "webpack-stream";
-import plumber     from "gulp-plumber";
-import server      from "gulp-live-server";
-import sync        from "gulp-sync";
-import tar         from "gulp-tar";
+import notify from "gulp-notify";
+import open from "gulp-open";
+import packer from "webpack-stream";
+import plumber from "gulp-plumber";
+import server from "gulp-live-server";
+import sync from "gulp-sync";
+import tar from "gulp-tar";
 
 const gulpsync = sync(gulp);
 const DESTINATION = ".dist";
@@ -68,13 +68,16 @@ gulp.task("init-server", () => {
   const constructServer = () => {
     if (LIVE_SERVER) LIVE_SERVER.stop()
 
-    LIVE_SERVER = server("./server.js", { cwd: `${__dirname}/${DESTINATION}` });
+    LIVE_SERVER = server("./server.js", {
+      cwd: `${__dirname}/${DESTINATION}`
+    });
     return LIVE_SERVER.start();
   }
 
-  return constructServer().then(() => {
-    return gulp.watch(`${DESTINATION}/**/*`, constructServer)
-  });
+  return constructServer()
+    .then(() => {
+      return gulp.watch(`${DESTINATION}/**/*`, constructServer)
+    });
 });
 
 gulp.task("launch-browser", () => {
@@ -99,11 +102,11 @@ gulp.task("cleanup", () => {
     CACHE,
     COMPRESSED_DESTINATION
   ], {
-    read: false
-  })
-  .pipe(
-    clean()
-  );
+      read: false
+    })
+    .pipe(
+      clean()
+    );
 });
 
 gulp.task("send-to-god", () => {
@@ -124,7 +127,9 @@ gulp.task("build-server", () => {
     )
     .pipe(
       packer(
-        packer_settings({ minify: false })
+        packer_settings({
+          minify: false
+        })
       )
     )
     .pipe(
@@ -139,7 +144,9 @@ gulp.task("build-production-server", () => {
     )
     .pipe(
       packer(
-        packer_settings({ minify: true })
+        packer_settings({
+          minify: true
+        })
       )
     )
     .pipe(
@@ -176,7 +183,7 @@ gulp.task("concat-application-script-essentials", () => {
     .pipe(concat("_essentials_.js"))
     .pipe(
       babel({
-        presets: [ "stage-0", "es2015" ]
+        presets: ["stage-0", "es2015"]
       })
     )
     .pipe(
@@ -191,9 +198,10 @@ gulp.task("application-scripts", () => {
   return gulp.src([
           get_client("**/*.js"),
       `!${get_client("libraries/essentials/*.js")}`
-    ]).pipe(
+    ])
+    .pipe(
       babel({
-        presets: [ "stage-0", "es2015" ]
+        presets: ["stage-0", "es2015"]
       })
     )
     .pipe(
@@ -233,9 +241,10 @@ gulp.task("application-production-scripts", () => {
   return gulp.src([
           get_client("**/*.js"),
       `!${get_client("libraries/essentials/*.js")}`
-    ]).pipe(
+    ])
+    .pipe(
       babel({
-        presets: [ "stage-0", "es2015", "babili" ]
+        presets: ["stage-0", "es2015", "babili"]
       })
     )
     .pipe(
@@ -256,7 +265,7 @@ gulp.task("concat-application-production-script-essentials", () => {
     )
     .pipe(
       babel({
-        presets: [ "stage-0", "es2015", "babili" ]
+        presets: ["stage-0", "es2015", "babili"]
       })
     )
     .pipe(
@@ -278,7 +287,7 @@ gulp.task("generate-iconfont", () => {
     .pipe(
       iconfont({
         fontName: ICONFONT_NAME,
-        formats: [ "woff" ]
+        formats: ["woff"]
       })
     )
     .pipe(
@@ -291,15 +300,19 @@ gulp.task("copy-assets", () => {
     get_asset("*.jpg"),
     get_asset("*.ico"),
     get_asset("fonts/**/*.woff")
-  ]).pipe( gulp.dest(`${DESTINATION}/assets`) );
+  ])
+    .pipe(gulp.dest(`${DESTINATION}/assets`));
 });
 
 gulp.task("copy-config", () => {
-  return gulp.src([ ".secrets", "package.json" ]).pipe( gulp.dest(DESTINATION) );
+  return gulp.src([".secrets", "package.json"])
+    .pipe(gulp.dest(DESTINATION));
 });
 
 ///\\\///\\\ HELPERS ///\\\///\\\
-function packer_settings({ minify }) {
+function packer_settings({
+  minify
+}) {
   let plugins = [];
 
   if (minify) {
@@ -322,8 +335,8 @@ function packer_settings({ minify }) {
       filename: "server.js"
     },
     resolve: {
-      root: [ __dirname ],
-      extensions : ["", ".js", ".json"]
+      root: [__dirname],
+      extensions: ["", ".js", ".json"]
     },
     module: {
       loaders: [
@@ -332,12 +345,12 @@ function packer_settings({ minify }) {
           exclude: /node_modules/,
           loader: "babel-loader",
           query: {
-            presets: minify
-              ? ["es2015", "stage-0", "babili"]
-              : ["es2015", "stage-0"]
+            presets: minify ?
+              ["es2015", "stage-0", "babili"] :
+              ["es2015", "stage-0"]
           }
         }, {
-          test:  /\.json$/,
+          test: /\.json$/,
           loader: "json-loader"
         }
       ]

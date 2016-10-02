@@ -1,4 +1,8 @@
-import { isArray, isString, isFunction } from "lodash"
+import {
+  isArray,
+  isString,
+  isFunction
+} from "lodash"
 import {
   mkdirSync,
   readdirSync,
@@ -7,8 +11,14 @@ import {
   readFileSync
 } from "fs"
 
-import { loadScripts, buildApplication } from "../template"
-import { CACHE_DIRECTORY, DAY_MS } from "../constants"
+import {
+  loadScripts,
+  buildApplication
+} from "../template"
+import {
+  CACHE_DIRECTORY,
+  DAY_MS
+} from "../constants"
 
 export attachRoutes from "./attachRoutes"
 
@@ -36,7 +46,7 @@ export default class Route {
 
   _loadCache(params) {
     const cacheDirectory = this._tryCacheDir()
-    const cacheHash      = this._cacheHash(params)
+    const cacheHash = this._cacheHash(params)
 
     // scan for valid cachefiles to return
     const validCacheDocuments = cacheDirectory
@@ -55,14 +65,15 @@ export default class Route {
     if (!validCacheDocuments.length) return null
 
     return readFileSync(
-      `./${CACHE_DIRECTORY}/${validCacheDocuments[0]}`,
-      { encoding: "utf8" }
+      `./${CACHE_DIRECTORY}/${validCacheDocuments[0]}`, {
+        encoding: "utf8"
+      }
     )
   }
 
   _saveCache(params, content) {
     const cacheDirectory = this._tryCacheDir()
-    const cacheHash      = this._cacheHash(params)
+    const cacheHash = this._cacheHash(params)
 
     // delete old documents
     cacheDirectory
@@ -96,7 +107,8 @@ export default class Route {
 
   _cacheHash(params) {
     let cacheHash = this.constructor.path.replace("/", "-")
-    let paramKeys = Object.keys(params).sort()
+    let paramKeys = Object.keys(params)
+      .sort()
     let _len = paramKeys.length
     while (_len--) {
       const key = paramKeys[_len]
@@ -106,7 +118,11 @@ export default class Route {
     return cacheHash
   }
 
-  _setupHandler({ prefetch, params, dispatch }) {
+  _setupHandler({
+    prefetch,
+    params,
+    dispatch
+  }) {
     return new Promise((resolve, reject) => {
       if (!isFunction(prefetch)) resolve(dispatch())
 
