@@ -8,8 +8,9 @@ export tumblrFetch from "./tumblr"
 export soundcloudFetch from "./soundcloud"
 // export vimeoFetch from "./vimeo"
 // export driveFetch from "./drive"
-// export youtubeFetch from "./youtube"
-// export githubFetch from "./github"
+export youtubeFetch from "./youtube"
+export githubFetch from "./github"
+export vineFetch from "./vine"
 
 export const publicFetch = ({ url, format, error }) => {
   return fetch({ error, format, url, fetcher: (url, callback) => {

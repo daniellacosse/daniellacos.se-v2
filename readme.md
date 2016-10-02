@@ -4,19 +4,25 @@
 i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
+* document gallery
 * attach more sources/documents - omnipoint for all sources
-* duplicates management
+* duplicates management (circa override, manual override)
 * favorites management
+* auto-gallery runs of posts from the same source
+* gulp deploy script
+
+-- v2 deploy, with static 50 most recent posts --
+
 * list/detail scroll & window keypress event listeners
+  * (window) navigate with arrow keys
   * (detail) save scroll depth
   * (detail) preprocess image & iframe body tags to load on scroll (image & iframe)
   * (list) infinite scrolling - JSON XHRHttpRequest to server omnipoint
-  * (window) navigate with arrow keys
 * permalink route
+* private posts
 * sharing
 * filter toggles
 * search
-* deploy script (gulp)
 
 * known bugs (also check TODOs)
   * hiding/showing tooltips properly & make them pointy on one end
@@ -30,26 +36,12 @@ i'm sick of these frameworks. let's cut out the "muddle man"
   * tests
 
   NOTES: list of sources
+    google drive
+    vimeo
+    youtube (X)
     tumblr (X)
     twitter (~)
-    medium (soon)
-    vine   (maybe?)
-    youtube
-    vimeo
+    vine   (X)
     soundcloud (X)
-    github (repo/gist)
-
-    s3 - there has to be a better option here
-    google drive public folder?
-
-    ** sane 'favorites' management **
-    ** sane 'duplicates' management **
-
-  categories
-    favorites
-    text
-    media
-    code
-    gallery
-
-  (icons for media/gallery/sharing)
+    github (repo [X]/gist)
+    medium

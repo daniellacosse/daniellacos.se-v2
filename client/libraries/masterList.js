@@ -120,7 +120,7 @@ const LIST_ITEM_STYLE$ACTIVE = {
   }
 }
 
-function $renderMasterListItem({ title, type, date }, index) {
+function $renderMasterListItem({ title, body, type, date }, index) {
   const activeDocumentKey = retrieve(MASTER_LIST_ACTIVE_DOCUMENT_KEY) || 0
   const isActiveProperties = (activeDocumentKey === index)
     ? { style: LIST_ITEM_STYLE$ACTIVE }
@@ -142,7 +142,7 @@ function $renderMasterListItem({ title, type, date }, index) {
         }}),
         $createElement({
           children: [
-            $createElement({ name: "b", text: `${title} — ` }),
+            $createElement({ name: "b", text: `${title || body} — ` }),
             $createElement({
               name: "time",
               text: date,

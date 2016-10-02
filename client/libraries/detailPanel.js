@@ -5,7 +5,7 @@ const DETAIL_SHARE_BUTTON_ICON_ID = `${DETAIL_SHARE_BUTTON_ID}-icon`
 
 const DETAIL_PANEL_STYLE = {
   "width": "100%",
-  "max-width": "500px",
+  "max-width": "720px",
   "margin": "75px auto 75px auto"
 }
 
@@ -47,17 +47,29 @@ function $renderDetailPanel() {
      children: [
        detailPanel,
        $renderMasterListCollapseButton(),
-       $renderActiveDocumentShareButton()
+      //  $renderActiveDocumentShareButton()
      ]
   })
 }
 
 function $renderDetailPanelActiveDocument() {
-  const { title, body, date, tags } = retrieveActiveDocument()
-
-  let requriedChildren = [
-    $createElement({ name: "h1", text: title }),
-    $createElement({
+  const { title, body, date, tags, frameUrl, frameHeight } = retrieveActiveDocument()
+  const frame = () => {
+    return $createElement({
+      name: "iframe",
+      src: frameUrl,
+      id: "ActiveDocumentFrame",
+      width: "100%",
+      height: frameHeight,
+      style: {
+        "background": "lightgray", // should be loading animation
+        "border-radius": "2px",
+        "margin-bottom": "5px"
+      }
+    })
+  }
+  const time = () => {
+    return $createElement({
       name: "time",
       text: date,
       style: {
@@ -68,18 +80,36 @@ function $renderDetailPanelActiveDocument() {
         "border-bottom": "1px solid black",
         "margin-bottom": "32px"
       }
-    }),
-    $createElement({ name: "section", innerHTML: body })
-  ]
+    })
+  }
+
+  let children = []
+
+  if (title) {
+    children.push($createElement({
+      name: "h1", text: title
+    }))
+  }
+
+  if (frameUrl && !title) {
+    children.push(frame())
+    children.push(time())
+  } else if (frameUrl) {
+    children.push(time())
+    children.push(frame())
+  } else children.push(time())
+
+  children.push($createElement({
+    name: "section",
+    innerHTML: body
+  }))
 
   if (typeof tags === "object" && tags.length) {
-    requriedChildren.push(
+    children.push(
       $createElement({
         name: "footer",
         style: {
-          "padding-top": "15px",
           "margin-top": "30px",
-          "border-top": "1px solid rgba(0, 0, 0, 0.5)",
           "overflow-wrap": "break-word"
         },
         children: tags.map((tag) => {
@@ -88,15 +118,22 @@ function $renderDetailPanelActiveDocument() {
             text: `#${tag}`,
             style: {
               "cursor": "pointer",
-              "padding-right": "15px"
-            }
+              "background-color": "#f70000",
+              "padding": "4px 10px",
+              "color": "white",
+              "border-radius": "5px",
+              "margin-right": "10px",
+              "transition": `background-color ${DASE_DURATION} ${DASE_BEZIER}`
+            },
+            onMouseOver: "this.style.backgroundColor='#9c0909'",
+            onMouseOut: "this.style.backgroundColor='#f70000'"
           })
         })
       })
     )
   }
 
-  return requriedChildren
+  return children
 }
 
 function $renderActiveDocumentShareButton() {

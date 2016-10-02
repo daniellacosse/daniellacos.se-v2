@@ -2,13 +2,13 @@ import Connection from "oauth"
 
 import fetch from "./index"
 
-export default ({ url, source, format, error }) => {
+export default ({ url, source, format, error, version }) => {
   const fetchConnector = new Connection.OAuth(
     null,
     null,
     process.env[`${source}_CONSUMER_KEY`],
     process.env[`${source}_CONSUMER_SECRET`],
-    "1.0A",
+    version || "1.0A",
     null,
     "HMAC-SHA1"
   )
