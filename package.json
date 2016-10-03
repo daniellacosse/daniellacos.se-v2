@@ -45,6 +45,7 @@
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
+    "base-conversion": "^3.3.0",
     "base-convertor": "^1.1.0",
     "compression": "^1.6.2",
     "express": "^4.14.0",

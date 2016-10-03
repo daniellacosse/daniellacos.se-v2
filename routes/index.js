@@ -3,12 +3,7 @@ import {
   buildApplication
 } from "helpers/template"
 import {
-  tumblrFetch,
-  soundcloudFetch,
-  githubFetch,
-  vineFetch,
-  youtubeFetch,
-  twitterFetch
+  omniFetch
 } from "helpers/api"
 import {
   getJPEG
@@ -22,26 +17,7 @@ export class IndexRoute extends Route {
   static cacheLifeInDays = 1
 
   prefetch() {
-    return Promise.all([
-      twitterFetch({
-        count: 10
-      }),
-      vineFetch({
-        count: 5
-      }),
-      tumblrFetch({
-        count: 3
-      }),
-      soundcloudFetch({
-        count: 5
-      }),
-      githubFetch({
-        count: 3
-      }),
-      youtubeFetch({
-        count: 3
-      })
-    ])
+    return omniFetch({ count: 50 })
   }
 
   dispatch(data) {

@@ -1,45 +1,22 @@
 import {
   isObject,
-  isFunction
+  isFunction,
+  get
 } from "lodash"
 import got from "got"
 import URL from "url"
 
-export privateFetch from "./private"
-export twitterFetch from "./twitter"
-export tumblrFetch from "./tumblr"
-export soundcloudFetch from "./soundcloud"
-  // export vimeoFetch from "./vimeo"
-  // export driveFetch from "./drive"
-export youtubeFetch from "./youtube"
-export githubFetch from "./github"
-export vineFetch from "./vine"
+import Document from "../document"
 
-export const publicFetch = ({
-  url,
-  format,
-  error
-}) => {
-  return fetch({
-    error,
-    format,
-    url,
-    fetcher: (url, callback) => {
-      got(url)
-        .then(({
-          body
-        }) => callback(null, body))
-        .catch(error => callback(error, null))
-    }
-  })
+export const documentFetch = ({ url, entry, format, error, fetcher }) => {
+  return fetch({ url, error, fetcher })
+    .then((parsedBody) => {
+      return get(parsedBody, entry)
+        .map((post) => new Document(post, format(post)))
+    })
 }
 
-export default function fetch({
-  url,
-  format,
-  error,
-  fetcher
-}) {
+export default function fetch({ url, error, fetcher }) {
   const URLString = isObject(url) ?
     URL.format(url) :
     url
@@ -66,10 +43,15 @@ export default function fetch({
       if (isFunction(error) && error(parsedBody))
         reject(error(parsedBody))
 
-      if (isFunction(format))
-        resolve(format(parsedBody))
-
       resolve(parsedBody)
     })
   })
 }
+
+export * as sources from "./sources"
+export fetchAll from "./fetchAll"
+export {
+  publicFetchFactory,
+  privateFetchFactory
+}
+from "./factory"
