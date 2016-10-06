@@ -7,10 +7,10 @@ import {
 } from "../../constants"
 
 const githubFetcher = publicFetchFactory({
-  format: (post) => ({
+  format: {
     type: "code",
     source: GITHUB_SOURCE
-  }),
+  },
   error: (response) => {
     if (!response.message) return null;
 
@@ -23,4 +23,5 @@ export default () => {
     githubFetcher(GITHUB_REPO_URL),
     githubFetcher(GITHUB_GIST_URL)
   ])
+    .then(reposAndGists => [].concat.apply([], reposAndGists))
 }

@@ -1,4 +1,4 @@
-import { privateFetchFactory } from "../private"
+import { privateFetchFactory } from "../factory"
 import {
   TWITTER_SOURCE,
   TWITTER_API_HOST,
@@ -13,7 +13,7 @@ const twitterFetcher = privateFetchFactory({
     return errors.map(({ code, message }) => {
         `${TWITTER_SOURCE}: ${message} (${code})`
       })
-      .join(a ", ")
+      .join(", ")
   }
 })
 

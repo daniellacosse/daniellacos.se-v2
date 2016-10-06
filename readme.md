@@ -5,9 +5,9 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
 * document gallery
-* attach more sources/documents - omnipoint for all sources
 * duplicates management (circa override, manual override)
 * favorites management
+* banner
 * auto-gallery runs of posts from the same source
 * gulp deploy script
 

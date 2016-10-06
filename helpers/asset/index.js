@@ -1,11 +1,4 @@
-import {
-  readFileSync
-} from "fs"
-
-export getApplicationCSS from "./getApplicationCSS"
-export getFavicon from "./getFavicon"
-export getJPEG from "./getJPEG"
-export getWebFont from "./getWebFont"
+import { readFileSync } from "fs"
 
 export default function getAssetURL(filename, mimetype) {
   const assetHash = readFileSync(`./assets/${filename}`)
@@ -13,3 +6,8 @@ export default function getAssetURL(filename, mimetype) {
 
   return `data:${mimetype};base64,${assetHash}`
 }
+
+export getApplicationCSS from "./getApplicationCSS"
+export getFavicon from "./getFavicon"
+export getJPEG from "./getJPEG"
+export getWebFont from "./getWebFont"

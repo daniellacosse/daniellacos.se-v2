@@ -1,8 +1,4 @@
-import {
-  isArray,
-  isString,
-  isFunction
-} from "lodash"
+import { isArray, isString, isFunction } from "lodash"
 import {
   mkdirSync,
   readdirSync,
@@ -11,16 +7,8 @@ import {
   readFileSync
 } from "fs"
 
-import {
-  loadScripts,
-  buildApplication
-} from "../template"
-import {
-  CACHE_DIRECTORY,
-  DAY_MS
-} from "../constants"
-
-export attachRoutes from "./attachRoutes"
+import { loadScripts, buildApplication } from "../template"
+import { CACHE_DIRECTORY, DAY_MS } from "../constants"
 
 export default class Route {
   constructor(request, response) {
@@ -118,11 +106,7 @@ export default class Route {
     return cacheHash
   }
 
-  _setupHandler({
-    prefetch,
-    params,
-    dispatch
-  }) {
+  _setupHandler({ prefetch, params, dispatch }) {
     return new Promise((resolve, reject) => {
       if (!isFunction(prefetch)) resolve(dispatch())
 
@@ -132,3 +116,5 @@ export default class Route {
     })
   }
 }
+
+export attachRoutes from "./attachRoutes"

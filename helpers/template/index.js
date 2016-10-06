@@ -1,13 +1,7 @@
-import {
-  readFileSync
-} from "fs"
+import { readFileSync } from "fs"
 
-import {
-  getFavicon,
-  getWebFont,
-  getApplicationCSS
-} from "../asset"
-
+import { getFavicon, getWebFont, getApplicationCSS } from "../asset"
+import buildScript from "./script"
 import {
   DATA_TEMPLATE,
   FAVICON_TEMPLATE,
@@ -22,29 +16,14 @@ import {
   URL_TEMPLATE
 } from "../constants"
 
-import buildScript from "./script"
-
-export buildApplication from "./application"
-export buildScript from "./script"
-
-export default ({
-  file,
-  meta,
-  scripts,
-  data
-}) => {
-  const sanitizedData = (!!data) ?
-    JSON.stringify(JSON.stringify(data)) :
-    "{}"
-
-  const sanitizedScript = buildScript(scripts || [])
-
+export default ({ file, meta, scripts, data }) => {
   const buildPoints = {
-    [DATA_TEMPLATE]: sanitizedData,
-    [SCRIPT_TEMPLATE]: sanitizedScript,
+    [DATA_TEMPLATE]: !!data ? JSON.stringify(data) : "{}",
+    [SCRIPT_TEMPLATE]: buildScript(scripts || []),
     [FAVICON_TEMPLATE]: getFavicon(),
     [CSS_TEMPLATE]: getApplicationCSS(),
     [ICONFONT_TEMPLATE]: getWebFont("daniellacosse-icons"),
+    // lolll
     [NEVIS_TEMPLATE]: getWebFont("nevis"),
 
     [TYPE_TEMPLATE]: meta.type,
@@ -69,3 +48,6 @@ export default ({
 
   return templateToBuild
 }
+
+export buildApplication from "./application"
+export buildScript from "./script"

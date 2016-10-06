@@ -1,48 +1,31 @@
 import Route from "helpers/routing"
-import {
-  buildApplication
-} from "helpers/template"
-import {
-  omniFetch
-} from "helpers/api"
-import {
-  getJPEG
-} from "helpers/asset"
+import { buildApplication } from "helpers/template"
+import { fetchAll } from "helpers/api"
+import { getJPEG } from "helpers/asset"
 
 export HealthRoute from "./health"
 export PermalinkRoute from "./permalink"
+  // export BannerRoute from "./banner"
 
-export class IndexRoute extends Route {
+export default class IndexRoute extends Route {
   static path = "/"
   static cacheLifeInDays = 1
 
   prefetch() {
-    return omniFetch({ count: 50 })
+    return fetchAll({ count: 50 })
   }
 
-  dispatch(data) {
-    let documents = []
-    let _len = data.length
-
-    while (_len--)
-      documents = documents.concat(data[_len])
-
+  dispatch(documents) {
     return buildApplication({
       meta: {
         type: "CreativeWork",
         title: "daniellacos.se",
-        description: "",
-        previewImage: "",
+        description: "The Creative Works of Daniel LaCosse.",
+        previewImage: "http://daniellacos.se/banner.jpg",
         url: "http://daniellacos.se/"
       },
       data: {
-        documents: documents.sort((a, b) => {
-          const dateA = new Date(a.date)
-          const dateB = new Date(b.date)
-
-          if (dateA == dateB) return 0
-          return (dateA > dateB) ? -1 : 1
-        }),
+        documents: documents.map(doc => doc.toJSON()),
         avatarURL: getJPEG("avatar")
       },
       scripts: [

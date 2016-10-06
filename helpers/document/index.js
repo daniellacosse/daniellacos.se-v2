@@ -33,8 +33,7 @@ export default class Document {
       `http://daniellacos.se/${this.source.slice(0, 2).toLowerCase()}/${this.id}`
 
     this.title = title || name;
-    this.date = new Date(date || created_at)
-      .toLocaleDateString();
+    this.date = new Date(date || created_at);
     this.frame = isObject(frame) ?
       URL.format(frame) :
       frame;
@@ -47,6 +46,17 @@ export default class Document {
   }
 
   toJSON() {
+    const { type, picture, permalink, title, date, frame, body, tags } = this
 
+    return JSON.stringify({
+      date: date.toLocaleDateString(),
+      type,
+      picture,
+      permalink,
+      title,
+      frame,
+      body,
+      tags
+    })
   }
 }

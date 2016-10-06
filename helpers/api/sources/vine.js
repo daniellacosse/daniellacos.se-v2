@@ -24,4 +24,4 @@ const vineFetcher = publicFetchFactory({
   }
 })
 
-export default () => publicFetchFactory(VINE_TIMELINE_URL)
+export default () => vineFetcher(VINE_TIMELINE_URL)
