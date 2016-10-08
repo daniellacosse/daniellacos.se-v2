@@ -1,3 +1,5 @@
+import { startCase, toLower, flow } from "lodash"
+
 import Document from "./index"
 
 export default function collapseIntoGallaries(documents) {
@@ -7,7 +9,8 @@ export default function collapseIntoGallaries(documents) {
   while (cursor < documents.length - 1) {
     const nextCursor = cursor + 1
 
-    if (documents[cursor].source === documents[nextCursor].source) {
+    if (documents[cursor].source === (documents[nextCursor] || {})
+      .source) {
       const targetSource = documents[cursor].source
 
       let subdocuments = []
@@ -22,19 +25,22 @@ export default function collapseIntoGallaries(documents) {
         subdocuments.push(currentDocument)
 
         subcursor++ // advance cursor
-        currentSource = documents[cursor + subcursor].source
+        currentSource = (documents[cursor + subcursor] || {})
+          .source
       }
 
-      const startDoc = subdocuments[length - 1];
+      const startDoc = subdocuments[subdocuments.length - 1];
       const endDoc = subdocuments[0];
+      const startDate = startDoc.date.toLocaleDateString()
+      const endDate = endDoc.date.toLocaleDateString()
       resultingDocuments.push(
         new Document({
           id: `${startDoc.id}-${endDoc.id}`,
           type: "gallery",
           source: targetSource,
           picture: startDoc.picture,
-          title: `${targetSource} activity from ${endDoc.date} to ${startDoc.date}`,
-          date: startDoc.date,
+          title: `${flow([ toLower, startCase ])(targetSource)} activity from ${startDate} to ${endDate}`,
+          date: startDate,
           subdocuments,
           tags: tagAggregation.filter((el, i) => tagAggregation.indexOf(el) ===
             i)

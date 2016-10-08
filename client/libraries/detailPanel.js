@@ -64,7 +64,7 @@ function $renderDocument({
   frame,
   subdocuments
 }) {
-  const frame = () => {
+  const frameElement = () => {
     return $createElement({
       name: "iframe",
       src: frame,
@@ -101,24 +101,29 @@ function $renderDocument({
     }))
   }
 
-  if (frameUrl && !title) {
-    children.push(frame())
+  if (frame && !title) {
+    children.push(frameElement())
     children.push(time())
-  } else if (frameUrl) {
+  } else if (frame) {
     children.push(time())
-    children.push(frame())
+    children.push(frameElement())
   } else children.push(time())
 
-  children.push($createElement({
-    name: "section",
-    innerHTML: body
-  }))
+  if (body) {
+    children.push($createElement({
+      name: "section",
+      innerHTML: body
+    }))
+  }
 
-  if (subdocuments && subdocuments.length) {
+  if (typeof subdocuments === "object" && subdocuments.length) {
+    const flattenedSubdocumentElements = [].concat.apply([], subdocuments.map(
+      $renderDocument))
+
     children.push(
       $createElement({
         name: "section",
-        children: subdocuments.map($renderDocument)
+        children: flattenedSubdocumentElements
       })
     )
   }

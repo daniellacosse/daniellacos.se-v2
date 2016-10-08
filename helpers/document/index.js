@@ -2,7 +2,6 @@ import convertor from "base-conversion"
 import { isObject, isNumber } from "lodash"
 import URL from "url"
 
-export sortByDate from "./sortByDate"
 export default class Document {
   constructor(properties, additionalProperties) {
     const {
@@ -38,25 +37,47 @@ export default class Document {
     this.frame = isObject(frame) ?
       URL.format(frame) :
       frame;
-    this.body = // TODO: sanitize body
-      `<p>${(body || description || "").split("\n").join("</p><p>")}</p>`;
+    // this.body = // TODO: sanitize body
+    //   `<p>${(body || description || "").split("\n").join("</p><p>")}</p>`;
     this.tags = tags;
 
     this.subdocuments = subdocuments;
   }
 
   curate() {
-    const { type, picture, permalink, title, date, frame, body, tags } = this
-
-    return {
-      date: date.toLocaleDateString(),
+    const {
       type,
       picture,
       permalink,
       title,
+      date,
       frame,
       body,
-      tags
-    }
+      tags,
+      subdocuments
+    } = this
+
+    const requiredParams = {
+      date: date.toLocaleDateString(),
+      type,
+      picture,
+      permalink,
+      title
+    };
+
+    let result = requiredParams
+    if (tags && tags.length)
+      result = {...result, tags }
+
+    if (subdocuments && subdocuments.length)
+      result = {...result, subdocuments: subdocuments.map((doc) => doc.curate()) }
+
+    if (body) result = {...result, body }
+    if (frame) result = {...result, frame }
+
+    return result;
   }
 }
+
+export sortByDate from "./sortByDate"
+export collapseIntoGallaries from "./collapseIntoGallaries"

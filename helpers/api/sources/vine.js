@@ -9,6 +9,7 @@ import {
 const vineFetcher = publicFetchFactory({
   entry: "data.records",
   format: (post) => ({
+    id: post.postIdStr,
     type: "media",
     source: VINE_SOURCE,
     picture: post.thumbnailUrl,
