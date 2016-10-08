@@ -1,5 +1,5 @@
 import convertor from "base-conversion"
-import { isObject } from "lodash"
+import { isObject, isNumber } from "lodash"
 import URL from "url"
 
 export sortByDate from "./sortByDate"
@@ -18,13 +18,14 @@ export default class Document {
       frame,
       body,
       description,
+      subdocuments,
       tags
     } = {
       ...properties,
       ...additionalProperties
     }
 
-    this.id = convertor(10, 62)(id);
+    this.id = isNumber(id) ? convertor(10, 62)(id) : id;
     this.type = type;
     this.source = source;
 
@@ -37,18 +38,17 @@ export default class Document {
     this.frame = isObject(frame) ?
       URL.format(frame) :
       frame;
-    this.body = `<p>${(body || description).split("\n").join("</p><p>")}</p>`;
+    this.body = // TODO: sanitize body
+      `<p>${(body || description || "").split("\n").join("</p><p>")}</p>`;
     this.tags = tags;
 
-    // TODO
-    this.subdocuments = [];
-    this.lastDate = new Date();
+    this.subdocuments = subdocuments;
   }
 
-  toJSON() {
+  curate() {
     const { type, picture, permalink, title, date, frame, body, tags } = this
 
-    return JSON.stringify({
+    return {
       date: date.toLocaleDateString(),
       type,
       picture,
@@ -57,6 +57,6 @@ export default class Document {
       frame,
       body,
       tags
-    })
+    }
   }
 }

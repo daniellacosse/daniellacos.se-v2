@@ -1,5 +1,8 @@
 import gulp from "gulp";
 import webpack from "webpack";
+import secrets from "node-env-file"
+
+secrets("./.secrets");
 
 import babel from "gulp-babel";
 import clean from "gulp-clean";
@@ -69,7 +72,8 @@ gulp.task("init-server", () => {
     if (LIVE_SERVER) LIVE_SERVER.stop()
 
     LIVE_SERVER = server("./server.js", {
-      cwd: `${__dirname}/${DESTINATION}`
+      cwd: `${__dirname}/${DESTINATION}`,
+      env: process.env
     });
     return LIVE_SERVER.start();
   }
@@ -90,8 +94,8 @@ gulp.task("launch-browser", () => {
 });
 
 gulp.task("watch-files", () => {
-  gulp.watch(get("helpers/**/*.js"), ["build-server"]);
-  gulp.watch(get("routes/**/*.js"), ["build-server"]);
+  gulp.watch(get("helpers/**/*.js"), ["build-server", "init-server"]);
+  gulp.watch(get("routes/**/*.js"), ["build-server", "init-server"]);
   gulp.watch(get("client/**/*.js"), ["build-client"]);
   gulp.watch(get("assets/**/*"), ["build-client"]);
 });
@@ -345,9 +349,8 @@ function packer_settings({
           exclude: /node_modules/,
           loader: "babel-loader",
           query: {
-            presets: minify ?
-              ["es2015", "stage-0", "babili"] :
-              ["es2015", "stage-0"]
+            presets: minify ? ["es2015", "stage-0", "babili"] : ["es2015",
+              "stage-0"]
           }
         }, {
           test: /\.json$/,

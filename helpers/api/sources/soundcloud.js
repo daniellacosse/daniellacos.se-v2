@@ -10,14 +10,15 @@ const soundcloudFetcher = publicFetchFactory({
   format: ({ artwork_url, genre, tag_list, uri }) => ({
     type: "media",
     source: SOUNDCLOUD_SOURCE,
-    picture: post.artwork_url,
+    picture: artwork_url,
     frame: {...SOUNDCLOUD_FRAME_URL,
       query: {...SOUNDCLOUD_FRAME_URL
         .query,
         url: uri
       }
     },
-    tags: [genre, ...tag_list.split(/\s?\"/)
+    tags: [genre, ...(tag_list || "")
+      .split(/\s?\"/)
       .filter(tag => !!tag)
     ]
   }),
@@ -29,4 +30,5 @@ const soundcloudFetcher = publicFetchFactory({
   }
 })
 
-export default () => soundcloudFetcher(SOUNDCLOUD_TRACKS_URL)
+export default (options = {}) => soundcloudFetcher(SOUNDCLOUD_TRACKS_URL,
+  options)

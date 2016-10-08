@@ -12,7 +12,7 @@ export default class IndexRoute extends Route {
   static cacheLifeInDays = 1
 
   prefetch() {
-    return fetchAll({ count: 50 })
+    return fetchAll({ count: 20 })
   }
 
   dispatch(documents) {
@@ -25,7 +25,7 @@ export default class IndexRoute extends Route {
         url: "http://daniellacos.se/"
       },
       data: {
-        documents: documents.map(doc => doc.toJSON()),
+        documents: documents.map(doc => doc.curate()),
         avatarURL: getJPEG("avatar")
       },
       scripts: [

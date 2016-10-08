@@ -53,21 +53,23 @@ function $renderDetailPanel() {
 }
 
 function $renderDetailPanelActiveDocument() {
-  const {
-    title,
-    body,
-    date,
-    tags,
-    frameUrl,
-    frameHeight
-  } = retrieveActiveDocument()
+  return $renderDocument(retrieveActiveDocument())
+}
+
+function $renderDocument({
+  title,
+  body,
+  date,
+  tags,
+  frame,
+  subdocuments
+}) {
   const frame = () => {
     return $createElement({
       name: "iframe",
-      src: frameUrl,
+      src: frame,
       id: "ActiveDocumentFrame",
       width: "100%",
-      height: frameHeight,
       style: {
         "background": "lightgray", // should be loading animation
         "border-radius": "2px",
@@ -111,6 +113,15 @@ function $renderDetailPanelActiveDocument() {
     name: "section",
     innerHTML: body
   }))
+
+  if (subdocuments && subdocuments.length) {
+    children.push(
+      $createElement({
+        name: "section",
+        children: subdocuments.map($renderDocument)
+      })
+    )
+  }
 
   if (typeof tags === "object" && tags.length) {
     children.push(

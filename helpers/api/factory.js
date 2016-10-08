@@ -4,6 +4,7 @@ import got from "got"
 import { documentFetch } from "./index"
 
 export const publicFetchFactory = (props) => {
+  console.log("props:", props);
   return (url, options = {}) => documentFetch({
     url,
     ...props,

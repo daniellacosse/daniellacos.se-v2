@@ -14,19 +14,20 @@ export const documentFetch = ({
   error,
   fetcher,
   count,
-  since
+  beforeDate
 }) => {
   return fetch({ url, error, fetcher })
     .then((parsedBody) => {
-      let documents = get(parsedBody, entry);
-      let formattedDocuments = isFunction(format) ?
-        documents.map((post) => new Document(post, format(post))) :
-        documents.map((post) => new Document(post, format))
+      const resultCollection = get(parsedBody, entry, parsedBody)
+      let documents = isFunction(format) ?
+        resultCollection.map(post => new Document(post, format(post))) :
+        resultCollection.map(post => new Document(post, format))
 
       if (beforeDate) {
         const beforeDateObject = new Date(beforeDate)
 
-        documents = documents.filter(({ date }) => date < beforeDateObject)
+        documents = documents.filter(({ date }) => date <
+          beforeDateObject)
       }
 
       if (count) documents = documents.slice(0, count)
@@ -62,7 +63,8 @@ export default function fetch({ url, error, fetcher }) {
       if (!parsedBody) {
         reject(
           new Error(
-            "Unfortunately, the request body could not be parsed.")
+            "Unfortunately, the request body could not be parsed."
+          )
         )
       }
 
