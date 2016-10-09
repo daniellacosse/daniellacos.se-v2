@@ -16,6 +16,7 @@ export default class Document {
       date,
       created_at,
       frame,
+      frameHeight,
       body,
       description,
       subdocuments,
@@ -34,6 +35,7 @@ export default class Document {
     this.frame = isObject(frame) ?
       URL.format(frame) :
       frame;
+    this.frameHeight = frameHeight;
     this.body =
       sanitize(
         (body || description || "")
@@ -58,6 +60,7 @@ export default class Document {
       title,
       date,
       frame,
+      frameHeight,
       body,
       tags,
       subdocuments
@@ -79,7 +82,7 @@ export default class Document {
       result = {...result, subdocuments: subdocuments.map((doc) => doc.curate()) }
 
     if (body) result = {...result, body }
-    if (frame) result = {...result, frame }
+    if (frame) result = {...result, frame, frameHeight }
 
     return result;
   }

@@ -12,6 +12,7 @@ export const documentFetch = ({
   entry,
   postEntry,
   format,
+  filter,
   error,
   fetcher,
   count,
@@ -20,6 +21,11 @@ export const documentFetch = ({
   return fetch({ url, error, fetcher })
     .then((parsedBody) => {
       const resultCollection = get(parsedBody, entry, parsedBody)
+      const filterer = (post) => {
+        const unwrappedPost = get(post, postEntry, post)
+
+        return isFunction(filter) ? filter(unwrappedPost) : true
+      }
       const formatter = (post) => {
         const unwrappedPost = get(post, postEntry, post)
         const additionalProperties = isFunction(format) ?
@@ -28,7 +34,9 @@ export const documentFetch = ({
         return new Document(unwrappedPost, additionalProperties)
       }
 
-      let documents = resultCollection.map(formatter)
+      let documents = resultCollection
+        .filter(filterer)
+        .map(formatter)
       if (beforeDate) {
         const beforeDateObject = new Date(beforeDate)
 
@@ -38,7 +46,7 @@ export const documentFetch = ({
 
       if (count) documents = documents.slice(0, count)
 
-      // if (document.length < count) try to fetch again
+      // TODO: if (document.length < count) try to fetch again
 
       return documents
     })

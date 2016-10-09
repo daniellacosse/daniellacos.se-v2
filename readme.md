@@ -6,10 +6,9 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 ### TODO:
 
 * fix all sources but gdrive
+  * twitter
   * github preview
-  * gallery double date
-  * remove revines
-  * twitter, vimeo, gists
+  * vimeo, gists
 * render galleries properly
 * index banner
 * tags (make them do something)

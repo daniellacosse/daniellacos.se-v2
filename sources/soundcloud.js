@@ -17,6 +17,7 @@ const soundcloudFetcher = publicFetchFactory({
         url: uri
       }
     },
+    frameHeight: 160,
     tags: [genre, ...(tag_list || "")
       .split(/\s?\"/)
       .filter(tag => !!tag)

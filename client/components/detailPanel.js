@@ -56,65 +56,84 @@ function $renderDetailPanelActiveDocument() {
   return $renderDocument(retrieveActiveDocument())
 }
 
+const DETAIL_DOCUMENT_TIME_STYLE = {
+  "font-size": "18px",
+  "opacity": "0.25",
+  "display": "block",
+  "padding": "7px 0 18px 0",
+  "border-bottom": "1px solid black",
+  "margin-bottom": "32px"
+}
+
+const DETAIL_SUBDOCUMENT_TIME_STYLE = {
+  "border-bottom": "0",
+  "margin-bottom": "0",
+  "float": "right"
+}
+
+const DETAIL_SUBDOCUMENT_TITLE_STYLE = {
+  "font-family": "Helvetica, sans-serif",
+  "font-size": "25px",
+  "opacity": "0.25"
+}
+
 function $renderDocument({
   title,
   body,
   date,
   tags,
   frame,
+  frameHeight,
   subdocuments
 }, { asSubdocument } = {}) {
-  const frameElement = () => {
+  const $frameElement = () => {
     return $createElement({
       name: "iframe",
       src: frame,
       id: "ActiveDocumentFrame",
       width: "100%",
-      height: 350,
+      height: 350 || frameHeight,
       style: {
-        "background": "lightgray",
+        "background": DASE_GREEN,
         "border-radius": "2px",
         "margin-bottom": "5px"
       }
     })
   }
-  const time = () => {
+  const $timeElement = () => {
     return $createElement({
       name: "time",
       text: date,
       style: {
-        "font-size": "18px",
-        "opacity": "0.25",
-        "display": "block",
-        "padding": "7px 0 18px 0",
-        "border-bottom": asSubdocument ? "" : "1px solid black",
-        "margin-bottom": asSubdocument ? "" : "32px",
-        "float": asSubdocument ? "right" : ""
+        ...DETAIL_DOCUMENT_TIME_STYLE,
+        ...asSubdocument ? DETAIL_SUBDOCUMENT_TIME_STYLE : {}
       }
     })
   }
 
   let children = []
 
-  if (title) {
+  if (title && asSubdocument) {
     children.push($createElement({
       name: "h1",
       text: title,
-      style: asSubdocument ? {
-        "font-family": "Helvetica, sans-serif",
-        "font-size": "25px",
-        "opacity": "0.25"
-      } : {}
+      style: DETAIL_SUBDOCUMENT_TITLE_STYLE,
+      children: [timeElement()]
     }))
+  } else if (title && !frame) {
+    children.push($createElement({
+      name: "h1",
+      text: title
+    }))
+  } else if (frame && !title) {
+    children.push($frameElement())
+    children.push($timeElement())
+  } else if (frame && title) {
+    children.push($timeElement())
+    children.push($frameElement())
+  } else {
+    children.push($timeElement())
   }
-
-  if (frame && !title) {
-    children.push(frameElement())
-    children.push(time())
-  } else if (frame) {
-    children.push(time())
-    children.push(frameElement())
-  } else children.push(time())
 
   if (body) {
     children.push($createElement({

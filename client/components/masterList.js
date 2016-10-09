@@ -132,12 +132,7 @@ const LIST_ITEM_STYLE$ACTIVE = {
   }
 }
 
-function $renderMasterListItem({
-  title,
-  body,
-  type,
-  date
-}, index) {
+function $renderMasterListItem({ title, body, type, date }, index) {
   const activeDocumentKey = retrieve(MASTER_LIST_ACTIVE_DOCUMENT_KEY) || 0
   const isActiveProperties = (activeDocumentKey === index) ? {
     style: LIST_ITEM_STYLE$ACTIVE
@@ -147,6 +142,26 @@ function $renderMasterListItem({
     onMouseOut: "this.style.background='transparent'; this.style.color='initial'",
     onClick: `setActiveDocument(${index})`
   }
+
+  const listItemText = (type === "gallery") ? [
+    $createElement({
+      name: "b",
+      text: title || body
+    })
+  ] : [
+    $createElement({
+      name: "b",
+      text: `${title || body} — `
+    }),
+    $createElement({
+      name: "time",
+      text: date,
+      style: {
+        "opacity": "0.5",
+        "font-weight": "normal"
+      }
+    })
+  ]
 
   return $createElement({
     ...isActiveProperties,
@@ -160,20 +175,7 @@ function $renderMasterListItem({
           }
         }),
         $createElement({
-          children: [
-            $createElement({
-              name: "b",
-              text: `${title || body} — `
-            }),
-            $createElement({
-              name: "time",
-              text: date,
-              style: {
-                "opacity": "0.5",
-                "font-weight": "normal"
-              }
-            })
-          ]
+          children: listItemText
         })
       ]
     }

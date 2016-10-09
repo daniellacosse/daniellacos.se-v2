@@ -8,6 +8,7 @@ import {
 
 const vineFetcher = publicFetchFactory({
   entry: "data.records",
+  filter: (post) => !post.repost,
   format: (post) => ({
     id: post.postIdStr,
     type: "media",
