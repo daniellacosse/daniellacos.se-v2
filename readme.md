@@ -8,8 +8,6 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 * fix all sources but gdrive
   * twitter
   * github preview
-  * vimeo, gists
-* render galleries properly
 * index banner
 * tags (make them do something)
 * bug: mobile doesn't quite fit
@@ -17,6 +15,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 -- deploy v2, with static 20 most recent posts --
 
+* vimeo, gists
 * permalink route & sharing
 * bug: close arrow/share button don't pin to top
 * google drive support

@@ -20,7 +20,7 @@ export default function collapseIntoGallaries(documents) {
 
       while (currentSource === targetSource) {
         const currentDocument = documents[cursor + subcursor]
-        tagAggregation = [].concat.apply([], tagAggregation, currentDocument.tags)
+        tagAggregation = tagAggregation.concat(currentDocument.tags)
         currentDocument.tags = []
         subdocuments.push(currentDocument)
 

@@ -24,6 +24,12 @@ body {
   height: 100%;
 }
 
+.clearfix:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
 p,
 blockquote {
   margin-bottom: 20px;

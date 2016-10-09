@@ -68,13 +68,21 @@ const DETAIL_DOCUMENT_TIME_STYLE = {
 const DETAIL_SUBDOCUMENT_TIME_STYLE = {
   "border-bottom": "0",
   "margin-bottom": "0",
+  "padding": "0",
   "float": "right"
+}
+
+const DETAIL_SUBDOCUMENT_MINITIME_STYLE = {
+  "font-size": "12px",
+  "padding": "4px 0 8px 0",
+  "margin-bottom": "14px"
 }
 
 const DETAIL_SUBDOCUMENT_TITLE_STYLE = {
   "font-family": "Helvetica, sans-serif",
   "font-size": "25px",
-  "opacity": "0.25"
+  "opacity": "0.25",
+  "float": "left"
 }
 
 function $renderDocument({
@@ -84,15 +92,24 @@ function $renderDocument({
   tags,
   frame,
   frameHeight,
+  type,
   subdocuments
 }, { asSubdocument } = {}) {
+  const $titleElement = (style) => {
+    return $createElement({
+      name: "h1",
+      text: title,
+      style
+    })
+  }
+
   const $frameElement = () => {
     return $createElement({
       name: "iframe",
       src: frame,
       id: "ActiveDocumentFrame",
       width: "100%",
-      height: 350 || frameHeight,
+      height: frameHeight || 350,
       style: {
         "background": DASE_GREEN,
         "border-radius": "2px",
@@ -100,42 +117,85 @@ function $renderDocument({
       }
     })
   }
-  const $timeElement = () => {
+  const $timeElement = (style) => {
     return $createElement({
       name: "time",
       text: date,
       style: {
         ...DETAIL_DOCUMENT_TIME_STYLE,
-        ...asSubdocument ? DETAIL_SUBDOCUMENT_TIME_STYLE : {}
+        ...style
       }
     })
   }
 
-  let children = []
-
-  if (title && asSubdocument) {
-    children.push($createElement({
-      name: "h1",
-      text: title,
-      style: DETAIL_SUBDOCUMENT_TITLE_STYLE,
-      children: [timeElement()]
-    }))
-  } else if (title && !frame) {
-    children.push($createElement({
-      name: "h1",
-      text: title
-    }))
-  } else if (frame && !title) {
-    children.push($frameElement())
-    children.push($timeElement())
-  } else if (frame && title) {
-    children.push($timeElement())
-    children.push($frameElement())
-  } else {
-    children.push($timeElement())
+  let children;
+  if (!asSubdocument && title && frame && type !== "gallery") {
+    children = [
+      $titleElement(),
+      $timeElement(),
+      $frameElement()
+    ]
+  } else if (!asSubdocument && title && !frame && type !== "gallery") {
+    children = [
+      $titleElement(),
+      $timeElement()
+    ]
+  } else if (!asSubdocument && !title && frame && type !== "gallery") {
+    children = [
+      $frameElement(),
+      $timeElement()
+    ]
+  } else if (!asSubdocument && title && type === "gallery") {
+    children = [
+      $titleElement({
+        "margin-bottom": "32px"
+      })
+    ]
+  } else if (asSubdocument && title && frame) {
+    children = [
+      $createElement({
+        name: "header",
+        class: "clearfix",
+        style: {
+          "margin": "15px 0 10px 0"
+        },
+        children: [
+          $titleElement(DETAIL_SUBDOCUMENT_TITLE_STYLE),
+          $timeElement(DETAIL_SUBDOCUMENT_TIME_STYLE)
+        ]
+      }),
+      $frameElement()
+    ]
+  } else if (asSubdocument && title && !frame) {
+    children = [
+      $createElement({
+        name: "header",
+        class: "clearfix",
+        style: {
+          "margin": "15px 0 10px 0"
+        },
+        children: [
+          $titleElement(DETAIL_SUBDOCUMENT_TITLE_STYLE),
+          $timeElement(DETAIL_SUBDOCUMENT_TIME_STYLE)
+        ]
+      })
+    ]
+  } else if (asSubdocument && !title && frame) {
+    children = [
+      $frameElement(),
+      $timeElement(DETAIL_SUBDOCUMENT_MINITIME_STYLE)
+    ]
   }
 
-  if (body) {
+  if (body && asSubdocument) {
+    children.push($createElement({
+      name: "blockquote",
+      style: {
+        "margin-bottom": "40px"
+      },
+      innerHTML: body
+    }));
+  } else if (body) {
     children.push($createElement({
       name: "section",
       innerHTML: body
@@ -143,8 +203,9 @@ function $renderDocument({
   }
 
   if (typeof subdocuments === "object" && subdocuments.length) {
-    const flattenedSubdocumentElements = [].concat.apply([], subdocuments.map((
-      doc) => $renderDocument(doc, { asSubdocument: true })))
+    const flattenedSubdocumentElements = [].concat.apply([], subdocuments.map(
+      (
+        doc) => $renderDocument(doc, { asSubdocument: true })))
 
     children.push(
       $createElement({
