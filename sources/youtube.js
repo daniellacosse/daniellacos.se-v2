@@ -1,10 +1,10 @@
-import { publicFetchFactory } from "../factory"
+import { publicFetchFactory } from "helpers/api"
 import {
   YOUTUBE_SOURCE,
   YOUTUBE_API_HOST,
   YOUTUBE_CHANNEL,
   YOUTUBE_UPLOADS_URL
-} from "../../constants"
+} from "assets/constants"
 
 const youtubeFetcher = publicFetchFactory({
   entry: "items",

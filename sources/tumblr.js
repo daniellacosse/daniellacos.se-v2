@@ -1,9 +1,9 @@
-import { privateFetchFactory } from "../factory"
+import { privateFetchFactory } from "helpers/api"
 import {
   TUMBLR_SOURCE,
   TUMBLR_API_HOST,
   TUMBLR_TEXTS_URL
-} from "../../constants"
+} from "assets/constants"
 
 const tumblrFetcher = privateFetchFactory({
   entry: "response.posts",

@@ -45,7 +45,7 @@ gulp.task("deploy", gulpsync.sync([
 gulp.task("build-client", gulpsync.sync([
   "generate-iconfont", [
     "application-scripts",
-    "concat-application-script-essentials",
+    "concat-application-framework",
     "application-css",
     "application-html",
     "copy-assets",
@@ -56,7 +56,7 @@ gulp.task("build-client", gulpsync.sync([
 gulp.task("build-production-client", gulpsync.sync([
   "generate-iconfont", [
     "application-production-scripts",
-    "concat-application-production-script-essentials",
+    "concat-application-production-framework",
     "application-production-css",
     "application-production-html",
     "copy-assets",
@@ -170,7 +170,7 @@ gulp.task("application-html", () => {
 });
 
 gulp.task("application-css", () => {
-  return gulp.src(get_asset("*.css"))
+  return gulp.src(get_asset("stylesheets/*.css"))
     .pipe(
       plumber(handle_error)
     )
@@ -182,9 +182,9 @@ gulp.task("application-css", () => {
     );
 });
 
-gulp.task("concat-application-script-essentials", () => {
-  return gulp.src(get_client("libraries/essentials/*.js"))
-    .pipe(concat("_essentials_.js"))
+gulp.task("concat-application-framework", () => {
+  return gulp.src(get_client("_framework_/*.js"))
+    .pipe(concat("_framework_.js"))
     .pipe(
       babel({
         presets: ["stage-0", "es2015"]
@@ -194,14 +194,14 @@ gulp.task("concat-application-script-essentials", () => {
       plumber(handle_error)
     )
     .pipe(
-      gulp.dest(`${DESTINATION}/client/libraries`)
+      gulp.dest(`${DESTINATION}/client`)
     );
 });
 
 gulp.task("application-scripts", () => {
   return gulp.src([
           get_client("**/*.js"),
-      `!${get_client("libraries/essentials/*.js")}`
+      `!${get_client("_framework_/*.js")}`
     ])
     .pipe(
       babel({
@@ -231,7 +231,7 @@ gulp.task("application-production-html", () => {
 
 gulp.task("application-production-css", () => {
   return minify_css(
-      get_asset("index.css")
+      get_asset("stylesheets/index.css")
     )
     .pipe(
       plumber(handle_error)
@@ -244,7 +244,7 @@ gulp.task("application-production-css", () => {
 gulp.task("application-production-scripts", () => {
   return gulp.src([
           get_client("**/*.js"),
-      `!${get_client("libraries/essentials/*.js")}`
+      `!${get_client("_framework_/*.js")}`
     ])
     .pipe(
       babel({
@@ -259,13 +259,13 @@ gulp.task("application-production-scripts", () => {
     );
 });
 
-gulp.task("concat-application-production-script-essentials", () => {
-  return gulp.src(get_client("libraries/essentials/*.js"))
+gulp.task("concat-application-production-framework", () => {
+  return gulp.src(get_client("_framework_/*.js"))
     .pipe(
       plumber(handle_error)
     )
     .pipe(
-      concat("_essentials_.js")
+      concat("_framework_.js")
     )
     .pipe(
       babel({
@@ -273,7 +273,7 @@ gulp.task("concat-application-production-script-essentials", () => {
       })
     )
     .pipe(
-      gulp.dest(`${DESTINATION}/client/libraries`)
+      gulp.dest(`${DESTINATION}/client`)
     );
 });
 
@@ -285,7 +285,7 @@ gulp.task("generate-iconfont", () => {
     .pipe(
       iconfontCSS({
         fontName: ICONFONT_NAME,
-        targetPath: "../icons.css"
+        targetPath: "../stylesheets/icons.css"
       })
     )
     .pipe(
@@ -301,8 +301,8 @@ gulp.task("generate-iconfont", () => {
 
 gulp.task("copy-assets", () => {
   return gulp.src([
-    get_asset("*.jpg"),
-    get_asset("*.ico"),
+    get_asset("images/*.jpg"),
+    get_asset("images/*.ico"),
     get_asset("fonts/**/*.woff")
   ])
     .pipe(gulp.dest(`${DESTINATION}/assets`));

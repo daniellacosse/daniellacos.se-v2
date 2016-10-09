@@ -1,10 +1,10 @@
-import { publicFetchFactory } from "../factory"
+import { publicFetchFactory } from "helpers/api"
 import {
   GITHUB_SOURCE,
   GITHUB_API_HOST,
   GITHUB_REPO_URL,
   GITHUB_GIST_URL
-} from "../../constants"
+} from "assets/constants"
 
 const githubFetcher = publicFetchFactory({
   format: {

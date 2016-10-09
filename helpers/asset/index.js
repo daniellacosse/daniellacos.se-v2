@@ -7,7 +7,19 @@ export default function getAssetURL(filename, mimetype) {
   return `data:${mimetype};base64,${assetHash}`
 }
 
-export getApplicationCSS from "./getApplicationCSS"
-export getFavicon from "./getFavicon"
-export getJPEG from "./getJPEG"
-export getWebFont from "./getWebFont"
+export function getApplicationCSS() {
+  return readFileSync("./assets/index.css")
+    .toString("utf8")
+}
+
+export function getFavicon() {
+  return getAssetURL("favicon.ico", "image/x-icon")
+}
+
+export function getJPEG(jpegname) {
+  return getAssetURL(`${jpegname}.jpg`, "image/jpg")
+}
+
+export function getWebFont(fontname) {
+  return getAssetURL(`${fontname}.woff`, "application/x-font-woff")
+}

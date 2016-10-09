@@ -1,7 +1,7 @@
 import { flow } from "lodash"
 
 import { sortByDate, collapseIntoGallaries } from "../document"
-import * as sources from "./sources"
+import * as sources from "sources"
 
 export default (options = {}) => {
   const sourceKeys = Object.keys(sources)

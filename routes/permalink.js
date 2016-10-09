@@ -2,7 +2,7 @@ import Route from "helpers/routing"
 import {
   buildApplication,
   loadScript
-} from "helpers/template"
+} from "helpers/templating"
 
 export default class PermalinkRoute extends Route {
   static path = "/:type/:hash"

@@ -82,7 +82,6 @@ export default function fetch({ url, error, fetcher }) {
   })
 }
 
-export * as sources from "./sources"
 export fetchAll from "./fetchAll"
 export { publicFetchFactory, privateFetchFactory }
 from "./factory"

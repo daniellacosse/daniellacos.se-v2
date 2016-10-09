@@ -1,5 +1,5 @@
 import Route from "helpers/routing"
-import { buildApplication } from "helpers/template"
+import { buildApplication } from "helpers/templating"
 import { fetchAll } from "helpers/api"
 import { getJPEG } from "helpers/asset"
 
@@ -29,11 +29,11 @@ export default class IndexRoute extends Route {
         avatarURL: getJPEG("avatar")
       },
       scripts: [
-        "libraries/homeLink",
-        "libraries/infoSidebar",
-        "libraries/masterList",
-        "libraries/detailPanel",
-        "scripts/rootView"
+        "components/homeLink",
+        "components/infoSidebar",
+        "components/masterList",
+        "components/detailPanel",
+        "pages/indexPage"
       ]
     })
   }

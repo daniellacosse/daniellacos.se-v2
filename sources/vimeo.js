@@ -1,9 +1,9 @@
-import { privateFetchFactory } from "../factory"
+import { privateFetchFactory } from "helpers/api"
 import {
   VIMEO_SOURCE,
   VIMEO_API_HOST,
   VIMEO_VIDEOS_URL
-} from "../../constants"
+} from "assets/constants"
 
 const vimeoFetcher = privateFetchFactory({
   source: VIMEO_SOURCE,

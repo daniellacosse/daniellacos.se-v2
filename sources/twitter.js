@@ -1,9 +1,9 @@
-import { privateFetchFactory } from "../factory"
+import { privateFetchFactory } from "helpers/api"
 import {
   TWITTER_SOURCE,
   TWITTER_API_HOST,
   TWITTER_TIMELINE_URL
-} from "../../constants"
+} from "assets/constants"
 
 const twitterFetcher = privateFetchFactory({
   source: TWITTER_SOURCE,

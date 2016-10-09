@@ -1,10 +1,10 @@
-import { publicFetchFactory } from "../factory"
+import { publicFetchFactory } from "helpers/api"
 import {
   SOUNDCLOUD_SOURCE,
   SOUNDCLOUD_API_HOST,
   SOUNDCLOUD_TRACKS_URL,
   SOUNDCLOUD_FRAME_URL
-} from "../../constants"
+} from "assets/constants"
 
 const soundcloudFetcher = publicFetchFactory({
   format: ({ artwork_url, genre, tag_list, uri }) => ({

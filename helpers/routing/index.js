@@ -7,8 +7,8 @@ import {
   readFileSync
 } from "fs"
 
-import { loadScripts, buildApplication } from "../template"
-import { CACHE_DIRECTORY, DAY_MS } from "../constants"
+import { loadScripts, buildApplication } from "../templating"
+import { CACHE_DIRECTORY, DAY_MS } from "assets/constants"
 
 export default class Route {
   constructor(request, response) {

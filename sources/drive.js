@@ -1,10 +1,10 @@
-import { publicFetchFactory } from "../factory"
+import { publicFetchFactory } from "helpers/api"
 import {
   DRIVE_SOURCE,
   DRIVE_API_HOST,
   DRIVE_PUBLIC_FOLDER,
   PUBLIC_DRIVE_FOLDER_URL
-} from "../../constants"
+} from "assets/constants"
 
 const driveFetcher = publicFetchFactory({
   entry: "items",

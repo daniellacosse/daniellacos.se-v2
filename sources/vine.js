@@ -1,10 +1,10 @@
-import { publicFetchFactory } from "../factory"
+import { publicFetchFactory } from "helpers/api"
 import {
   VINE_SOURCE,
   VINE_API_HOST,
   VINE_TIMELINE,
   VINE_TIMELINE_URL
-} from "../../constants"
+} from "assets/constants"
 
 const vineFetcher = publicFetchFactory({
   entry: "data.records",
