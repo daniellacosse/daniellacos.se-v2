@@ -9,6 +9,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 * render galleries properly
 * index banner
 * gulp deploy script
+* tags
 * bug: mobile doesn't quite fit
 
 -- deploy v2, with static 20 most recent posts --
@@ -17,7 +18,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 * bug: close arrow/share button don't pin to top
 * google drive
 
--- v2.1 deploy --
+-- v2.1 deploy -- (by 2017)
 
 * duplicates management (circa override, manual override)
 * favorites management

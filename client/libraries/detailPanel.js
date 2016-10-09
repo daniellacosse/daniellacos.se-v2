@@ -63,15 +63,16 @@ function $renderDocument({
   tags,
   frame,
   subdocuments
-}) {
+}, { asSubdocument } = {}) {
   const frameElement = () => {
     return $createElement({
       name: "iframe",
       src: frame,
       id: "ActiveDocumentFrame",
       width: "100%",
+      height: 350,
       style: {
-        "background": "lightgray", // should be loading animation
+        "background": "lightgray",
         "border-radius": "2px",
         "margin-bottom": "5px"
       }
@@ -86,8 +87,9 @@ function $renderDocument({
         "opacity": "0.25",
         "display": "block",
         "padding": "7px 0 18px 0",
-        "border-bottom": "1px solid black",
-        "margin-bottom": "32px"
+        "border-bottom": asSubdocument ? "" : "1px solid black",
+        "margin-bottom": asSubdocument ? "" : "32px",
+        "float": asSubdocument ? "right" : ""
       }
     })
   }
@@ -97,7 +99,12 @@ function $renderDocument({
   if (title) {
     children.push($createElement({
       name: "h1",
-      text: title
+      text: title,
+      style: asSubdocument ? {
+        "font-family": "Helvetica, sans-serif",
+        "font-size": "25px",
+        "opacity": "0.25"
+      } : {}
     }))
   }
 
@@ -117,8 +124,8 @@ function $renderDocument({
   }
 
   if (typeof subdocuments === "object" && subdocuments.length) {
-    const flattenedSubdocumentElements = [].concat.apply([], subdocuments.map(
-      $renderDocument))
+    const flattenedSubdocumentElements = [].concat.apply([], subdocuments.map((
+      doc) => $renderDocument(doc, { asSubdocument: true })))
 
     children.push(
       $createElement({
@@ -134,7 +141,8 @@ function $renderDocument({
         name: "footer",
         style: {
           "margin-top": "30px",
-          "overflow-wrap": "break-word"
+          "overflow-wrap": "break-word",
+          "line-height": "1.75"
         },
         children: tags.map((tag) => {
           return $createElement({
