@@ -10,6 +10,7 @@ import Document from "../document"
 export const documentFetch = ({
   url,
   entry,
+  postEntry,
   format,
   error,
   fetcher,
@@ -19,10 +20,15 @@ export const documentFetch = ({
   return fetch({ url, error, fetcher })
     .then((parsedBody) => {
       const resultCollection = get(parsedBody, entry, parsedBody)
-      let documents = isFunction(format) ?
-        resultCollection.map(post => new Document(post, format(post))) :
-        resultCollection.map(post => new Document(post, format))
+      const formatter = (post) => {
+        const unwrappedPost = get(post, postEntry, post)
+        const additionalProperties = isFunction(format) ?
+          format(unwrappedPost) : format
 
+        return new Document(unwrappedPost, additionalProperties)
+      }
+
+      let documents = resultCollection.map(formatter)
       if (beforeDate) {
         const beforeDateObject = new Date(beforeDate)
 

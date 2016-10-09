@@ -1,4 +1,5 @@
 import convertor from "base-conversion"
+import { sanitize } from "html-parser"
 import { isObject, isNumber } from "lodash"
 import URL from "url"
 
@@ -25,22 +26,27 @@ export default class Document {
     }
 
     this.id = isNumber(id) ? convertor(10, 62)(id) : id;
-    this.type = type;
-    this.source = source;
-
-    this.picture = picture;
     this.permalink =
-      `http://daniellacos.se/${this.source.slice(0, 2).toLowerCase()}/${this.id}`
+      `http://daniellacos.se/${source.slice(0, 2).toLowerCase()}/${this.id}`
 
     this.title = title || name;
     this.date = new Date(date || created_at);
     this.frame = isObject(frame) ?
       URL.format(frame) :
       frame;
-    // this.body = // TODO: sanitize body
-    //   `<p>${(body || description || "").split("\n").join("</p><p>")}</p>`;
-    this.tags = tags;
+    this.body =
+      sanitize(
+        (body || description || "")
+        .replace(/'/g, "&rsquo;")
+        .replace(/[\n\r]+/gm, "<br>"), {
+          elements: ["script"]
+        }
+      );
 
+    this.type = type;
+    this.source = source;
+    this.picture = picture;
+    this.tags = tags;
     this.subdocuments = subdocuments;
   }
 

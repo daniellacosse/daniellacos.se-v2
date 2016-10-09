@@ -8,7 +8,8 @@ import {
 
 const youtubeFetcher = publicFetchFactory({
   entry: "items",
-  format: ({ snippet: { thumbnails, resourceId, publishedAt } }) => ({
+  postEntry: "snippet",
+  format: ({ thumbnails, resourceId, publishedAt }) => ({
     id: resourceId.videoId,
     type: "media",
     source: YOUTUBE_SOURCE,

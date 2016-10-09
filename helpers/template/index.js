@@ -17,12 +17,9 @@ import {
 } from "../constants"
 
 export default ({ file, meta, scripts, data }) => {
-  // console.log("JSON.stringify(data):", JSON.stringify(data)
-  //   .replace(new RegExp("'", "g"), "\'"));
-
   const buildPoints = {
-    [DATA_TEMPLATE]: !!data ? JSON.stringify(data)
-      .replace(new RegExp("'", "g"), "\'") : "{}",
+    [DATA_TEMPLATE]: !!data ? JSON.stringify(data) : "{}",
+    // [DATA_TEMPLATE]: data,
     [SCRIPT_TEMPLATE]: buildScript(scripts || []),
     [FAVICON_TEMPLATE]: getFavicon(),
     [CSS_TEMPLATE]: getApplicationCSS(),

@@ -6,6 +6,10 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 ### TODO:
 
 * fix all sources but gdrive
+  * github preview
+  * gallery double date
+  * remove revines
+  * twitter, vimeo, gists
 * render galleries properly
 * index banner
 * gulp deploy script
