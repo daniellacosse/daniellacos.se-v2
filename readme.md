@@ -4,44 +4,52 @@
 i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
-* document gallery
+
+* fix all sources but gdrive
+  * github preview
+  * gallery double date
+  * remove revines
+  * twitter, vimeo, gists
+* render galleries properly
+* index banner
+* gulp deploy script
+* tags
+* bug: mobile doesn't quite fit
+
+-- deploy v2, with static 20 most recent posts --
+
+* permalink route & sharing
+* bug: close arrow/share button don't pin to top
+* google drive
+
+-- v2.1 deploy -- (by 2017)
+
 * duplicates management (circa override, manual override)
 * favorites management
-* banner
-* auto-gallery runs of posts from the same source
-* gulp deploy script
+* filter toggles
+* bug: show/hide tooltips properly & make them pointy on one end
 
--- v2 deploy, with static 50 most recent posts --
+-- v2.2 deploy -- (MLP - by Q2 2017)
 
-* list/detail scroll & window keypress event listeners
+* detail scroll & window keypress event listeners
+  * (detail) preprocess image & iframe body tags to load on scroll (image & iframe)
   * (window) navigate with arrow keys
   * (detail) save scroll depth
-  * (detail) preprocess image & iframe body tags to load on scroll (image & iframe)
-  * (list) infinite scrolling - JSON XHRHttpRequest to server omnipoint
-* permalink route
+* bug: freeze the article width during resize
+
+-- v2.2.1 deploy --
+
+* IE alternate message, link to chrome
 * private posts
-* sharing
-* filter toggles
-* search
 
-* known bugs (also check TODOs)
-  * hiding/showing tooltips properly & make them pointy on one end
-  * freeze the article width during resize
-  * close arrow/share button don't pin to top
-  * mobile doesn't quite fit
+-- v2.2.2 deploy --
 
-* misc:
-  * IE alternate message, link to chrome
-  * sourcemaps in development
-  * tests
+* infinite scrolling - JSON XHRHttpRequest to server omnipoint
+* search bar
 
-  NOTES: list of sources
-    google drive
-    vimeo
-    youtube (X)
-    tumblr (X)
-    twitter (~)
-    vine   (X)
-    soundcloud (X)
-    github (repo [X]/gist)
-    medium
+-- v2.3 deploy --
+
+out-of-roadmap improvements:
+  help button
+  store button (as if)
+  contact button

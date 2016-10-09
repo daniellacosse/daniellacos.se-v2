@@ -1,8 +1,8 @@
 import convertor from "base-conversion"
-import { isObject } from "lodash"
+import { sanitize } from "html-parser"
+import { isObject, isNumber } from "lodash"
 import URL from "url"
 
-export sortByDate from "./sortByDate"
 export default class Document {
   constructor(properties, additionalProperties) {
     const {
@@ -18,45 +18,72 @@ export default class Document {
       frame,
       body,
       description,
+      subdocuments,
       tags
     } = {
       ...properties,
       ...additionalProperties
     }
 
-    this.id = convertor(10, 62)(id);
-    this.type = type;
-    this.source = source;
-
-    this.picture = picture;
+    this.id = isNumber(id) ? convertor(10, 62)(id) : id;
     this.permalink =
-      `http://daniellacos.se/${this.source.slice(0, 2).toLowerCase()}/${this.id}`
+      `http://daniellacos.se/${source.slice(0, 2).toLowerCase()}/${this.id}`
 
     this.title = title || name;
     this.date = new Date(date || created_at);
     this.frame = isObject(frame) ?
       URL.format(frame) :
       frame;
-    this.body = `<p>${(body || description).split("\n").join("</p><p>")}</p>`;
-    this.tags = tags;
+    this.body =
+      sanitize(
+        (body || description || "")
+        .replace(/'/g, "&rsquo;")
+        .replace(/[\n\r]+/gm, "<br>"), {
+          elements: ["script"]
+        }
+      );
 
-    // TODO
-    this.subdocuments = [];
-    this.lastDate = new Date();
+    this.type = type;
+    this.source = source;
+    this.picture = picture;
+    this.tags = tags;
+    this.subdocuments = subdocuments;
   }
 
-  toJSON() {
-    const { type, picture, permalink, title, date, frame, body, tags } = this
-
-    return JSON.stringify({
-      date: date.toLocaleDateString(),
+  curate() {
+    const {
       type,
       picture,
       permalink,
       title,
+      date,
       frame,
       body,
-      tags
-    })
+      tags,
+      subdocuments
+    } = this
+
+    const requiredParams = {
+      date: date.toLocaleDateString(),
+      type,
+      picture,
+      permalink,
+      title
+    };
+
+    let result = requiredParams
+    if (tags && tags.length)
+      result = {...result, tags }
+
+    if (subdocuments && subdocuments.length)
+      result = {...result, subdocuments: subdocuments.map((doc) => doc.curate()) }
+
+    if (body) result = {...result, body }
+    if (frame) result = {...result, frame }
+
+    return result;
   }
 }
+
+export sortByDate from "./sortByDate"
+export collapseIntoGallaries from "./collapseIntoGallaries"

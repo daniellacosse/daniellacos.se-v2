@@ -10,11 +10,11 @@ const twitterFetcher = privateFetchFactory({
   error: (response = {}) => {
     if (!response.errors) return null
 
-    return errors.map(({ code, message }) => {
+    return response.errors.map(({ code, message }) => {
         `${TWITTER_SOURCE}: ${message} (${code})`
       })
       .join(", ")
   }
 })
 
-export default () => twitterFetcher(TWITTER_TIMELINE_URL)
+export default (options) => twitterFetcher(TWITTER_TIMELINE_URL, options)

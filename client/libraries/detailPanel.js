@@ -53,23 +53,26 @@ function $renderDetailPanel() {
 }
 
 function $renderDetailPanelActiveDocument() {
-  const {
-    title,
-    body,
-    date,
-    tags,
-    frameUrl,
-    frameHeight
-  } = retrieveActiveDocument()
-  const frame = () => {
+  return $renderDocument(retrieveActiveDocument())
+}
+
+function $renderDocument({
+  title,
+  body,
+  date,
+  tags,
+  frame,
+  subdocuments
+}, { asSubdocument } = {}) {
+  const frameElement = () => {
     return $createElement({
       name: "iframe",
-      src: frameUrl,
+      src: frame,
       id: "ActiveDocumentFrame",
       width: "100%",
-      height: frameHeight,
+      height: 350,
       style: {
-        "background": "lightgray", // should be loading animation
+        "background": "lightgray",
         "border-radius": "2px",
         "margin-bottom": "5px"
       }
@@ -84,8 +87,9 @@ function $renderDetailPanelActiveDocument() {
         "opacity": "0.25",
         "display": "block",
         "padding": "7px 0 18px 0",
-        "border-bottom": "1px solid black",
-        "margin-bottom": "32px"
+        "border-bottom": asSubdocument ? "" : "1px solid black",
+        "margin-bottom": asSubdocument ? "" : "32px",
+        "float": asSubdocument ? "right" : ""
       }
     })
   }
@@ -95,22 +99,41 @@ function $renderDetailPanelActiveDocument() {
   if (title) {
     children.push($createElement({
       name: "h1",
-      text: title
+      text: title,
+      style: asSubdocument ? {
+        "font-family": "Helvetica, sans-serif",
+        "font-size": "25px",
+        "opacity": "0.25"
+      } : {}
     }))
   }
 
-  if (frameUrl && !title) {
-    children.push(frame())
+  if (frame && !title) {
+    children.push(frameElement())
     children.push(time())
-  } else if (frameUrl) {
+  } else if (frame) {
     children.push(time())
-    children.push(frame())
+    children.push(frameElement())
   } else children.push(time())
 
-  children.push($createElement({
-    name: "section",
-    innerHTML: body
-  }))
+  if (body) {
+    children.push($createElement({
+      name: "section",
+      innerHTML: body
+    }))
+  }
+
+  if (typeof subdocuments === "object" && subdocuments.length) {
+    const flattenedSubdocumentElements = [].concat.apply([], subdocuments.map((
+      doc) => $renderDocument(doc, { asSubdocument: true })))
+
+    children.push(
+      $createElement({
+        name: "section",
+        children: flattenedSubdocumentElements
+      })
+    )
+  }
 
   if (typeof tags === "object" && tags.length) {
     children.push(
@@ -118,7 +141,8 @@ function $renderDetailPanelActiveDocument() {
         name: "footer",
         style: {
           "margin-top": "30px",
-          "overflow-wrap": "break-word"
+          "overflow-wrap": "break-word",
+          "line-height": "1.75"
         },
         children: tags.map((tag) => {
           return $createElement({

@@ -19,6 +19,7 @@ import {
 export default ({ file, meta, scripts, data }) => {
   const buildPoints = {
     [DATA_TEMPLATE]: !!data ? JSON.stringify(data) : "{}",
+    // [DATA_TEMPLATE]: data,
     [SCRIPT_TEMPLATE]: buildScript(scripts || []),
     [FAVICON_TEMPLATE]: getFavicon(),
     [CSS_TEMPLATE]: getApplicationCSS(),

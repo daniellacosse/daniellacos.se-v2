@@ -6,6 +6,7 @@ import {
 } from "../../constants"
 
 const tumblrFetcher = privateFetchFactory({
+  entry: "response.posts",
   source: TUMBLR_SOURCE,
   format: {
     type: "text",
@@ -18,12 +19,12 @@ const tumblrFetcher = privateFetchFactory({
   }
 });
 
-export default ({ count, since } = {}) => {
+export default ({ count, beforeDate } = {}) => {
   return tumblrFetcher({...TUMBLR_TEXTS_URL,
     query: {...TUMBLR_TEXTS_URL
       .query,
       limit: count,
-      offset: since
+      offset: beforeDate
     }
   })
 }

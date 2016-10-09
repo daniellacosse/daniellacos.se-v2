@@ -9,10 +9,12 @@ import {
 const vineFetcher = publicFetchFactory({
   entry: "data.records",
   format: (post) => ({
+    id: post.postIdStr,
     type: "media",
     source: VINE_SOURCE,
     picture: post.thumbnailUrl,
     frame: `${post.permalinkUrl}/embed/wide`,
+    date: post.created,
     tags: post.entities
       .filter(({ type }) => type === "tag")
       .map(({ title }) => title)
@@ -24,4 +26,4 @@ const vineFetcher = publicFetchFactory({
   }
 })
 
-export default () => vineFetcher(VINE_TIMELINE_URL)
+export default (options = {}) => vineFetcher(VINE_TIMELINE_URL, options)

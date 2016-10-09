@@ -1,4 +1,6 @@
-import { sortByDate } from "../document"
+import { flow } from "lodash"
+
+import { sortByDate, collapseIntoGallaries } from "../document"
 import * as sources from "./sources"
 
 export default (options = {}) => {
@@ -13,16 +15,17 @@ export default (options = {}) => {
     fetchPromises.push(source(options))
   }
 
+  // TODO: ensure temporal concurrecy across sources
+  // TODO: keep hitting all endpoints until you've gotten the proper # of records
   return Promise.all(fetchPromises)
     .then((documentSets) => {
-      let allDocuments = sortByDate(
-        [].concat.apply([], documentSets)
-      )
+      let allDocuments = flow([
+        sortByDate,
+        collapseIntoGallaries
+      ])([].concat.apply([], documentSets))
 
-      // ensure temporal concurrency
-      // gallerify
-
-      // the above again if count length not met
+      if (options.count)
+        allDocuments = allDocuments.slice(0, options.count)
 
       return allDocuments
     })

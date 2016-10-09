@@ -18,10 +18,10 @@ const githubFetcher = publicFetchFactory({
   }
 })
 
-export default () => {
-  return Promise.all([
-    githubFetcher(GITHUB_REPO_URL),
-    githubFetcher(GITHUB_GIST_URL)
-  ])
-    .then(reposAndGists => [].concat.apply([], reposAndGists))
+export default (options = {}) => {
+  // return Promise.all([
+  return githubFetcher(GITHUB_REPO_URL, options)
+    //   githubFetcher(GITHUB_GIST_URL)
+    // ])
+    //   .then(reposAndGists => [].concat.apply([], reposAndGists))
 }
