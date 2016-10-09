@@ -215,35 +215,35 @@ function $renderDocument({
     )
   }
 
-  if (typeof tags === "object" && tags.length) {
-    children.push(
-      $createElement({
-        name: "footer",
-        style: {
-          "margin-top": "30px",
-          "overflow-wrap": "break-word",
-          "line-height": "1.75"
-        },
-        children: tags.map((tag) => {
-          return $createElement({
-            name: "a",
-            text: `#${tag}`,
-            style: {
-              "cursor": "pointer",
-              "background-color": "#f70000",
-              "padding": "4px 10px",
-              "color": "white",
-              "border-radius": "5px",
-              "margin-right": "10px",
-              "transition": `background-color ${DASE_DURATION} ${DASE_BEZIER}`
-            },
-            onMouseOver: "this.style.backgroundColor='#9c0909'",
-            onMouseOut: "this.style.backgroundColor='#f70000'"
-          })
-        })
-      })
-    )
-  }
+  // if (typeof tags === "object" && tags.length) {
+  //   children.push(
+  //     $createElement({
+  //       name: "footer",
+  //       style: {
+  //         "margin-top": "30px",
+  //         "overflow-wrap": "break-word",
+  //         "line-height": "1.75"
+  //       },
+  //       children: tags.map((tag) => {
+  //         return $createElement({
+  //           name: "a",
+  //           text: `#${tag}`,
+  //           style: {
+  //             "cursor": "pointer",
+  //             "background-color": "#f70000",
+  //             "padding": "4px 10px",
+  //             "color": "white",
+  //             "border-radius": "5px",
+  //             "margin-right": "10px",
+  //             "transition": `background-color ${DASE_DURATION} ${DASE_BEZIER}`
+  //           },
+  //           onMouseOver: "this.style.backgroundColor='#9c0909'",
+  //           onMouseOut: "this.style.backgroundColor='#f70000'"
+  //         })
+  //       })
+  //     })
+  //   )
+  // }
 
   return children
 }
