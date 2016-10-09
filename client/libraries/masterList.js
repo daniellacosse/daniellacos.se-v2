@@ -33,7 +33,7 @@ function openMasterList() {
   })
 }
 
-function setActiveDocument(documentIndex) {
+function setActiveDocument(documentIndex, { keepListOpen } = {}) {
   const activeDocument = retrieveDocuments()[documentIndex]
 
   addToStorage({
@@ -51,6 +51,7 @@ function setActiveDocument(documentIndex) {
     }
   })
 
+  if (keepListOpen) return;
   collapseMasterList();
 }
 
