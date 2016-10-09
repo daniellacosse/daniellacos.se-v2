@@ -7,8 +7,6 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 * twitter
 * github preview
-* banner
-* bug: mobile doesn't quite fit
 * gulp deploy script
 
 -- deploy v2, with static 20 most recent posts --
@@ -16,6 +14,8 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 * tags
 * google drive support
 * vimeo, gists
+* bug: mobile doesn't quite fit
+
 * permalink route & sharing
 * bug: close arrow/share button don't pin to top
 

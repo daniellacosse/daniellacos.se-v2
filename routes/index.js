@@ -3,10 +3,6 @@ import { buildApplication } from "helpers/templating"
 import { fetchAll } from "helpers/api"
 import { getJPEG } from "helpers/asset"
 
-export HealthRoute from "./health"
-export PermalinkRoute from "./permalink"
-  // export BannerRoute from "./banner"
-
 export default class IndexRoute extends Route {
   static path = "/"
   static cacheLifeInDays = 1
@@ -38,3 +34,7 @@ export default class IndexRoute extends Route {
     })
   }
 }
+
+export HealthRoute from "./health"
+export PermalinkRoute from "./permalink"
+export BannerRoute from "./banner"
