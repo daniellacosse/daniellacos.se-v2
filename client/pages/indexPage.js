@@ -41,4 +41,19 @@
       break
     }
   })
+
+  window.addEventListener("resize", () => {
+    const resizeDefererId = retrieve("resizeDefererId")
+    const resizeDefererWidth = retrieve("resizeDefererWidth")
+
+    if (resizeDefererId) {
+      clearTimeout(resizeDefererId);
+      addToStorage({ resizeDefererId: null });
+    }
+
+    addToStorage({
+      resizeDefererWidth: freezeDetailPanel(resizeDefererWidth),
+      resizeDefererId: setTimeout(unfreezeDetailPanel, 300)
+    })
+  })
 })();
