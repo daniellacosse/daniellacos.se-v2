@@ -1,10 +1,7 @@
+import { whileInObject } from "../iterators"
+
 export default (app, routes) => {
-  let _keys = Object.keys(routes)
-  let _len = _keys.length
-
-  while (_len--) {
-    const Route = routes[_keys[_len]]
-
+  whileInObject(routes, (key, Route) => {
     app.get(Route.path, (request, response) => {
       const handledRoute = new Route(request, response)
         .handler()
@@ -12,5 +9,5 @@ export default (app, routes) => {
       if (handledRoute.catch)
         handledRoute.catch(console.trace)
     })
-  }
+  })
 }

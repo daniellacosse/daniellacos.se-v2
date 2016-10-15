@@ -1,16 +1,16 @@
 import { readFileSync } from "fs"
 import optimize from "optimize-js"
 
+import { whileInList } from "../iterators"
+
 export default (files) => {
   let readString = readFileSync("./client/_framework_.js")
     .toString("utf8")
-  let _len = files.length
-  while (_len--) {
-    const filename = files.reverse()[_len]
 
-    readString += readFileSync(`./client/${filename}.js`)
+  whileInList(files, (file) => {
+    readString += readFileSync(`./client/${file}.js`)
       .toString("utf8")
-  }
+  })
 
   return optimize(readString);
 }

@@ -7,6 +7,7 @@ import {
   readFileSync
 } from "fs"
 
+import { whileInObject } from "../iterators"
 import { loadScripts, buildApplication } from "../templating"
 import { CACHE_DIRECTORY, DAY_MS } from "assets/constants"
 
@@ -95,13 +96,10 @@ export default class Route {
 
   _cacheHash(params) {
     let cacheHash = this.constructor.path.replace("/", "-")
-    let paramKeys = Object.keys(params)
-      .sort()
-    let _len = paramKeys.length
-    while (_len--) {
-      const key = paramKeys[_len]
-      cacheHash += `${key}:${params[key]}-`
-    }
+
+    whileInObject(params, (key, param) => {
+      cacheHash += `${key}:${param}-`
+    })
 
     return cacheHash
   }

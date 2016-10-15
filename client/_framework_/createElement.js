@@ -18,10 +18,7 @@ function locateFreeRegistrySlot(properties = {}) {
 }
 
 function $createElement(properties) {
-  let {
-    name,
-    id
-  } = properties
+  let { name, id } = properties
 
   if (!window._COMPONENT_REGISTRY_)
     window._COMPONENT_REGISTRY_ = {};
@@ -29,7 +26,8 @@ function $createElement(properties) {
   if (!id)
     id = locateFreeRegistrySlot(properties)
 
-  window._COMPONENT_REGISTRY_[id] = document.createElement(name || "div");
+  window._COMPONENT_REGISTRY_[id] =
+    document.createElement(name || "div");
 
   return $changeElement(id, properties)
 }

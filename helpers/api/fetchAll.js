@@ -1,19 +1,15 @@
 import { flow } from "lodash"
 
 import { sortByDate, collapseIntoGallaries } from "../document"
+import { whileInObject } from "../iterators"
 import * as sources from "sources"
 
 export default (options = {}) => {
-  const sourceKeys = Object.keys(sources)
-
-  let _len = sourceKeys.length
   let fetchPromises = []
-  while (_len--) {
-    const key = sourceKeys[_len]
-    const source = sources[key]
 
+  whileInObject(sources, (key, source) => {
     fetchPromises.push(source(options))
-  }
+  })
 
   // TODO: ensure temporal concurrecy across sources
   // TODO: keep hitting all endpoints until you've gotten the proper # of records

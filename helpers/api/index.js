@@ -50,8 +50,8 @@ export const documentFetch = ({
 
       return documents
     })
-    .catch((error) => {
-      console.trace(error)
+    .catch(({ trace }) => {
+      console.log({ trace });
 
       return []
     })

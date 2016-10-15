@@ -1,5 +1,6 @@
 import { readFileSync } from "fs"
 
+import { whileInObject } from "../iterators"
 import { getFavicon, getWebFont, getApplicationCSS } from "../asset"
 import buildScript from "./script"
 import {
@@ -36,15 +37,11 @@ export default ({ file, meta, scripts, data }) => {
   let templateToBuild = readFileSync(`./assets/${file}.html`)
     .toString("utf8")
 
-  let buildPointKeys = Object.keys(buildPoints)
-  let _len = buildPointKeys.length
-  while (_len--) {
-    const key = buildPointKeys[_len]
-    const buildPointSource = buildPoints[key]
+  whileInObject(buildPoints, (key, value) => {
     const regex = new RegExp(key, "g")
 
-    templateToBuild = templateToBuild.replace(regex, buildPointSource)
-  }
+    templateToBuild = templateToBuild.replace(regex, value)
+  })
 
   return templateToBuild
 }

@@ -1,12 +1,8 @@
 function $changeElement(id, delta) {
-  const {
-    innerHTML,
-    text,
-    children
-  } = delta;
   if (!window._COMPONENT_STYLE_REGISTRY_)
     window._COMPONENT_STYLE_REGISTRY_ = {}
 
+  const { innerHTML, text, children } = delta;
   if (
     innerHTML && text ||
     innerHTML && children ||
@@ -19,54 +15,41 @@ function $changeElement(id, delta) {
 
   let element = window._COMPONENT_REGISTRY_[id]
   let elementStyle = window._COMPONENT_STYLE_REGISTRY_[id] || {}
-  let _keys = Object.keys(delta)
-  let _len = _keys.length
-
-  while (_len--) {
-    const key = _keys[_len]
-
+  whileInObject(delta, (key, value) => {
     switch (key) {
     case "style":
-      const styleDelta = delta["style"]
-      const currentStyleKeys = Object.keys(elementStyle)
-
-      const mergedStyle = {...elementStyle,
-        ...styleDelta
+      const mergedStyle = {
+        ...elementStyle,
+        ...value
       }
-      const styleKeys = Object.keys(mergedStyle)
 
       let styleString = ""
-      let _len3 = styleKeys.length
-
-      while (_len3--) {
-        const key = styleKeys[_len3]
-        const style = mergedStyle[key]
-
-        styleString += `${key}:${style};`
-      }
+      whileInObject(mergedStyle, (prop, style) => {
+        styleString += `${prop}:${style};`
+      })
 
       window._COMPONENT_STYLE_REGISTRY_[id] = mergedStyle;
 
       element.setAttribute("style", styleString)
       break
     case "text":
-      const textNode = document.createTextNode(delta["text"])
+      const textNode = document.createTextNode(value)
 
       element.innerHTML = ""
       element.appendChild(textNode)
       break
     case "innerHTML":
-      element.innerHTML = delta["innerHTML"]
+      element.innerHTML = value["innerHTML"]
       break
     case "children":
       element.innerHTML = ""
-      element = $insertElements(element, delta["children"])
+      element = $insertElements(element, value)
       break
     default:
-      element.setAttribute(key, delta[key])
+      element.setAttribute(key, value)
       break
     }
-  }
+  })
 
   window._COMPONENT_REGISTRY_[id] = element
 
@@ -74,13 +57,5 @@ function $changeElement(id, delta) {
 }
 
 function $changeElements(idHash = {}) {
-  const elementIDs = Object.keys(idHash)
-
-  let _len = elementIDs.length
-  while (_len--) {
-    const id = elementIDs[_len]
-    const delta = idHash[id]
-
-    $changeElement(id, delta)
-  }
+  whileInObject(idHash, $changeElement)
 }
