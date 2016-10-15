@@ -12,7 +12,10 @@ const tumblrFetcher = privateFetchFactory({
     type: "text",
     source: TUMBLR_SOURCE
   },
-  error: ({ meta, response }) => {
+  error: (returnData) => {
+    if (!returnData) return `${TUMBLR_SOURCE}: No data!`
+
+    const { meta, response } = returnData;
     if (meta.status < 299 || response.length) return null
 
     return `${TUMBLR_SOURCE}: ${meta.msg} (${meta.status})`
