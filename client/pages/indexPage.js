@@ -15,7 +15,7 @@
   const masterList = $renderMasterList();
   const detailPanel = $renderDetailPanel();
 
-  $renderAppView([
+  $renderApp([
     infoSidebar,
     masterList,
     detailPanel

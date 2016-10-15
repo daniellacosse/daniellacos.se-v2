@@ -30,14 +30,13 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 * detail scroll & window keypress event listeners
   * (detail) preprocess image & iframe body tags to load on scroll (image & iframe)
-  * (window) navigate with arrow keys
-  * (detail) save scroll depth
-* bug: freeze the article width (& blur?) during resize
+  * (detail & list) save scroll depth
+  * freeze the article width (& blur?) during resize
 
 -- v2.2.1 deploy --
 
 * IE alternate message, link to chrome
-* private posts
+* show private posts
 
 -- v2.2.2 deploy --
 
