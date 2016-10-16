@@ -1,4 +1,5 @@
 import { whileInObject } from "../iterators"
+import { reportError } from "../system"
 
 export default (app, routes) => {
   whileInObject(routes, (key, Route) => {
@@ -7,7 +8,7 @@ export default (app, routes) => {
         .handler()
 
       if (handledRoute.catch)
-        handledRoute.catch(console.trace)
+        handledRoute.catch(reportError)
     })
   })
 }

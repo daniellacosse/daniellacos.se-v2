@@ -2,13 +2,14 @@ import Route from "helpers/routing"
 import { buildApplication } from "helpers/templating"
 import { fetchAll } from "helpers/api"
 import { getJPEG } from "helpers/asset"
+import { DEFAULT_DOCUMENT_COUNT } from "assets/constants"
 
 export default class IndexRoute extends Route {
   static path = "/"
   static cacheLifeInDays = 1
 
   prefetch() {
-    return fetchAll({ count: 20 })
+    return fetchAll({ count: DEFAULT_DOCUMENT_COUNT })
   }
 
   dispatch(documents) {

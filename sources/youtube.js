@@ -24,7 +24,7 @@ const youtubeFetcher = publicFetchFactory({
   }
 })
 
-export default ({ count, beforeDate } = {}) => {
+export default ({ count, before } = {}) => {
   return youtubeFetcher({...YOUTUBE_UPLOADS_URL,
     query: {...YOUTUBE_UPLOADS_URL
       .query,

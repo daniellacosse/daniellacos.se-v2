@@ -22,12 +22,12 @@ const tumblrFetcher = privateFetchFactory({
   }
 });
 
-export default ({ count, beforeDate } = {}) => {
+export default ({ count, before } = {}) => {
   return tumblrFetcher({...TUMBLR_TEXTS_URL,
     query: {...TUMBLR_TEXTS_URL
       .query,
       limit: count,
-      offset: beforeDate
+      offset: before
     }
   })
 }

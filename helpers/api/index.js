@@ -5,6 +5,7 @@ import {
 } from "lodash"
 import URL from "url"
 
+import { reportError } from "../system"
 import Document from "../document"
 
 export const documentFetch = ({
@@ -16,7 +17,7 @@ export const documentFetch = ({
   error,
   fetcher,
   count,
-  beforeDate
+  before
 }) => {
   return fetch({ url, error, fetcher })
     .then((parsedBody) => {
@@ -37,21 +38,22 @@ export const documentFetch = ({
       let documents = resultCollection
         .filter(filterer)
         .map(formatter)
-      if (beforeDate) {
-        const beforeDateObject = new Date(beforeDate)
 
-        documents = documents.filter(({ date }) => date <
-          beforeDateObject)
+      if (before) {
+        const beforeObject = new Date(before)
+
+        documents = documents.filter(({ date }) => date < beforeObject)
       }
 
-      if (count) documents = documents.slice(0, count)
+      if (count)
+        documents = documents.slice(0, count)
 
       // TODO: if (document.length < count) try to fetch again
 
       return documents
     })
-    .catch(({ trace }) => {
-      console.log({ trace });
+    .catch((error) => {
+      reportError(error);
 
       return []
     })

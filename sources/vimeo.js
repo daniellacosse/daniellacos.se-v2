@@ -18,7 +18,7 @@ const vimeoFetcher = privateFetchFactory({
   })
 })
 
-export default ({ count, beforeDate } = {}) => {
+export default ({ count, before } = {}) => {
   return vimeoFetcher({...VIMEO_VIDEOS_URL,
     query: {
       per_page: count

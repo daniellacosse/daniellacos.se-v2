@@ -8,7 +8,9 @@ export default (options = {}) => {
   let fetchPromises = []
 
   whileInObject(sources, (key, source) => {
-    fetchPromises.push(source(options))
+    fetchPromises.push(
+      source(options)
+    )
   })
 
   // TODO: ensure temporal concurrecy across sources
