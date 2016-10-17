@@ -44,16 +44,17 @@
 
   window.addEventListener("resize", () => {
     const resizeDefererId = retrieve("resizeDefererId")
-    const resizeDefererWidth = retrieve("resizeDefererWidth")
 
-    if (resizeDefererId) {
-      clearTimeout(resizeDefererId);
-      addToStorage({ resizeDefererId: null });
-    }
+    if (resizeDefererId)
+      clearTimeout(resizeDefererId)
+    else
+      freezeDetailPanel()
 
     addToStorage({
-      resizeDefererWidth: freezeDetailPanel(resizeDefererWidth),
-      resizeDefererId: setTimeout(unfreezeDetailPanel, 300)
+      resizeDefererId: setTimeout(() => {
+        unfreezeDetailPanel()
+        removeFromStorage(["resizeDefererId"])
+      }, 600)
     })
   })
 })();

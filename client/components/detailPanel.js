@@ -6,8 +6,13 @@ const DETAIL_SHARE_BUTTON_ICON_ID = `${DETAIL_SHARE_BUTTON_ID}-icon`
 const DETAIL_PANEL_STYLE = {
   "width": "100%",
   "max-width": "720px",
-  "margin": "75px auto 75px auto",
-  "transition": `filter ${DASE_DURATION} ${DASE_BEZIER}, opacity ${DASE_DURATION} ${DASE_BEZIER}`
+  "margin": "75px 0",
+  "position": "relative",
+  "filter": "blur(0px)",
+  "left": "50%",
+  "transform": "translateX(-50%)",
+  "opacity": "1",
+  "transition": `filter 300ms ${DASE_BEZIER}, opacity 300ms ${DASE_BEZIER}`
 }
 
 const DETAIL_CONTAINER_STYLE = {
@@ -15,6 +20,7 @@ const DETAIL_CONTAINER_STYLE = {
   "height": "100%",
   "flex-grow": "1",
   "overflow-y": "scroll",
+  "overflow-x": "hidden",
   "box-shadow": "-3px 0px 8px 1px rgba(0, 0, 0, 0.2)",
   "background": "white",
   "position": "relative",
@@ -33,24 +39,24 @@ const DETAIL_SHARE_BUTTON_STYLE = {
 
 const DETAIL_PANEL_STYLE$FROZEN = (width) => ({
   ...DETAIL_PANEL_STYLE,
-  "filter": "blur(20px)",
+  "filter": "blur(5px)",
   "opacity": "0.25",
-  "width": width
+  "width": `${width}px`
 })
 
 ///\\\///\\\ DetailPanel - ACTIONS ///\\\///\\\
 function freezeDetailPanel() {
-  const { innerWidth } = window._COMPONENT_REGISTRY_[DETAIL_PANEL_ID]
+  const { offsetWidth } = window._COMPONENT_REGISTRY_[DETAIL_PANEL_ID]
 
-  $changeElementById({
-    [DETAIL_PANEL_ID]: DETAIL_PANEL_STYLE$FROZEN(innerWidth)
-  })
+  $changeElement(
+    DETAIL_PANEL_ID, {
+      style: DETAIL_PANEL_STYLE$FROZEN(offsetWidth)
+    }
+  )
 }
 
 function unfreezeDetailPanel() {
-  $changeElementById({
-    [DETAIL_PANEL_ID]: DETAIL_PANEL_STYLE
-  })
+  $changeElement(DETAIL_PANEL_ID, { style: DETAIL_PANEL_STYLE })
 }
 
 ///\\\///\\\ DetailPanel ///\\\///\\\

@@ -39,7 +39,7 @@ function $changeElement(id, delta) {
       element.appendChild(textNode)
       break
     case "innerHTML":
-      element.innerHTML = value["innerHTML"]
+      element.innerHTML = value
       break
     case "children":
       element.innerHTML = ""
