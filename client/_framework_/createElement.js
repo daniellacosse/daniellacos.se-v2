@@ -1,18 +1,23 @@
 function locateFreeRegistrySlot(properties = {}) {
+  let keyHash;
+  let testKey;
+  let activeRegistrySlot = "INVALID";
   let registryString = ""
 
-  if (properties.name) registryString += `${properties.name || "div"}-`
-  if (properties.class) registryString += `${properties.class}-`
-
-  let keyNumber = 0
-  let testKey = `${registryString}${keyNumber}`
-  let activeRegistrySlot = window._COMPONENT_REGISTRY_[testKey]
-
-  while (!!activeRegistrySlot) {
-    keyNumber++
-    testKey = `${registryString}${keyNumber}`
+  const resetSlotAttempt = () => {
+    keyHash = Math.floor(Math.random() * 10000)
+      .toString(16)
+    testKey = `${registryString}${keyHash}`
     activeRegistrySlot = window._COMPONENT_REGISTRY_[testKey]
   }
+
+  if (properties.name)
+    registryString += `${properties.name || "div"}-`
+  if (properties.class)
+    registryString += `${properties.class}-`
+
+  while (!!activeRegistrySlot)
+    resetSlotAttempt()
 
   return testKey
 }
@@ -38,15 +43,4 @@ function $createIcon(iconName, properties = {}) {
     name: "i",
     class: `icon icon-${iconName}`
   })
-}
-
-function $createList() {
-  // ul
-  // li
-  // li.map(liTemplate)
-  // updateList(list of things)
-}
-
-function $createInput() {
-
 }

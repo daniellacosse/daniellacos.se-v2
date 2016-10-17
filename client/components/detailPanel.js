@@ -10,7 +10,7 @@ const DETAIL_PANEL_STYLE = {
   "position": "relative",
   "filter": "blur(0px)",
   "left": "50%",
-  "transform": "translateX(-50%)",
+  "transform": "translate3d(-50%, 0, 0)",
   "opacity": "1",
   "transition": `filter 300ms ${DASE_BEZIER}, opacity 300ms ${DASE_BEZIER}`
 }

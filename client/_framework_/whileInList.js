@@ -9,15 +9,15 @@ function whileInList(list = [], func) {
   }
 }
 
-// function mapToList(list, func) {
-//   let result = [];
-//
-//   whileInList(list, (item) => {
-//     result.push(func(item))
-//   })
-//
-//   return result
-// }
+function mapToList(list, func) {
+  let result = [];
+
+  whileInList(list, (item) => {
+    result.push(func(item))
+  })
+
+  return result
+}
 
 function whileInObject(object = {}, func) {
   const keys = Object.keys(object);

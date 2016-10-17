@@ -54,6 +54,7 @@ export default class Document {
 
   curate() {
     const {
+      id,
       type,
       picture,
       permalink,
@@ -67,6 +68,7 @@ export default class Document {
     } = this
 
     const requiredParams = {
+      id,
       date: date.toLocaleDateString(),
       type,
       picture,
