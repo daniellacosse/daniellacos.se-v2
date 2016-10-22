@@ -34,25 +34,7 @@ function retrieveDocumentPosition(id) {
     .indexOf(id)
 }
 
-function retrieveActiveDocumentPosition() {
-  return retrieveDocumentPosition(retrieveActiveDocumentHash())
-}
-
-function retrieveVisibleDocumentList() {
-  // const documentFilters = retrieve("filters")
-  // const allDocuments = retrieveDocuments()
-
-
-  return retrieveDocuments()
-}
-
-function retrieveActiveDocumentHash() {
-  return (
-    retrieve(MASTER_LIST_ACTIVE_DOCUMENT_KEY) ||
-    retrieve("documentListOrder")[0]
-  )
-}
-
+// NOTE: arguably beyond the purview of this "framework"
 function retrieveActiveDocument() {
   const potentialActiveDocument = retrieveDocument(retrieveActiveDocumentHash())
 
@@ -67,4 +49,25 @@ function retrieveActiveDocument() {
   }
 
   return potentialActiveDocument
+}
+
+function retrieveActiveDocumentPosition() {
+  return retrieveDocumentPosition(retrieveActiveDocumentHash())
+}
+
+function retrieveActiveDocumentHash() {
+  return (
+    retrieve(MASTER_LIST_ACTIVE_DOCUMENT_KEY) ||
+    retrieve("documentListOrder")[0]
+  )
+}
+
+function retrieveVisibleDocumentList() {
+  const documentFilters = retrieve(INFO_SIDEBAR_TOGGLE_FILTER_LIST_KEY)
+  const allDocuments = retrieveDocuments()
+
+  if (!documentFilters || !documentFilters.length)
+    return allDocuments
+
+  return allDocuments.filter(({ type }) => documentFilters.includes(type))
 }

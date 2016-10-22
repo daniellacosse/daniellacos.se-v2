@@ -19,6 +19,19 @@ function mapToList(list, func) {
   return result
 }
 
+function filterMapToList(list, func) {
+  let result = [];
+
+  whileInList(list, (item) => {
+    const mappedItem = func(item)
+
+    if (mappedItem)
+      result.push(func(item))
+  })
+
+  return result
+}
+
 function whileInObject(object = {}, func) {
   const keys = Object.keys(object);
 

@@ -1,4 +1,7 @@
+///\\\///\\\ HomeLink - KEYS ///\\\///\\\
 const HOME_LINK_ID = "HomeLink";
+
+///\\\///\\\ HomeLink - PROPERTIES ///\\\///\\\
 const HOME_LINK_STYLE = {
   "background-size": "cover",
   "background-position": "center",
@@ -14,6 +17,7 @@ const HOME_LINK_STYLE = {
   "border": "1px solid white"
 }
 
+///\\\///\\\ HomeLink ///\\\///\\\
 function $renderHomeLink() {
   return $createElement({
     name: "a",

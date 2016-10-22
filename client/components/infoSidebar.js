@@ -1,32 +1,9 @@
-///\///\ InfoSidebar - ACTIONS ///\///\\
-function openToggleIcon(iconID) {
-  const tooltipID = `${iconID}-tooltip`
-
-  $changeElements({
-    [iconID]: {
-      style: FILTER_TOGGLE_ICON_STYLE$HOVER,
-    },
-    [tooltipID]: {
-      style: FILTER_TOGGLE_TOOLTIP_STYLE$HOVER
-    }
-  })
-}
-
-function closeToggleIcon(iconID) {
-  const tooltipID = `${iconID}-tooltip`
-
-  $changeElements({
-    [iconID]: {
-      style: FILTER_TOGGLE_ICON_STYLE,
-    },
-    [tooltipID]: {
-      style: FILTER_TOGGLE_TOOLTIP_STYLE
-    }
-  })
-}
-
-///\\\///\\\ InfoSidebar ///\\\///\\\
+///\///\ InfoSidebar - KEYS ///\///\\
 const INFO_SIDEBAR_ID = "InfoSidebar";
+const INFO_SIDEBAR_TOGGLE_LIST_ID = `${INFO_SIDEBAR_ID}-toggleList`;
+const INFO_SIDEBAR_TOGGLE_FILTER_LIST_KEY = `"${INFO_SIDEBAR_ID}-filters`;
+
+///\///\ InfoSidebar - PROPERTIES ///\///\\
 const INFO_SIDEBAR_STYLE = {
   "height": "100%",
   "min-width": "60px",
@@ -36,40 +13,6 @@ const INFO_SIDEBAR_STYLE = {
   "flex-shrink": "1"
 }
 
-function $renderInfoSidebar() {
-  return $createElement({
-    name: "header",
-    id: INFO_SIDEBAR_ID,
-    style: INFO_SIDEBAR_STYLE,
-    children: [
-      // $renderInfoFilterToggleList(),
-      $renderHomeLink()
-    ]
-  })
-}
-
-///\///\ InfoSidebar - FilterToggleList ///\///\\
-const INFO_SIDEBAR_TOGGLE_LIST_ID = `${INFO_SIDEBAR_ID}-toggleList`;
-const INFO_SIDEBAR_TOGGLE_LIST_STYLE = {
-  "margin-top": "15px"
-}
-
-function $renderInfoFilterToggleList() {
-  return $createElement({
-    name: "ul",
-    id: INFO_SIDEBAR_TOGGLE_LIST_ID,
-    style: INFO_SIDEBAR_TOGGLE_LIST_STYLE,
-    children: [
-      $renderInfoToggleIcon("star", "favorites"),
-      $renderInfoToggleIcon("text"),
-      $renderInfoToggleIcon("gallery"),
-      $renderInfoToggleIcon("media"),
-      $renderInfoToggleIcon("code")
-    ]
-  })
-}
-
-///\///\ InfoSidebar - FilterToggles ///\///\\
 const FILTER_TOGGLE_STYLE = {
   "cursor": "pointer",
   "color": "white",
@@ -85,14 +28,34 @@ const FILTER_TOGGLE_ICON_STYLE = {
   "opacity": "0.5",
   "padding": "10px",
   "cursor": "pointer",
-  "transform": "rotateZ(0)",
-  "transition": `opacity ${DASE_DURATION} ${DASE_BEZIER}`
+  "filter": "drop-shadow(0px 0px 0px rgba(255, 255, 255, 0))",
+  "transition": `opacity ${DASE_DURATION} ${DASE_BEZIER}, filter ${DASE_DURATION} ${DASE_BEZIER}`
 }
 
 const FILTER_TOGGLE_ICON_STYLE$HOVER = {
   ...FILTER_TOGGLE_ICON_STYLE,
   "opacity": "1"
 }
+
+const FILTER_TOGGLE_ICON_STYLE$ACTIVE = {
+  ...FILTER_TOGGLE_ICON_STYLE,
+  "opacity": "1",
+  "filter": "drop-shadow(0px 0px 7px rgba(255, 255, 255, 0.8))"
+}
+
+const FILTER_TOGGLE_ICON_PROPERTIES = (iconID = "") => ({
+  style: FILTER_TOGGLE_ICON_STYLE,
+  onClick: `activateFilterToggle("${iconID}")`,
+  onMouseOver: `openToggleIcon("${iconID}")`,
+  onMouseOut: `closeToggleIcon("${iconID}")`
+})
+
+const FILTER_TOGGLE_ICON_PROPERTIES$ACTIVE = (iconID) => ({
+  style: FILTER_TOGGLE_ICON_STYLE$ACTIVE,
+  onClick: `deactivateFilterToggle("${iconID}")`,
+  onMouseOver: "",
+  onMouseOut: "",
+})
 
 // TODO: obscuring tooltip bug
 const FILTER_TOGGLE_TOOLTIP_STYLE = {
@@ -117,22 +80,121 @@ const FILTER_TOGGLE_TOOLTIP_STYLE$HOVER = {
   "left": "calc(100% + 10px)"
 }
 
-function $renderInfoToggleIcon(type, typeText) {
+const INFO_SIDEBAR_TOGGLE_LIST_STYLE = {
+  "margin-top": "15px"
+}
+
+///\///\ InfoSidebar - ACTIONS ///\///\\
+function openToggleIcon(iconID) {
+  const tooltipID = `${iconID}-tooltip`
+
+  $changeElements({
+    [iconID]: {
+      style: FILTER_TOGGLE_ICON_STYLE$HOVER,
+    },
+    [tooltipID]: {
+      style: FILTER_TOGGLE_TOOLTIP_STYLE$HOVER
+    }
+  })
+}
+
+function closeToggleIcon(iconID) {
+  const tooltipID = `${iconID}-tooltip`
+
+  $changeElements({
+    [iconID]: {
+      style: FILTER_TOGGLE_ICON_STYLE,
+    }
+  })
+}
+
+function activateFilterToggle(iconID) {
+  const tooltipID = `${iconID}-tooltip`
+
+  let activeFilters = retrieve(INFO_SIDEBAR_TOGGLE_FILTER_LIST_KEY) || []
+
+  activeFilters.push(iconID.split(":")[1])
+
+  addToStorage({
+    [INFO_SIDEBAR_TOGGLE_FILTER_LIST_KEY]: activeFilters
+  })
+
+  $changeElements({
+    [iconID]: FILTER_TOGGLE_ICON_PROPERTIES$ACTIVE(iconID)
+  })
+
+  refreshListAndDetailContent()
+  openMasterList()
+}
+
+function deactivateFilterToggle(iconID) {
+  const tooltipID = `${iconID}-tooltip`
+  const iconIDType = iconID.split(":")[1]
+  const activeFilters = retrieve(INFO_SIDEBAR_TOGGLE_FILTER_LIST_KEY)
+
+  addToStorage({
+    [INFO_SIDEBAR_TOGGLE_FILTER_LIST_KEY]: activeFilters
+      .filter(typeInList => typeInList !== iconIDType)
+  })
+
+  $changeElements({
+    [iconID]: FILTER_TOGGLE_ICON_PROPERTIES(iconID),
+    [tooltipID]: {
+      style: FILTER_TOGGLE_TOOLTIP_STYLE
+    }
+  })
+
+  refreshListAndDetailContent()
+  openMasterList()
+}
+
+///\\\///\\\ InfoSidebar ///\\\///\\\
+function $renderInfoSidebar() {
+  return $createElement({
+    name: "header",
+    id: INFO_SIDEBAR_ID,
+    style: INFO_SIDEBAR_STYLE,
+    children: [
+      $renderInfoFilterToggleList(),
+      $renderHomeLink()
+    ]
+  })
+}
+
+///\///\ InfoSidebar - FilterToggleList ///\///\\
+function $renderInfoFilterToggleList() {
+  return $createElement({
+    name: "ul",
+    id: INFO_SIDEBAR_TOGGLE_LIST_ID,
+    style: INFO_SIDEBAR_TOGGLE_LIST_STYLE,
+    children: [
+      // $renderInfoToggleIcon("star", "favorites"),
+      $renderInfoToggleIcon("text"),
+      $renderInfoToggleIcon("gallery"),
+      $renderInfoToggleIcon("media"),
+      $renderInfoToggleIcon("code")
+    ]
+  })
+}
+
+///\///\ InfoSidebar - FilterToggles ///\///\\
+function $renderInfoToggleIcon(type, typeOverride) {
   const iconID = `${INFO_SIDEBAR_ID}-toggleIcon:${type}`
   const tooltipID = `${iconID}-tooltip`
+  const filters = retrieve(INFO_SIDEBAR_TOGGLE_FILTER_LIST_KEY) || []
+  const iconProperties = filters.includes(iconID.split(":")[1]) ?
+    FILTER_TOGGLE_ICON_PROPERTIES$ACTIVE(iconID) :
+    FILTER_TOGGLE_ICON_PROPERTIES(iconID)
 
   return $createElement({
     name: "li",
     children: [
-      $createIcon(type, {
-        id: iconID,
-        style: FILTER_TOGGLE_ICON_STYLE,
-        onMouseOver: `openToggleIcon("${iconID}")`,
-        onMouseOut: `closeToggleIcon("${iconID}")`
+      $createIcon(type, {...iconProperties,
+        id: iconID
       }),
       $createElement({
         id: tooltipID,
-        text: typeText || type,
+        text: typeOverride || type,
         style: FILTER_TOGGLE_TOOLTIP_STYLE
       })
     ],

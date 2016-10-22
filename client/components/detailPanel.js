@@ -1,8 +1,10 @@
+///\\\///\\\ DetailPanel - KEYS ///\\\///\\\
 const DETAIL_PANEL_ID = "DetailPanel"
 const DETAIL_CONTAINER_ID = `${DETAIL_PANEL_ID}-container`
 const DETAIL_SHARE_BUTTON_ID = `${DETAIL_PANEL_ID}-shareButton`
 const DETAIL_SHARE_BUTTON_ICON_ID = `${DETAIL_SHARE_BUTTON_ID}-icon`
 
+///\\\///\\\ DetailPanel - PROPERTIES ///\\\///\\\
 const DETAIL_PANEL_STYLE = {
   "width": "100%",
   "max-width": "720px",
@@ -44,6 +46,35 @@ const DETAIL_PANEL_STYLE$FROZEN = (width) => ({
   "width": `${width}px`
 })
 
+const DETAIL_DOCUMENT_TIME_STYLE = {
+  "font-size": "18px",
+  "opacity": "0.25",
+  "display": "block",
+  "padding": "7px 0 18px 0",
+  "border-bottom": "1px solid black",
+  "margin-bottom": "32px"
+}
+
+const DETAIL_SUBDOCUMENT_TIME_STYLE = {
+  "border-bottom": "0",
+  "margin-bottom": "0",
+  "padding": "0",
+  "float": "right"
+}
+
+const DETAIL_SUBDOCUMENT_MINITIME_STYLE = {
+  "font-size": "12px",
+  "padding": "4px 0 8px 0",
+  "margin-bottom": "14px"
+}
+
+const DETAIL_SUBDOCUMENT_TITLE_STYLE = {
+  "font-family": "Helvetica, sans-serif",
+  "font-size": "25px",
+  "opacity": "0.25",
+  "float": "left"
+}
+
 ///\\\///\\\ DetailPanel - ACTIONS ///\\\///\\\
 function freezeDetailPanel() {
   const { offsetWidth } = window._COMPONENT_REGISTRY_[DETAIL_PANEL_ID]
@@ -82,35 +113,6 @@ function $renderDetailPanel() {
 
 function $renderDetailPanelActiveDocument() {
   return $renderDocument(retrieveActiveDocument())
-}
-
-const DETAIL_DOCUMENT_TIME_STYLE = {
-  "font-size": "18px",
-  "opacity": "0.25",
-  "display": "block",
-  "padding": "7px 0 18px 0",
-  "border-bottom": "1px solid black",
-  "margin-bottom": "32px"
-}
-
-const DETAIL_SUBDOCUMENT_TIME_STYLE = {
-  "border-bottom": "0",
-  "margin-bottom": "0",
-  "padding": "0",
-  "float": "right"
-}
-
-const DETAIL_SUBDOCUMENT_MINITIME_STYLE = {
-  "font-size": "12px",
-  "padding": "4px 0 8px 0",
-  "margin-bottom": "14px"
-}
-
-const DETAIL_SUBDOCUMENT_TITLE_STYLE = {
-  "font-family": "Helvetica, sans-serif",
-  "font-size": "25px",
-  "opacity": "0.25",
-  "float": "left"
 }
 
 function $renderDocument({
