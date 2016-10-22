@@ -31,8 +31,7 @@ gulp.task("default", gulpsync.sync([
   "build-client",
   "build-server",
   "watch-files",
-  "init-server",
-  "launch-browser"
+  "init-server"
 ]));
 
 gulp.task("deploy", gulpsync.sync([
@@ -80,24 +79,23 @@ gulp.task("init-server", () => {
 
   return constructServer()
     .then(() => {
-      return gulp.watch(`${DESTINATION}/**/*`, constructServer)
+      return gulp.src(__filename)
+        .pipe(
+          open({
+            uri: "http://localhost:9999"
+          })
+        )
+        // .watch(`${DESTINATION}/**/*`, constructServer)
     });
 });
 
-gulp.task("launch-browser", () => {
-  return gulp.src(__filename)
-    .pipe(
-      open({
-        uri: "http://localhost:9999"
-      })
-    );
-});
-
 gulp.task("watch-files", () => {
-  gulp.watch(get("helpers/**/*.js"), ["build-server", "init-server"]);
-  gulp.watch(get("routes/**/*.js"), ["build-server", "init-server"]);
-  gulp.watch(get("client/**/*.js"), ["build-client"]);
-  gulp.watch(get("assets/**/*"), ["build-client"]);
+  gulp.watch(get("helpers/**/*.js"), ["cleanup", "build-server",
+    "init-server"]);
+  gulp.watch(get("routes/**/*.js"), ["cleanup", "build-server",
+    "init-server"]);
+  gulp.watch(get("client/**/*.js"), ["cleanup", "build-client"]);
+  gulp.watch(get("assets/**/*"), ["cleanup", "build-client"]);
 });
 
 gulp.task("cleanup", () => {

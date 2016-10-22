@@ -10,7 +10,7 @@ const vineFetcher = publicFetchFactory({
   entry: "data.records",
   filter: (post) => !post.repost,
   format: (post) => ({
-    id: post.postIdStr,
+    id: post.permalinkUrl.match(/\/.+^/)[0],
     type: "media",
     source: VINE_SOURCE,
     picture: post.thumbnailUrl,

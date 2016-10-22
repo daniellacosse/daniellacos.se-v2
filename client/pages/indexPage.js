@@ -22,7 +22,7 @@
   ]);
 
   window.addEventListener("keydown", ({ keyCode }) => {
-    const activeDocumentIndex = retrieveActiveDocumentIndex()
+    const activeDocumentIndex = retrieveActiveDocumentPosition()
 
     switch (keyCode) {
     case LEFT_ARROW:
@@ -30,14 +30,14 @@
       break
     case UP_ARROW:
       if (activeDocumentIndex > 0)
-        setActiveDocument(activeDocumentIndex -
+        setActiveVisibleDocument(activeDocumentIndex -
           1, { keepListOpen: true })
       break
     case RIGHT_ARROW:
       openMasterList()
       break
     case DOWN_ARROW:
-      setActiveDocument(activeDocumentIndex + 1, { keepListOpen: true })
+      setActiveVisibleDocument(activeDocumentIndex + 1, { keepListOpen: true })
       break
     }
   })

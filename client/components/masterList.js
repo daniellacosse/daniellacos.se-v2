@@ -4,7 +4,9 @@ const MASTER_LIST_COLLAPSE_BUTTON_ID = `${MASTER_LIST_ID}-collapseButton`
 const MASTER_LIST_NAVIGATION_ID = `${MASTER_LIST_ID}-articleListNavigation`
 
 const MASTER_LIST_IS_CLOSED_KEY = `${MASTER_LIST_ID}-isClosed`
-const MASTER_LIST_ACTIVE_DOCUMENT_KEY = `${MASTER_LIST_ID}-activeDocumentIndex`
+const MASTER_LIST_ACTIVE_DOCUMENT_KEY = `${MASTER_LIST_ID}-activeDocumentId`
+const MASTER_LIST_VISIBLE_DOCUMENTS_KEY =
+  `${MASTER_LIST_ID}-visibleDocumentsList`
 
 ///\\\///\\\ MasterList - ACTIONS ///\\\///\\\
 function collapseMasterList() {
@@ -33,13 +35,7 @@ function openMasterList() {
   })
 }
 
-function setActiveDocument(documentIndex, { keepListOpen } = {}) {
-  const activeDocument = retrieveDocuments()[documentIndex]
-
-  addToStorage({
-    [MASTER_LIST_ACTIVE_DOCUMENT_KEY]: documentIndex
-  })
-
+const refreshListAndDetailContent = () => {
   $changeElements({
     [DETAIL_PANEL_ID]: {
       children: $renderDetailPanelActiveDocument()
@@ -50,10 +46,37 @@ function setActiveDocument(documentIndex, { keepListOpen } = {}) {
       ]
     }
   })
-
-  if (keepListOpen) return;
-  collapseMasterList();
 }
+
+function setActiveVisibleDocument(documentIndex, { keepListOpen } = {}) {
+  if (!keepListOpen) collapseMasterList()
+
+  addToStorage({
+    [MASTER_LIST_ACTIVE_DOCUMENT_KEY]: retrieveVisibleDocumentList()[
+      documentIndex].id
+  })
+
+  refreshListAndDetailContent()
+}
+
+
+function setActiveDocument(documentId) {
+  addToStorage({
+    [MASTER_LIST_ACTIVE_DOCUMENT_KEY]: documentId
+  })
+
+  refreshListAndDetailContent()
+}
+
+// function setVisibleDocuments() {
+//   const activeDocument = retrieveActiveDocument()
+//
+//   // if active document isn't in list, set it to the first in the list
+//   //
+//
+//   refreshListAndDetailContent()
+//   openMasterList()
+// }
 
 ///\\\////\\\ MasterList ///\\\///\\\
 const MASTER_LIST_STYLE = {
@@ -92,7 +115,7 @@ function $renderMasterList() {
 }
 
 function $renderMasterListNavigation() {
-  const documents = retrieveDocuments()
+  const documents = retrieveVisibleDocumentList()
 
   return $createElement({
     name: "ul",
@@ -132,15 +155,14 @@ const LIST_ITEM_STYLE$ACTIVE = {
   }
 }
 
-function $renderMasterListItem({ title, body, type, date }, index) {
-  const activeDocumentKey = retrieve(MASTER_LIST_ACTIVE_DOCUMENT_KEY) || 0
-  const isActiveProperties = (activeDocumentKey === index) ? {
+function $renderMasterListItem({ id, title, body, type, date }) {
+  const isActiveProperties = (retrieveActiveDocumentHash() === id) ? {
     style: LIST_ITEM_STYLE$ACTIVE
   } : {
     style: LIST_ITEM_STYLE,
     onMouseOver: `this.style.background='${DASE_GREEN}'; this.style.color='white'`,
     onMouseOut: "this.style.background='transparent'; this.style.color='initial'",
-    onClick: `setActiveDocument(${index})`
+    onClick: `setActiveDocument(${id})`
   }
 
   const listItemText = (type === "gallery") ? [
