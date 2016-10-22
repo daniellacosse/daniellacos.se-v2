@@ -162,7 +162,7 @@ function $renderMasterListItem({ id, title, body, type, date }) {
     style: LIST_ITEM_STYLE,
     onMouseOver: `this.style.background='${DASE_GREEN}'; this.style.color='white'`,
     onMouseOut: "this.style.background='transparent'; this.style.color='initial'",
-    onClick: `setActiveDocument(${id})`
+    onClick: `setActiveDocument("${id}")`
   }
 
   const availableText = title || body
