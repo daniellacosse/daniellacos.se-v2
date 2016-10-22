@@ -61,22 +61,14 @@ function setActiveVisibleDocument(documentIndex, { keepListOpen } = {}) {
 
 
 function setActiveDocument(documentId) {
+  collapseMasterList()
+
   addToStorage({
     [MASTER_LIST_ACTIVE_DOCUMENT_KEY]: documentId
   })
 
   refreshListAndDetailContent()
 }
-
-// function setVisibleDocuments() {
-//   const activeDocument = retrieveActiveDocument()
-//
-//   // if active document isn't in list, set it to the first in the list
-//   //
-//
-//   refreshListAndDetailContent()
-//   openMasterList()
-// }
 
 ///\\\////\\\ MasterList ///\\\///\\\
 const MASTER_LIST_STYLE = {
@@ -177,7 +169,8 @@ function $renderMasterListItem({ id, title, body, type, date }) {
   ] : [
     $createElement({
       name: "b",
-      innerHTML: `${truncatedPreview} — `
+      innerHTML: `${truncatedPreview} — `,
+      style: { "line-height": "1" }
     }),
     $createElement({
       name: "time",

@@ -5,13 +5,14 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 ### TODO:
 
-* twitter
-* github preview
-* gulp deploy script
+* finish filter toggles
+  * bug: show/hide tooltips properly & make them pointy on one end
+* tags
+* github & twitter preview
+* gulp deploy script & development tools
 
 -- deploy v2, with static 20 most recent posts --
 
-* tags
 * google drive support
 * vimeo, gists
 * bug: mobile doesn't quite fit
@@ -22,8 +23,6 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 -- v2.1 deploy -- (by 2017)
 
 * duplicates management (circa override, manual override)
-* finish filter toggles
-  * bug: show/hide tooltips properly & make them pointy on one end
 * favorites management
 
 -- v2.2 deploy -- (MLP - by Q2 2017)

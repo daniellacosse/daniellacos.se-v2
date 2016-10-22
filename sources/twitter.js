@@ -11,7 +11,13 @@ import {
 
 export default (options = {}) => {
   return documentFetch({
-    url: TWITTER_TIMELINE_URL,
+    url: {
+      ...TWITTER_TIMELINE_URL,
+      query: {
+        ...TWITTER_TIMELINE_URL.query,
+        count: options.count
+      }
+    },
     format: ({ entities, text }) => ({
       type: "text",
       source: TWITTER_SOURCE,

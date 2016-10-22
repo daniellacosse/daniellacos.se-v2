@@ -13,7 +13,7 @@ export const URL_TEMPLATE = "@CANONICAL_URL@"
 
 export const CACHE_DIRECTORY = "./_CACHE"
 export const DAY_MS = 24 * 60 * 60 * 1000
-export const DEFAULT_DOCUMENT_COUNT = 20
+export const DEFAULT_DOCUMENT_COUNT = 15
 
 export const DRIVE_API_HOST = "www.googleapis.com/drive/v3"
 export const DRIVE_SOURCE = "DRIVE"
