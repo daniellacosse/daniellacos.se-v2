@@ -65,7 +65,7 @@ export default function fetch({ url, error, fetcher }) {
     url
 
   return new Promise((resolve, reject) => {
-    fetcher(URLString, (fetchError, body, request) => {
+    fetcher(URLString, (fetchError, body) => {
       if (fetchError) reject(fetchError)
 
       let parsedBody;

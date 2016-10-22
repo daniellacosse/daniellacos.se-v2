@@ -54,7 +54,17 @@ function retrieveActiveDocumentHash() {
 }
 
 function retrieveActiveDocument() {
-  return retrieveDocument(
-    retrieveActiveDocumentHash()
-  )
+  const potentialActiveDocument = retrieveDocument(retrieveActiveDocumentHash())
+
+  if (!potentialActiveDocument) {
+    const firstVisibleDocument = retrieveVisibleDocumentList()[0]
+
+    addToStorage({
+      [MASTER_LIST_ACTIVE_DOCUMENT_KEY]: firstVisibleDocument.id
+    })
+
+    return firstVisibleDocument
+  }
+
+  return potentialActiveDocument
 }

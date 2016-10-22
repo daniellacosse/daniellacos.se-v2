@@ -5,9 +5,10 @@ export default function reportError(error) {
       .toLocaleTimeString()
   }
 
-  if (!!error.trace)
-    errorReport["trace"] = error.trace
+  if (error.trace)
+    errorReport.trace = error.trace
 
+  console.error(error)
   console.trace(
     "ERROR!", JSON.stringify(errorReport, null, 2)
   )

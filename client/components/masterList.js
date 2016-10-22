@@ -165,15 +165,19 @@ function $renderMasterListItem({ id, title, body, type, date }) {
     onClick: `setActiveDocument(${id})`
   }
 
+  const availableText = title || body
+  const truncatedPreview = availableText.length > 50 ?
+    `${availableText.slice(0, 50)}...` : availableText
+
   const listItemText = (type === "gallery") ? [
     $createElement({
       name: "b",
-      text: title || body
+      text: availableText
     })
   ] : [
     $createElement({
       name: "b",
-      text: `${title || body} — `
+      innerHTML: `${truncatedPreview} — `
     }),
     $createElement({
       name: "time",

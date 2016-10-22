@@ -156,7 +156,7 @@ function $renderDocument({
     })
   }
 
-  let children;
+  let children = [];
   if (!asSubdocument && title && frame && type !== "gallery") {
     children = [
       $titleElement(),

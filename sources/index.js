@@ -2,7 +2,7 @@
 export github from "./github"
 export soundcloud from "./soundcloud"
 export tumblr from "./tumblr"
-  // export twitter from "./twitter"
+export twitter from "./twitter"
   // export vimeo from "./vimeo"
 export vine from "./vine"
 export youtube from "./youtube"
