@@ -1,5 +1,6 @@
 ///\///\ InfoSidebar - KEYS ///\///\\
 const INFO_SIDEBAR_ID = "InfoSidebar";
+const INFO_SIDEBAR_Z_INDEX = "1";
 const INFO_SIDEBAR_TOGGLE_LIST_ID = `${INFO_SIDEBAR_ID}-toggleList`;
 const INFO_SIDEBAR_TOGGLE_FILTER_LIST_KEY = `"${INFO_SIDEBAR_ID}-filters`;
 
@@ -10,7 +11,8 @@ const INFO_SIDEBAR_STYLE = {
   "max-width": "60px",
   "position": "relative",
   "box-flex": "0",
-  "flex-shrink": "1"
+  "flex-shrink": "1",
+  "z-index": INFO_SIDEBAR_Z_INDEX
 }
 
 const FILTER_TOGGLE_STYLE = {
@@ -46,38 +48,51 @@ const FILTER_TOGGLE_ICON_STYLE$ACTIVE = {
 const FILTER_TOGGLE_ICON_PROPERTIES = (iconID = "") => ({
   style: FILTER_TOGGLE_ICON_STYLE,
   onClick: `activateFilterToggle("${iconID}")`,
-  onMouseOver: `openToggleIcon("${iconID}")`,
-  onMouseOut: `closeToggleIcon("${iconID}")`
+  onMouseOver: `enterToggleIcon("${iconID}")`,
+  onMouseOut: `exitToggleIcon("${iconID}")`
 })
 
 const FILTER_TOGGLE_ICON_PROPERTIES$ACTIVE = (iconID) => ({
   style: FILTER_TOGGLE_ICON_STYLE$ACTIVE,
   onClick: `deactivateFilterToggle("${iconID}")`,
-  onMouseOver: "",
-  onMouseOut: "",
+  onMouseOver: `enterToggleIcon("${iconID}", true)`,
+  onMouseOut: `exitToggleIcon("${iconID}", true)`
 })
 
-// TODO: obscuring tooltip bug
 const FILTER_TOGGLE_TOOLTIP_STYLE = {
   "font-size": "16px",
   "font-weight": "bold",
   "position": "absolute",
-  "top": "0",
+  "top": "-4px",
   "left": "100%",
   "background": "#0d3622",
   "color": "white",
   "display": "block",
-  "border-radius": "10px",
-  "padding": "0 15px",
+  "border-top-right-radius": "10px",
+  "border-bottom-right-radius": "10px",
+  "padding": "0 15px 3px 5px",
   "opacity": "0",
   "transform": "translateY(50%)",
   "transition": `all ${DASE_DURATION} ${DASE_BEZIER} 50ms`
 }
 
+const TOGGLE_TOOLTIP_TRIANGLE_SIZE = 11
+const TOGGLE_TOOLTIP_TRIANGLE_STYLE = {
+  "width": "0",
+  "height": "0",
+  "position": "absolute",
+  "left": `-${TOGGLE_TOOLTIP_TRIANGLE_SIZE * 2}px`,
+  "top": "0",
+  "border-left": `${TOGGLE_TOOLTIP_TRIANGLE_SIZE}px solid transparent`,
+  "border-top": `${TOGGLE_TOOLTIP_TRIANGLE_SIZE}px solid transparent`,
+  "border-bottom": `${TOGGLE_TOOLTIP_TRIANGLE_SIZE}px solid transparent`,
+  "border-right": `${TOGGLE_TOOLTIP_TRIANGLE_SIZE}px solid #0d3622`
+}
+
 const FILTER_TOGGLE_TOOLTIP_STYLE$HOVER = {
   ...FILTER_TOGGLE_TOOLTIP_STYLE,
   "opacity": "1",
-  "left": "calc(100% + 10px)"
+  "left": "calc(100% + 20px)"
 }
 
 const INFO_SIDEBAR_TOGGLE_LIST_STYLE = {
@@ -85,11 +100,11 @@ const INFO_SIDEBAR_TOGGLE_LIST_STYLE = {
 }
 
 ///\///\ InfoSidebar - ACTIONS ///\///\\
-function openToggleIcon(iconID) {
+function enterToggleIcon(iconID, isActive) {
   const tooltipID = `${iconID}-tooltip`
 
   $changeElements({
-    [iconID]: {
+    [iconID]: isActive ? {} : {
       style: FILTER_TOGGLE_ICON_STYLE$HOVER,
     },
     [tooltipID]: {
@@ -98,12 +113,15 @@ function openToggleIcon(iconID) {
   })
 }
 
-function closeToggleIcon(iconID) {
+function exitToggleIcon(iconID, isActive) {
   const tooltipID = `${iconID}-tooltip`
 
   $changeElements({
-    [iconID]: {
+    [iconID]: isActive ? {} : {
       style: FILTER_TOGGLE_ICON_STYLE,
+    },
+    [tooltipID]: {
+      style: FILTER_TOGGLE_TOOLTIP_STYLE
     }
   })
 }
@@ -120,7 +138,10 @@ function activateFilterToggle(iconID) {
   })
 
   $changeElements({
-    [iconID]: FILTER_TOGGLE_ICON_PROPERTIES$ACTIVE(iconID)
+    [iconID]: FILTER_TOGGLE_ICON_PROPERTIES$ACTIVE(iconID),
+    [tooltipID]: {
+      style: FILTER_TOGGLE_TOOLTIP_STYLE
+    }
   })
 
   refreshListAndDetailContent()
@@ -194,8 +215,16 @@ function $renderInfoToggleIcon(type, typeOverride) {
       }),
       $createElement({
         id: tooltipID,
-        text: typeOverride || type,
-        style: FILTER_TOGGLE_TOOLTIP_STYLE
+        style: FILTER_TOGGLE_TOOLTIP_STYLE,
+        children: [
+          $createElement({
+            style: TOGGLE_TOOLTIP_TRIANGLE_STYLE
+          }),
+          $createElement({
+            name: "span",
+            text: typeOverride || type
+          })
+        ]
       })
     ],
     style: FILTER_TOGGLE_STYLE

@@ -3,16 +3,19 @@
 
 i'm sick of these frameworks. let's cut out the "muddle man"
 
+#### overview
+
+TODO
+
 ### TODO:
 
-* finish filter toggles
-  * bug: show/hide tooltips properly & make them pointy on one end
-* tags
+* bug: show/hide tooltips properly & make them pointy on one end
 * github & twitter preview
 * gulp deploy script & development tools
 
 -- deploy v2, with static 20 most recent posts --
 
+* tags
 * google drive support
 * vimeo, gists
 * bug: mobile doesn't quite fit
