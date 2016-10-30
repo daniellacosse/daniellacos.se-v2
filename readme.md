@@ -16,7 +16,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 * overview
 
 <hr>
-#### — v2.1 deploy (by 2017) —
+#### — v2.1 (by 2017) —
 
 * tags
 * google drive support
@@ -28,7 +28,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 
 <hr>
-#### — v2.2 deploy (MLP - by Q2 2017) —
+#### — v2.2 (by Q2 2017 **MLP**) —
 
 * duplicates management (circa override, manual override)
 * favorites toggle & management
