@@ -3,51 +3,51 @@
 
 i'm sick of these frameworks. let's cut out the "muddle man"
 
-#### overview
+## overview
 
-TODO
+(TBD)
 
-### TODO:
+### roadmap
 
-* bug: show/hide tooltips properly & make them pointy on one end
-* github & twitter preview
+#### — v2 —
+
+* twitter & github previews
 * gulp deploy script & development tools
+* overview
 
--- deploy v2, with static 20 most recent posts --
+<hr>
+#### — v2.1 deploy (by 2017) —
 
 * tags
 * google drive support
 * vimeo, gists
-* bug: mobile doesn't quite fit
-
 * permalink route & sharing
-* bug: close arrow/share button don't pin to top
+* help & contact menu
+* **bug:** mobile doesn't quite fit
+* **bug:** close arrow/share button don't pin to top
 
--- v2.1 deploy -- (by 2017)
+
+<hr>
+#### — v2.2 deploy (MLP - by Q2 2017) —
 
 * duplicates management (circa override, manual override)
-* favorites management
+* favorites toggle & management
 
--- v2.2 deploy -- (MLP - by Q2 2017)
+<hr>
+#### — v2.2.1 —
 
 * detail scroll & window keypress event listeners
-  * (detail) preprocess image & iframe body tags to load on scroll (image & iframe)
-  * (detail & list) save scroll depth
-  * freeze the article width (& blur?) during resize
+  * **detail:** preprocess image & iframe body tags to load on scroll (image & iframe)
+  * **detail & list:** save scroll depth
 
--- v2.2.1 deploy --
+<hr>
+#### — v2.2.2 —
 
 * IE alternate message, link to chrome
 * show private posts
 
--- v2.2.2 deploy --
+<hr>
+#### — v2.3 —
 
 * infinite scrolling - JSON XHRHttpRequest to server omnipoint
 * search bar
-
--- v2.3 deploy --
-
-out-of-roadmap improvements:
-  help button
-  store button (as if)
-  contact button

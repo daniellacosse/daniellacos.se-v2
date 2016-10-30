@@ -14,6 +14,7 @@ APPLICATION.use(compression())
 attachRoutes(APPLICATION, routes)
 
 APPLICATION.listen(PORT, () => {
+  // TODO: premptively cache index
   console.log(
     `daniellacos.se live @ localhost:${PORT}`
   )
