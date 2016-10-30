@@ -13,8 +13,7 @@ const DETAIL_PANEL_STYLE = {
   "filter": "blur(0px)",
   "left": "50%",
   "transform": "translate3d(-50%, 0, 0)",
-  "opacity": "1",
-  "transition": `filter 300ms ${DASE_BEZIER}, opacity 300ms ${DASE_BEZIER}`
+  "opacity": "1"
 }
 
 const DETAIL_CONTAINER_STYLE = {
@@ -41,8 +40,7 @@ const DETAIL_SHARE_BUTTON_STYLE = {
 
 const DETAIL_PANEL_STYLE$FROZEN = (width) => ({
   ...DETAIL_PANEL_STYLE,
-  "filter": "blur(5px)",
-  "opacity": "0.25",
+  "opacity": "0.75",
   "width": `${width}px`
 })
 
