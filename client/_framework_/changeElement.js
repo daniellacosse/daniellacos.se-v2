@@ -59,3 +59,9 @@ function $changeElement(id, delta) {
 function $changeElements(idHash = {}) {
   whileInObject(idHash, $changeElement)
 }
+
+function $insertElements(parent, children) {
+  whileInList(children, (child) => parent.appendChild(child))
+
+  return parent
+}
