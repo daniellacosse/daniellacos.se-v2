@@ -36,14 +36,18 @@ export default class Document {
       URL.format(frame) :
       frame;
     this.frameHeight = frameHeight;
-    this.body =
-      sanitize(
-        (body || description || "")
+
+    let textToSanitize = body || description
+
+    if (textToSanitize) {
+      this.body = sanitize(
+        textToSanitize
         .replace(/'/g, "&rsquo;")
         .replace(/[\n\r]+/gm, "<br>"), {
           elements: ["script"]
         }
       );
+    }
 
     this.type = type;
     this.source = source;

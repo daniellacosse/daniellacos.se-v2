@@ -61,10 +61,9 @@ gulp.task("deploy", gulpsync.sync([
   "cleanup",
   [
     "build-production-client",
-    "build-production-server", [
-      "compress-and-deploy"
-    ]
+    "build-production-server",
   ],
+  "compress-and-deploy"
 ]));
 
 gulp.task("build-client", gulpsync.sync([
@@ -274,7 +273,7 @@ gulp.task("application-scripts", () => {
 });
 
 gulp.task("application-production-html", () => {
-  return gulp.src(get("index.html"))
+  return gulp.src(get_asset("index.html"))
     .pipe(
       plumber(handle_error)
     )
@@ -287,11 +286,17 @@ gulp.task("application-production-html", () => {
 });
 
 gulp.task("application-production-css", () => {
-  return minify_css(
-      get_asset("stylesheets/index.css")
-    )
+  return gulp.src(get_asset("stylesheets/*.css"))
     .pipe(
       plumber(handle_error)
+    )
+    .pipe(
+      minify_css(
+        get_asset("stylesheets/*.css")
+      )
+    )
+    .pipe(
+      concat("index.css")
     )
     .pipe(
       gulp.dest(`${DESTINATION}/assets`)
