@@ -1,5 +1,6 @@
 import express from "express"
 import compression from "compression"
+import livereload from "connect-livereload"
 import secrets from "node-env-file"
 
 import * as routes from "routes"
@@ -10,6 +11,9 @@ const PORT = process.env.PORT || 9999
 
 secrets("./.secrets")
 APPLICATION.use(compression())
+
+if (process.env.NODE_ENV !== "production")
+  APPLICATION.use(livereload())
 
 attachRoutes(APPLICATION, routes)
 
