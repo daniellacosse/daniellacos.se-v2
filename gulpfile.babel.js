@@ -159,8 +159,8 @@ gulp.task("compress-and-deploy", () => {
         `tar -xvzf ${deploymentID}.tar.gz`,
         `rm ${deploymentID}.tar.gz`,
         "npm install",
-        "sudo PORT=80 node server.js"
-      ])
+        "sudo PORT=80 NODE_ENV=production node server.js"
+      ].join(" && "))
     )
 });
 
