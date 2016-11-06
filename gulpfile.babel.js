@@ -1,6 +1,6 @@
 import gulp from "gulp";
-import webpack from "webpack";
-import secrets from "node-env-file"
+import secrets from "node-env-file";
+import { readFileSync } from "fs";
 
 secrets("./.secrets");
 
@@ -17,32 +17,58 @@ import open from "gulp-open";
 import packer from "webpack-stream";
 import plumber from "gulp-plumber";
 import server from "gulp-live-server";
+import sourcemaps from "gulp-sourcemaps";
+import SSHClient from "gulp-ssh";
 import sync from "gulp-sync";
 import tar from "gulp-tar";
 
 const gulpsync = sync(gulp);
-const DESTINATION = ".dist";
-const COMPRESSED_DESTINATION = `${DESTINATION}.tar.gz`;
+const gulpssh = new SSHClient({
+  ignoreErrors: false,
+  sshConfig: {
+    host: process.env.DEPLOY_HOST,
+    username: "daniel",
+    privateKey: readFileSync(
+      process.env.DEPLOY_SSH_KEY_PATH
+    ),
+    password: process.env.DEPLOY_SSH_KEY_PASSWORD,
+    passphrase: process.env.DEPLOY_SSH_KEY_PASSWORD
+  }
+});
+
+const DESTINATION = "build";
 const CACHE = "_CACHE";
 const ICONFONT_NAME = "daniellacosse-icons";
 
 gulp.task("default", gulpsync.sync([
   "cleanup",
-  "build-client",
+  [
+    "build-client",
+    "build-server",
+  ], [
+    "watch-files",
+    "init-server"
+  ]
+]));
+
+gulp.task("rebuild-server", gulpsync.sync([
+  "cleanup",
   "build-server",
-  "watch-files",
   "init-server"
 ]));
 
 gulp.task("deploy", gulpsync.sync([
   "cleanup",
-  "build-production-client",
-  "build-production-server",
-  "send-to-god"
+  [
+    "build-production-client",
+    "build-production-server",
+  ],
+  "compress-and-deploy"
 ]));
 
 gulp.task("build-client", gulpsync.sync([
-  "generate-iconfont", [
+  "generate-iconfont",
+  [
     "application-scripts",
     "concat-application-framework",
     "application-css",
@@ -52,8 +78,15 @@ gulp.task("build-client", gulpsync.sync([
   ]
 ]));
 
+gulp.task("rebuild-client", gulpsync.sync([
+  "cleanup",
+  "build-client",
+  "init-server"
+]));
+
 gulp.task("build-production-client", gulpsync.sync([
-  "generate-iconfont", [
+  "generate-iconfont",
+  [
     "application-production-scripts",
     "concat-application-production-framework",
     "application-production-css",
@@ -74,51 +107,60 @@ gulp.task("init-server", () => {
       cwd: `${__dirname}/${DESTINATION}`,
       env: process.env
     });
+
     return LIVE_SERVER.start();
   }
 
   return constructServer()
-    .then(() => {
-      return gulp.src(__filename)
-        .pipe(
-          open({
-            uri: "http://localhost:9999"
-          })
-        )
-        // .watch(`${DESTINATION}/**/*`, constructServer)
-    });
 });
 
 gulp.task("watch-files", () => {
-  gulp.watch(get("helpers/**/*.js"), ["cleanup", "build-server",
-    "init-server"]);
-  gulp.watch(get("routes/**/*.js"), ["cleanup", "build-server",
-    "init-server"]);
-  gulp.watch(get("client/**/*.js"), ["cleanup", "build-client"]);
-  gulp.watch(get("assets/**/*"), ["cleanup", "build-client"]);
+  gulp.watch([
+    get("helpers/**/*.js"),
+    get("routes/**/*.js")
+  ], ["rebuild-server"]);
+  gulp.watch([
+    get("client/**/*.js"),
+    get("assets/**/*")
+  ], ["rebuild-client"]);
 });
 
 gulp.task("cleanup", () => {
-  return gulp.src([
-    DESTINATION,
-    CACHE,
-    COMPRESSED_DESTINATION
-  ], {
-      read: false
-    })
+  return gulp.src([DESTINATION, CACHE], { read: false })
     .pipe(
       clean()
     );
 });
 
-gulp.task("send-to-god", () => {
-  return gulp.src(`${DESTINATION}/**/*`)
+gulp.task("compress-and-deploy", () => {
+  const deploymentHash = Math.floor(Math.random() * 100000000)
+    .toString(16);
+  const deploymentID =
+    `${new Date().toLocaleDateString().replace(/\//g, "-")}-${deploymentHash}`;
+
+  return gulp.src([`${DESTINATION}/**/*`, `${DESTINATION}/.secrets`])
     .pipe(
-      tar(".dist.tar")
+      tar(`${deploymentID}.tar`)
     )
-    .pipe(gzip())
-    .pipe( // TODO: send to god
-      gulp.dest(".")
+    .pipe(
+      gzip()
+    )
+    .pipe(
+      gulpssh.sftp("write",
+        `/home/daniel/builds/${deploymentID}.tar.gz`)
+    )
+    .pipe(
+      gulpssh.shell([
+        "pkill -f node",
+        "rm -rf app",
+        "mkdir app",
+        `cp builds/${deploymentID}.tar.gz app`,
+        "cd app",
+        `tar -xvzf ${deploymentID}.tar.gz`,
+        `rm ${deploymentID}.tar.gz`,
+        "npm install",
+        "sudo PORT=80 NODE_ENV=production node server.js"
+      ].join(" && "))
     )
 });
 
@@ -130,7 +172,8 @@ gulp.task("build-server", () => {
     .pipe(
       packer(
         packer_settings({
-          minify: false
+          minify: false,
+          sourcemaps: true
         })
       )
     )
@@ -147,7 +190,8 @@ gulp.task("build-production-server", () => {
     .pipe(
       packer(
         packer_settings({
-          minify: true
+          minify: true,
+          sourcemaps: false
         })
       )
     )
@@ -182,14 +226,22 @@ gulp.task("application-css", () => {
 
 gulp.task("concat-application-framework", () => {
   return gulp.src(get_client("_framework_/*.js"))
-    .pipe(concat("_framework_.js"))
+    .pipe(
+      plumber(handle_error)
+    )
+    .pipe(
+      sourcemaps.init()
+    )
+    .pipe(
+      concat("_framework_.js")
+    )
     .pipe(
       babel({
         presets: ["stage-0", "es2015"]
       })
     )
     .pipe(
-      plumber(handle_error)
+      sourcemaps.write()
     )
     .pipe(
       gulp.dest(`${DESTINATION}/client`)
@@ -202,12 +254,18 @@ gulp.task("application-scripts", () => {
       `!${get_client("_framework_/*.js")}`
     ])
     .pipe(
+      plumber(handle_error)
+    )
+    .pipe(
+      sourcemaps.init()
+    )
+    .pipe(
       babel({
         presets: ["stage-0", "es2015"]
       })
     )
     .pipe(
-      plumber(handle_error)
+      sourcemaps.write()
     )
     .pipe(
       gulp.dest(`${DESTINATION}/client`)
@@ -215,7 +273,7 @@ gulp.task("application-scripts", () => {
 });
 
 gulp.task("application-production-html", () => {
-  return gulp.src(get("index.html"))
+  return gulp.src(get_asset("index.html"))
     .pipe(
       plumber(handle_error)
     )
@@ -228,11 +286,17 @@ gulp.task("application-production-html", () => {
 });
 
 gulp.task("application-production-css", () => {
-  return minify_css(
-      get_asset("stylesheets/index.css")
-    )
+  return gulp.src(get_asset("stylesheets/*.css"))
     .pipe(
       plumber(handle_error)
+    )
+    .pipe(
+      minify_css(
+        get_asset("stylesheets/*.css")
+      )
+    )
+    .pipe(
+      concat("index.css")
     )
     .pipe(
       gulp.dest(`${DESTINATION}/assets`)
@@ -307,32 +371,17 @@ gulp.task("copy-assets", () => {
 });
 
 gulp.task("copy-config", () => {
-  return gulp.src([".secrets", "package.json"])
+  return gulp.src([
+    ".secrets", "package.json"
+  ])
     .pipe(gulp.dest(DESTINATION));
 });
 
 ///\\\///\\\ HELPERS ///\\\///\\\
-function packer_settings({
-  minify
-}) {
-  let plugins = [];
-
-  if (minify) {
-    plugins = [
-      new webpack.optimize.UglifyJsPlugin({
-        compress: {
-          warnings: false,
-        },
-        output: {
-          comments: false,
-          semicolons: true,
-        },
-      }),
-    ];
-  }
-
+function packer_settings({ minify, sourcemaps }) {
   return {
     target: "node",
+    devtool: sourcemaps ? "source-map" : "",
     output: {
       filename: "server.js"
     },
@@ -355,8 +404,7 @@ function packer_settings({
           loader: "json-loader"
         }
       ]
-    },
-    plugins
+    }
   };
 }
 
