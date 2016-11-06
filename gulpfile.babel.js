@@ -37,6 +37,7 @@ const gulpssh = new SSHClient({
 });
 
 const DESTINATION = "build";
+const COMPRESSED_DESTINATION = `${DESTINATION}.tar.gz`;
 const CACHE = "_CACHE";
 const ICONFONT_NAME = "daniellacosse-icons";
 
@@ -63,7 +64,7 @@ gulp.task("deploy", gulpsync.sync([
     "build-production-client",
     "build-production-server",
   ],
-  "compress-and-deploy"
+  "compress-and-sftp"
 ]));
 
 gulp.task("build-client", gulpsync.sync([
@@ -132,7 +133,7 @@ gulp.task("cleanup", () => {
     );
 });
 
-gulp.task("compress-and-deploy", () => {
+gulp.task("compress-and-sftp", () => {
   const deploymentHash = Math.floor(Math.random() * 100000000)
     .toString(16);
   const deploymentID =
@@ -151,7 +152,6 @@ gulp.task("compress-and-deploy", () => {
     )
     .pipe(
       gulpssh.shell([
-        "pkill -f node",
         "rm -rf app",
         "mkdir app",
         `cp builds/${deploymentID}.tar.gz app`,
@@ -159,10 +159,15 @@ gulp.task("compress-and-deploy", () => {
         `tar -xvzf ${deploymentID}.tar.gz`,
         `rm ${deploymentID}.tar.gz`,
         "npm install",
-        "sudo PORT=80 NODE_ENV=production node server.js"
       ].join(" && "))
     )
 });
+
+// gulp.task("reset-production-server", () => {
+//   return gulpssh.shell(
+//       "pkill -f node && sudo PORT=80 NODE_ENV=production node server.js"
+//     )
+// })
 
 gulp.task("build-server", () => {
   return gulp.src(get("server.js"))
