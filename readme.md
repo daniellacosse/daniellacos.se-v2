@@ -5,7 +5,7 @@ i'm sick of these frameworks. let's cut out the "muddle man"
 
 ## overview
 
-I was running into some issues with my old setup:
+I was running into some issues with [my old setup](http://v1.daniellacos.se):
 
 * **Long loading tail** — several factors contributed to this; lack of SSR, no logic around intelligently loading external dependencies, no concentrated effort to cull # of requests made.
 * **Lack of reliable platform service** — Heroku _says_ they don't put your dynos to sleep when you pay them money, but I've found that to not always be the case.
