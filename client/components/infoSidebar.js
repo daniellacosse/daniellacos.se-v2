@@ -68,6 +68,7 @@ const FILTER_TOGGLE_TOOLTIP_STYLE = {
   "background": "#0d3622",
   "color": "white",
   "display": "block",
+  "pointer-events": "none",
   "border-top-right-radius": "10px",
   "border-bottom-right-radius": "10px",
   "padding": "0 15px 3px 5px",
