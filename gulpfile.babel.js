@@ -152,6 +152,7 @@ gulp.task("compress-and-sftp", () => {
     )
     .pipe(
       gulpssh.shell([
+        // TODO: su, for _CACHE
         "rm -rf app",
         "mkdir app",
         `cp builds/${deploymentID}.tar.gz app`,
@@ -159,15 +160,11 @@ gulp.task("compress-and-sftp", () => {
         `tar -xvzf ${deploymentID}.tar.gz`,
         `rm ${deploymentID}.tar.gz`,
         "npm install",
+        // "forever stopall",
+        // "forever PORT=80 NODE_ENV=production forever start -l forever.log -o out.log -e err.log server.js"
       ].join(" && "))
     )
 });
-
-// gulp.task("reset-production-server", () => {
-//   return gulpssh.shell(
-//       "pkill -f node && sudo PORT=80 NODE_ENV=production node server.js"
-//     )
-// })
 
 gulp.task("build-server", () => {
   return gulp.src(get("server.js"))
