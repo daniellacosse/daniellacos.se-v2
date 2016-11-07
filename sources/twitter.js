@@ -1,12 +1,13 @@
 import TwitterClient from "twitter"
-// import URL from "url"
+import URL from "url"
+import got from "got"
 
 import { documentFetch } from "helpers/api"
 import {
   TWITTER_SOURCE,
   TWITTER_API_HOST,
   TWITTER_TIMELINE_URL,
-  TWITTER_FRAME_URL
+  TWITTER_OEMBED_URL,
 } from "assets/constants"
 
 export default (options = {}) => {
@@ -18,17 +19,21 @@ export default (options = {}) => {
         count: options.count
       }
     },
-    format: ({ entities, text }) => ({
-      type: "text",
-      source: TWITTER_SOURCE,
-      tags: entities.hashtags,
-      description: text
-        // frame: TWITTER_FRAME_URL(
-        //   URL.format({
-        //
-        //   })
-        // )
-    }),
+    format: ({ entities, text, id_str }) => {
+      return got(
+          URL.format({
+            ...TWITTER_OEMBED_URL,
+            query: { id: id_str }
+          })
+        )
+        .then(({ body }) => ({
+          type: "text",
+          source: TWITTER_SOURCE,
+          tags: entities.hashtags,
+          body: JSON.parse(body)
+            .html
+        }));
+    },
     fetcher: (url, callback) => {
       new TwitterClient({
           consumer_key: process.env["TWITTER_CONSUMER_KEY"],

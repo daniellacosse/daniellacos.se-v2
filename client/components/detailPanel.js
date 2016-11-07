@@ -217,10 +217,6 @@ function $renderDocument({
 
   if (body && asSubdocument) {
     children.push($createElement({
-      name: "blockquote",
-      style: {
-        "margin-bottom": "40px"
-      },
       innerHTML: body
     }));
   } else if (body) {

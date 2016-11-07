@@ -8,10 +8,11 @@ export default function collapseIntoGallaries(documents) {
 
   while (cursor < documents.length - 1) {
     const nextCursor = cursor + 1
+    const targetDocument = documents[cursor] || {}
+    const nextDocument = documents[nextCursor] || {}
 
-    if (documents[cursor].source === (documents[nextCursor] || {})
-      .source) {
-      const targetSource = documents[cursor].source
+    if (targetDocument.source === nextDocument.source) {
+      const targetSource = targetDocument.source
 
       let subdocuments = []
       let tagAggregation = []
@@ -19,10 +20,15 @@ export default function collapseIntoGallaries(documents) {
       let currentSource = targetSource
 
       while (currentSource === targetSource) {
-        const currentDocument = documents[cursor + subcursor]
-        tagAggregation = tagAggregation.concat(currentDocument.tags)
-        currentDocument.tags = []
-        subdocuments.push(currentDocument)
+        const currentDocument = documents[cursor + subcursor] || {}
+
+        if (currentDocument) {
+          currentSource = currentDocument.source
+          tagAggregation = tagAggregation.concat(currentDocument.tags)
+
+          delete currentDocument.tags
+          subdocuments.push(currentDocument)
+        }
 
         subcursor++ // advance cursor
         currentSource = (documents[cursor + subcursor] || {})
@@ -30,8 +36,8 @@ export default function collapseIntoGallaries(documents) {
       }
 
       const startDoc = subdocuments[subdocuments.length - 1];
-      const endDoc = subdocuments[0];
       const startDate = startDoc.date.toLocaleDateString()
+      const endDoc = subdocuments[0];
       const endDate = endDoc.date.toLocaleDateString()
       resultingDocuments.push(
         new Document({
