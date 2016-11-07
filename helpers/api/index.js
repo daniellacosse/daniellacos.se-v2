@@ -29,28 +29,39 @@ export const documentFetch = ({
       }
       const formatter = (post) => {
         const unwrappedPost = get(post, postEntry, post)
-        const additionalProperties = isFunction(format) ?
+        const formattedProperties = isFunction(format) ?
           format(unwrappedPost) : format
 
-        return new Document(unwrappedPost, additionalProperties)
+        if (formattedProperties.then) { // check if it's a promise
+          return formattedProperties.then((resultingProperties) => {
+            return new Document(unwrappedPost, resultingProperties)
+          })
+        } else {
+          return Promise.resolve(
+            new Document(unwrappedPost, formattedProperties)
+          )
+        }
       }
 
-      let documents = resultCollection
-        .filter(filterer)
-        .map(formatter)
+      return Promise.all(
+          resultCollection
+          .filter(filterer)
+          .map(formatter)
+        )
+        .then((documents) => {
+          if (before) {
+            const beforeObject = new Date(before)
 
-      if (before) {
-        const beforeObject = new Date(before)
+            documents = documents.filter(({ date }) => date <
+              beforeObject)
+          }
 
-        documents = documents.filter(({ date }) => date < beforeObject)
-      }
+          if (count)
+            documents = documents.slice(0, count)
+            // TODO: if (document.length < count) try to fetch again
 
-      if (count)
-        documents = documents.slice(0, count)
-
-      // TODO: if (document.length < count) try to fetch again
-
-      return documents
+          return documents
+        })
     })
     .catch((error) => {
       reportError(error);

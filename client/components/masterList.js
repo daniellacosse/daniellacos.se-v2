@@ -77,6 +77,7 @@ const LIST_ITEM_STYLE = {
   "max-width": "210px",
   "min-width": "210px",
   "height": "60px",
+  "margin": "0",
   "overflow": "hidden",
   "cursor": "pointer",
   "position": "relative",

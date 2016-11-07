@@ -43,6 +43,11 @@ export const GITHUB_GIST_URL = {
   pathname: "/gists"
 }
 
+export const GITHUB_RAW_URL = {
+  protocol: "https",
+  hostname: "raw.githubusercontent.com"
+}
+
 export const SOUNDCLOUD_API_HOST = "api.soundcloud.com"
 export const SOUNDCLOUD_SOURCE = "SOUNDCLOUD"
 export const SOUNDCLOUD_USERNAME = "daniellacosse"
@@ -91,6 +96,11 @@ export const TWITTER_TIMELINE_URL = {
     include_rts: false,
     trim_user: true
   }
+}
+
+export const TWITTER_OEMBED_URL = {
+  ...TWITTER_TIMELINE_URL,
+  pathname: "/statuses/oembed.json"
 }
 
 export const VIMEO_API_HOST = "api.vimeo.com"

@@ -1,15 +1,27 @@
+import got from "got"
+import URL from "url"
 import { publicFetchFactory } from "helpers/api"
 import {
   GITHUB_SOURCE,
   GITHUB_API_HOST,
   GITHUB_REPO_URL,
-  GITHUB_GIST_URL
+  GITHUB_GIST_URL,
+  GITHUB_RAW_URL
 } from "assets/constants"
 
 const githubFetcher = publicFetchFactory({
-  format: {
-    type: "code",
-    source: GITHUB_SOURCE
+  format: ({ full_name }) => {
+    return got(
+        URL.format({
+          ...GITHUB_RAW_URL,
+          pathname: `/${full_name}/master/readme.md`
+        })
+      )
+      .then(({ body }) => ({
+        type: "code",
+        source: GITHUB_SOURCE,
+        markdown: body
+      }));
   },
   error: (response) => {
     if (!response.message) return null;

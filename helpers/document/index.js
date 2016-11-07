@@ -1,10 +1,11 @@
 import convertor from "base-conversion"
 import { sanitize } from "html-parser"
 import { isObject, isNumber } from "lodash"
+import marked from "marked"
 import URL from "url"
 
 export default class Document {
-  constructor(properties, additionalProperties) {
+  constructor(properties = {}, additionalProperties = {}) {
     const {
       id,
       type,
@@ -18,6 +19,7 @@ export default class Document {
       frame,
       frameHeight,
       body,
+      markdown,
       description,
       subdocuments,
       tags
@@ -39,7 +41,9 @@ export default class Document {
 
     let textToSanitize = body || description
 
-    if (textToSanitize) {
+    if (markdown) {
+      this.body = marked(markdown)
+    } else if (textToSanitize) {
       this.body = sanitize(
         textToSanitize
         .replace(/'/g, "&rsquo;")
