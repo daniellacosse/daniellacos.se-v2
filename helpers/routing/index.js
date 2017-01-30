@@ -54,7 +54,7 @@ export default class Route {
     if (!validCacheDocuments.length) return null
 
     return readFileSync(
-      `./${CACHE_DIRECTORY}/${validCacheDocuments[0]}`, {
+      `${CACHE_DIRECTORY}/${validCacheDocuments[0]}`, {
         encoding: "utf8"
       }
     )
@@ -67,11 +67,11 @@ export default class Route {
     // delete old documents
     cacheDirectory
       .filter(filename => filename.startsWith(cacheHash))
-      .forEach(filename => unlinkSync(`./${CACHE_DIRECTORY}/${filename}`))
+      .forEach(filename => unlinkSync(`${CACHE_DIRECTORY}/${filename}`))
 
     // write fresh cache file
     return writeFileSync(
-      `./${CACHE_DIRECTORY}/${cacheHash}\$${Date.now()}`, content
+      `${CACHE_DIRECTORY}/${cacheHash}\$${Date.now()}`, content
     )
   }
 
