@@ -170,6 +170,8 @@ function refreshListAndDetailContent() {
       ]
     }
   })
+
+  window.loadTwitterWidgets();
 }
 
 function setActiveVisibleDocument(documentIndex, { keepListOpen } = {}) {

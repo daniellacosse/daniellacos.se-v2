@@ -217,6 +217,7 @@ function $renderDocument({
 
   if (body && asSubdocument) {
     children.push($createElement({
+      name: "p",
       innerHTML: body
     }));
   } else if (body) {

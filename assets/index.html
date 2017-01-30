@@ -47,6 +47,28 @@
 
     <script>(function(){window._RUNTIME_DATA_=@RUNTIME_DATA@;})();</script>
     <script>@RUNTIME_SCRIPTS@</script>
-    <script async src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <script>
+      // little hack to reload widget script
+      window.twttr = (function (d,s,id) {
+        var t, js, fjs = d.getElementsByTagName(s)[0];
+        if (d.getElementById(id))
+          return;
+
+        js = d.createElement(s);
+        js.id = id;
+        js.src = "https://platform.twitter.com/widgets.js";
+        fjs.parentNode.insertBefore(js, fjs);
+
+        return window.twttr || (t = {
+          _e: [], ready: function(f){ t._e.push(f) }
+        });
+      }(document, "script", "twitter-wjs"));
+
+      twttr.ready(() => {
+        twttr.widgets.load();
+
+        window.loadTwitterWidgets = twttr.widgets.load;
+      });
+    </script>
   </body>
 </html>
