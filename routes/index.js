@@ -36,6 +36,7 @@ export default class IndexRoute extends Route {
   }
 }
 
+export TimelineRoute from "./timeline"
 export HealthRoute from "./health"
 export PermalinkRoute from "./permalink"
 export BannerRoute from "./banner"

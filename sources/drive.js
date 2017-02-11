@@ -2,6 +2,7 @@ import { publicFetchFactory } from "helpers/api"
 import {
   DRIVE_SOURCE,
   DRIVE_API_HOST,
+  DRIVE_FAVORITES,
   DRIVE_PUBLIC_FOLDER,
   PUBLIC_DRIVE_FOLDER_URL
 } from "assets/constants"
@@ -16,6 +17,7 @@ const driveFetcher = publicFetchFactory({
     frame: `https://www.youtube.com/embed/${resourceId.videoId}`,
     date: publishedAt
   }),
+  favorites: DRIVE_FAVORITES,
   error: (response) => {
     if (!response.code) return null;
 

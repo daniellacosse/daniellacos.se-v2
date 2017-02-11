@@ -11,7 +11,7 @@ export const DESCRIPTION_TEMPLATE = "@DESCRIPTION@"
 export const PREVIEW_IMAGE_TEMPLATE = "@PREVIEW_IMAGE@"
 export const URL_TEMPLATE = "@CANONICAL_URL@"
 
-export const CACHE_DIRECTORY = "./_CACHE"
+export const CACHE_DIRECTORY = "_CACHE"
 export const DAY_MS = 24 * 60 * 60 * 1000
 export const DEFAULT_DOCUMENT_COUNT = 15
 
@@ -24,6 +24,10 @@ export const PUBLIC_DRIVE_FOLDER_URL = {
   hostname: DRIVE_API_HOST,
   pathname: `/files/${DRIVE_PUBLIC_FOLDER}/children`
 }
+
+export const DRIVE_FAVORITES = new Set([
+
+]);
 
 export const GITHUB_API_HOST = "api.github.com"
 export const GITHUB_SOURCE = "GITHUB"
@@ -48,6 +52,10 @@ export const GITHUB_RAW_URL = {
   hostname: "raw.githubusercontent.com"
 }
 
+export const GITHUB_FAVORITES = new Set([
+
+]);
+
 export const SOUNDCLOUD_API_HOST = "api.soundcloud.com"
 export const SOUNDCLOUD_SOURCE = "SOUNDCLOUD"
 export const SOUNDCLOUD_USERNAME = "daniellacosse"
@@ -70,6 +78,10 @@ export const SOUNDCLOUD_FRAME_URL = {
   }
 }
 
+export const SOUNDCLOUD_FAVORITES = new Set([
+
+]);
+
 export const TUMBLR_API_HOST = "api.tumblr.com/v2"
 export const TUMBLR_SOURCE = "TUMBLR"
 export const TUMBLR_BLOG = "daniellacosse.tumblr.com"
@@ -82,6 +94,10 @@ export const TUMBLR_TEXTS_URL = {
     filter: "raw"
   }
 }
+
+export const TUMBLR_FAVORITES = new Set([
+
+]);
 
 export const TWITTER_API_HOST = "api.twitter.com/1.1"
 export const TWITTER_SOURCE = "TWITTER"
@@ -103,6 +119,10 @@ export const TWITTER_OEMBED_URL = {
   pathname: "/statuses/oembed.json"
 }
 
+export const TWITTER_FAVORITES = new Set([
+
+]);
+
 export const VIMEO_API_HOST = "api.vimeo.com"
 export const VIMEO_SOURCE = "VIMEO"
 
@@ -111,6 +131,10 @@ export const VIMEO_VIDEOS_URL = {
   hostname: VIMEO_API_HOST,
   pathname: "/me/videos"
 }
+
+export const VIMEO_FAVORITES = new Set([
+
+]);
 
 export const VINE_API_HOST = "vine.co/api"
 export const VINE_SOURCE = "VINE"
@@ -121,6 +145,10 @@ export const VINE_TIMELINE_URL = {
   hostname: VINE_API_HOST,
   pathname: `/timelines/users/${VINE_TIMELINE}`,
 }
+
+export const VINE_FAVORITES = new Set([
+
+]);
 
 export const YOUTUBE_API_HOST = "www.googleapis.com/youtube/v3"
 export const YOUTUBE_SOURCE = "YOUTUBE"
@@ -136,3 +164,7 @@ export const YOUTUBE_UPLOADS_URL = {
     key: process.env["GOOGLE_CONSUMER_KEY"]
   }
 }
+
+export const YOUTUBE_FAVORITES = new Set([
+
+]);

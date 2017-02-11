@@ -13,6 +13,7 @@ export const documentFetch = ({
   entry,
   postEntry,
   format,
+  favorites,
   filter,
   error,
   fetcher,
@@ -27,10 +28,15 @@ export const documentFetch = ({
 
         return isFunction(filter) ? filter(unwrappedPost) : true
       }
+
       const formatter = (post) => {
-        const unwrappedPost = get(post, postEntry, post)
-        const formattedProperties = isFunction(format) ?
-          format(unwrappedPost) : format
+        const unwrappedPost = {
+          ...get(post, postEntry, post), favorites
+        };
+
+        const formattedProperties = isFunction(format)
+          ? format(unwrappedPost)
+          : format;
 
         if (formattedProperties.then) { // check if it's a promise
           return formattedProperties.then((resultingProperties) => {
@@ -45,8 +51,8 @@ export const documentFetch = ({
 
       return Promise.all(
           resultCollection
-          .filter(filterer)
-          .map(formatter)
+            .filter(filterer)
+            .map(formatter)
         )
         .then((documents) => {
           if (before) {

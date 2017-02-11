@@ -2,6 +2,7 @@ import { publicFetchFactory } from "helpers/api"
 import {
   SOUNDCLOUD_SOURCE,
   SOUNDCLOUD_API_HOST,
+  SOUNDCLOUD_FAVORITES,
   SOUNDCLOUD_TRACKS_URL,
   SOUNDCLOUD_FRAME_URL
 } from "assets/constants"
@@ -23,6 +24,7 @@ const soundcloudFetcher = publicFetchFactory({
       .filter(tag => !!tag)
     ]
   }),
+  favorites: SOUNDCLOUD_FAVORITES,
   error: (response) => {
     if (!response) return `${SOUNDCLOUD_SOURCE}: No response!`
     if (!response.statusCode) return null

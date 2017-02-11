@@ -1,6 +1,7 @@
 import { publicFetchFactory } from "helpers/api"
 import {
   YOUTUBE_SOURCE,
+  YOUTUBE_FAVORITES,
   YOUTUBE_API_HOST,
   YOUTUBE_CHANNEL,
   YOUTUBE_UPLOADS_URL
@@ -17,6 +18,7 @@ const youtubeFetcher = publicFetchFactory({
     frame: `https://www.youtube.com/embed/${resourceId.videoId}`,
     date: publishedAt
   }),
+  favorites: YOUTUBE_FAVORITES,
   error: (response) => {
     if (!response.code) return null;
 
@@ -26,8 +28,8 @@ const youtubeFetcher = publicFetchFactory({
 
 export default ({ count, before } = {}) => {
   return youtubeFetcher({...YOUTUBE_UPLOADS_URL,
-    query: {...YOUTUBE_UPLOADS_URL
-      .query,
+    query: {
+      ...YOUTUBE_UPLOADS_URL.query,
       maxResults: count
     }
   })

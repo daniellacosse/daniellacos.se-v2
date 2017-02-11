@@ -2,6 +2,7 @@ import { privateFetchFactory } from "helpers/api"
 import {
   TUMBLR_SOURCE,
   TUMBLR_API_HOST,
+  TUMBLR_FAVORITES,
   TUMBLR_TEXTS_URL
 } from "assets/constants"
 
@@ -12,6 +13,7 @@ const tumblrFetcher = privateFetchFactory({
     type: "text",
     source: TUMBLR_SOURCE
   },
+  favorites: TUMBLR_FAVORITES,
   error: (returnData) => {
     if (!returnData) return `${TUMBLR_SOURCE}: No data!`
 

@@ -2,6 +2,7 @@ import { privateFetchFactory } from "helpers/api"
 import {
   VIMEO_SOURCE,
   VIMEO_API_HOST,
+  VIMEO_FAVORITES,
   VIMEO_VIDEOS_URL
 } from "assets/constants"
 
@@ -15,7 +16,8 @@ const vimeoFetcher = privateFetchFactory({
     picture: pictures.sizes[pictures.sizes.length - 1].link,
     date: created_time,
     tags: tags.map(({ tag }) => tag)
-  })
+  }),
+  favorites: VIMEO_FAVORITES
 })
 
 export default ({ count, before } = {}) => {

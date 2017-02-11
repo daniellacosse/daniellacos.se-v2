@@ -22,7 +22,8 @@ export default class Document {
       markdown,
       description,
       subdocuments,
-      tags
+      tags,
+      favorites
     } = {
       ...properties,
       ...additionalProperties
@@ -54,6 +55,7 @@ export default class Document {
     }
 
     this.type = type;
+    // this.isFavorite = favorites.has(id) || favorites.has(this.id);
     this.source = source;
     this.picture = picture;
     this.tags = tags;
@@ -64,6 +66,7 @@ export default class Document {
     const {
       id,
       type,
+      isFavorite,
       picture,
       permalink,
       title,
@@ -79,6 +82,7 @@ export default class Document {
       id,
       date: date.toLocaleDateString(),
       type,
+      isFavorite,
       picture,
       permalink,
       title

@@ -25,14 +25,14 @@ const DETAIL_CONTAINER_STYLE = {
   "box-shadow": "-3px 0px 8px 1px rgba(0, 0, 0, 0.2)",
   "background": "white",
   "position": "relative",
-  "padding": "15px",
   "min-width": "285px"
 }
 
 const DETAIL_SHARE_BUTTON_STYLE = {
   "position": "fixed",
-  "top": "15px",
-  "right": "15px",
+  "top": "0px",
+  "right": "0px",
+  "padding": "15px",
   "opacity": "0.25",
   "cursor": "pointer",
   "transition": `opacity ${DASE_DURATION} ${DASE_BEZIER}`
@@ -102,10 +102,10 @@ function $renderDetailPanel() {
     style: DETAIL_CONTAINER_STYLE,
     id: DETAIL_CONTAINER_ID,
     children: [
-       detailPanel,
-       $renderMasterListCollapseButton(),
-      //  $renderActiveDocumentShareButton()
-     ]
+      $renderMasterListCollapseButton(),
+      // $renderActiveDocumentShareButton(),
+      detailPanel,
+    ]
   })
 }
 

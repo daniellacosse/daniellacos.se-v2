@@ -6,6 +6,7 @@ import { documentFetch } from "helpers/api"
 import {
   TWITTER_SOURCE,
   TWITTER_API_HOST,
+  TWITTER_FAVORITES,
   TWITTER_TIMELINE_URL,
   TWITTER_OEMBED_URL,
 } from "assets/constants"
@@ -19,6 +20,7 @@ export default (options = {}) => {
         count: options.count
       }
     },
+    favorites: TWITTER_FAVORITES,
     format: ({ entities, text, id_str }) => {
       return got(
           URL.format({
@@ -30,6 +32,7 @@ export default (options = {}) => {
           type: "text",
           source: TWITTER_SOURCE,
           tags: entities.hashtags,
+          title: text,
           body: JSON.parse(body)
             .html
         }));

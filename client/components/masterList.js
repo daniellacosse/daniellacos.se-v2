@@ -45,12 +45,12 @@ const MASTER_LIST_PROPERTIES$OPEN = {
 }
 
 const MASTER_LIST_COLLAPSE_BUTTON_STYLE = {
-  "position": "absolute",
+  "position": "sticky",
   "top": "0px",
   "left": "0px",
-  "padding": "15px",
+  "padding": "30px",
   "cursor": "pointer",
-  "font-size": "16px",
+  "font-size": "18px",
   "opacity": "0.25",
   "color": DASE_GREEN,
   "transition": `all ${DASE_DURATION} ${DASE_BEZIER}`
@@ -63,12 +63,12 @@ const MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER = {
 
 const MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER$CLOSED = {
   ...MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER,
-  "padding": "15px 10px 15px 20px"
+  "padding": "30px 25px 30px 35px"
 }
 
 const MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER$OPEN = {
   ...MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER,
-  "padding": "15px 20px 15px 10px"
+  "padding": "30px 35px 30px 25px"
 }
 
 const LIST_ITEM_STYLE = {

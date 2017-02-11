@@ -1,9 +1,10 @@
 import Route from "helpers/routing"
+import { fetchAll } from "helpers/api"
 import { getJPEG } from "helpers/asset"
 
 import { DEFAULT_DOCUMENT_COUNT } from "assets/constants"
 
-export default class BannerRoute extends Route {
+export default class TimelineRoute extends Route {
   static path = "/timeline"
 
   prefetch({ count, before }) {

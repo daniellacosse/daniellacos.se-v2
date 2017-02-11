@@ -4,6 +4,7 @@ import { publicFetchFactory } from "helpers/api"
 import {
   GITHUB_SOURCE,
   GITHUB_API_HOST,
+  GITHUB_FAVORITES,
   GITHUB_REPO_URL,
   GITHUB_GIST_URL,
   GITHUB_RAW_URL
@@ -23,6 +24,7 @@ const githubFetcher = publicFetchFactory({
         markdown: body
       }));
   },
+  favorites: GITHUB_FAVORITES,
   error: (response) => {
     if (!response.message) return null;
 
