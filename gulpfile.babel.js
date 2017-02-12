@@ -27,7 +27,7 @@ const gulpssh = new SSHClient({
   ignoreErrors: false,
   sshConfig: {
     host: process.env.DEPLOY_HOST,
-    username: "daniel",
+    username: "root",
     privateKey: readFileSync(
       process.env.DEPLOY_SSH_KEY_PATH
     ),
@@ -152,17 +152,15 @@ gulp.task("compress-and-sftp", () => {
     )
     .pipe(
       gulpssh.shell([
-        // TODO: su, for _CACHE
-        "rm -rf app",
-        "mkdir app",
-        `cp builds/${deploymentID}.tar.gz app`,
-        "cd app",
+        "rm -rf /home/daniel/app",
+        "mkdir /home/daniel/app",
+        `cp /home/daniel/builds/${deploymentID}.tar.gz /home/daniel/app`,
+        "cd /home/daniel/app",
         `tar -xvzf ${deploymentID}.tar.gz`,
         `rm ${deploymentID}.tar.gz`,
         "npm install",
-        // "forever stopall",
-        // "forever PORT=80 NODE_ENV=production forever start -l forever.log -o out.log -e err.log server.js"
-      ].join(" && "))
+        "pm2 restart server.js"
+      ])
     )
 });
 

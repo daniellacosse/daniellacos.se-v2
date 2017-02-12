@@ -19,7 +19,7 @@ const driveFetcher = publicFetchFactory({
   }),
   favorites: DRIVE_FAVORITES,
   error: (response) => {
-    if (!response.code) return null;
+    if (!response || !response.code) return null;
 
     return `${DRIVE_SOURCE}: (${response.code})`;
   }

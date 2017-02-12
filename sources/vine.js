@@ -24,7 +24,7 @@ const vineFetcher = publicFetchFactory({
   }),
   favorites: VINE_FAVORITES,
   error: (response) => {
-    if (!response.code) return null;
+    if (!response || !response.code) return null;
 
     return `${VINE_SOURCE}: (${response.code})`;
   }

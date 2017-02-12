@@ -58,14 +58,14 @@ export const GITHUB_FAVORITES = new Set([
 
 export const SOUNDCLOUD_API_HOST = "api.soundcloud.com"
 export const SOUNDCLOUD_SOURCE = "SOUNDCLOUD"
-export const SOUNDCLOUD_USERNAME = "daniellacosse"
+export const SOUNDCLOUD_USER_ID = "3847120"
 
 export const SOUNDCLOUD_TRACKS_URL = {
   protocol: "https",
   hostname: SOUNDCLOUD_API_HOST,
-  pathname: `/users/${SOUNDCLOUD_USERNAME}/tracks`,
+  pathname: `/users/${SOUNDCLOUD_USER_ID}/tracks`,
   query: {
-    client_id: process.env["SOUNDCLOUD_CONSUMER_KEY"]
+    client_id: process.env.SOUNDCLOUD_CONSUMER_KEY
   }
 }
 
@@ -161,7 +161,7 @@ export const YOUTUBE_UPLOADS_URL = {
   query: {
     part: "snippet",
     playlistId: YOUTUBE_CHANNEL_ID,
-    key: process.env["GOOGLE_CONSUMER_KEY"]
+    key: process.env.GOOGLE_CONSUMER_KEY
   }
 }
 

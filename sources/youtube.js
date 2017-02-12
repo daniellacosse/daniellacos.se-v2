@@ -20,17 +20,18 @@ const youtubeFetcher = publicFetchFactory({
   }),
   favorites: YOUTUBE_FAVORITES,
   error: (response) => {
-    if (!response.code) return null;
+    if (!response || !response.code) return null;
 
     return `${YOUTUBE_SOURCE}: (${response.code})`;
   }
-})
+});
 
 export default ({ count, before } = {}) => {
-  return youtubeFetcher({...YOUTUBE_UPLOADS_URL,
+  return youtubeFetcher({
+    ...YOUTUBE_UPLOADS_URL,
     query: {
       ...YOUTUBE_UPLOADS_URL.query,
       maxResults: count
     }
-  })
+  });
 }

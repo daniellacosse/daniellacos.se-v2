@@ -48,7 +48,7 @@ const MASTER_LIST_COLLAPSE_BUTTON_STYLE = {
   "position": "sticky",
   "top": "0px",
   "left": "0px",
-  "padding": "30px",
+  "padding": "24px",
   "cursor": "pointer",
   "font-size": "18px",
   "opacity": "0.25",
@@ -63,12 +63,12 @@ const MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER = {
 
 const MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER$CLOSED = {
   ...MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER,
-  "padding": "30px 25px 30px 35px"
+  "padding": "24px 19px 24px 29px"
 }
 
 const MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER$OPEN = {
   ...MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER,
-  "padding": "30px 35px 30px 25px"
+  "padding": "24px 29px 24px 19px"
 }
 
 const LIST_ITEM_STYLE = {
