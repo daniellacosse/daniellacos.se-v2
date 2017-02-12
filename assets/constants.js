@@ -1,3 +1,5 @@
+console.log(process.env);
+
 export const DATA_TEMPLATE = "@RUNTIME_DATA@"
 export const FAVICON_TEMPLATE = "@FAVICON@"
 export const CSS_TEMPLATE = "@GLOBAL_CSS@"

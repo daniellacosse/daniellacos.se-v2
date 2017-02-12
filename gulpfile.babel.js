@@ -159,6 +159,7 @@ gulp.task("compress-and-sftp", () => {
         `tar -xvzf ${deploymentID}.tar.gz`,
         `rm ${deploymentID}.tar.gz`,
         "npm install",
+        "cp /home/daniel/app/.secrets /etc/environment",
         "pm2 restart server.js"
       ])
     )
