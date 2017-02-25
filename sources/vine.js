@@ -1,26 +1,28 @@
-import { publicFetchFactory } from "helpers/api"
+require("babel-polyfill");
+
+import fetch, { publicFetchFactory } from "helpers/api"
+import got from "got"
 import {
   VINE_SOURCE,
   VINE_API_HOST,
   VINE_FAVORITES,
-  VINE_TIMELINE,
-  VINE_TIMELINE_URL
+  VINE_PROFILE_URL,
+  VINE_POST_URL_FACTORY
 } from "assets/constants"
 
 const vineFetcher = publicFetchFactory({
-  entry: "data.records",
-  filter: (post) => !post.repost,
+  entry: "posts",
+  documentUrlFactory: VINE_POST_URL_FACTORY,
   format: (post) => ({
-    id: post.permalinkUrl.split("/")
-      .reverse()[0],
-    type: "media",
-    source: VINE_SOURCE,
-    picture: post.thumbnailUrl,
-    frame: `${post.permalinkUrl}/embed/wide`,
-    date: post.created,
-    tags: post.entities
-      .filter(({ type }) => type === "tag")
-      .map(({ title }) => title)
+      id: post.postId,
+      type: "media",
+      source: VINE_SOURCE,
+      picture: post.thumbnailUrl,
+      frame: `${post.permalinkUrl}/embed/wide`,
+      date: post.created,
+      tags: (post.entities || [])
+        .filter(({ type }) => type === "tag")
+        .map(({ title }) => title)
   }),
   favorites: VINE_FAVORITES,
   error: (response) => {
@@ -30,4 +32,4 @@ const vineFetcher = publicFetchFactory({
   }
 })
 
-export default (options = {}) => vineFetcher(VINE_TIMELINE_URL, options)
+export default (options = {}) => vineFetcher(VINE_PROFILE_URL, options)

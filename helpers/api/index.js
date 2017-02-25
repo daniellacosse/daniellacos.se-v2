@@ -1,3 +1,4 @@
+require("babel-polyfill");
 import {
   isObject,
   isFunction,
@@ -10,6 +11,7 @@ import Document from "../document"
 
 export const documentFetch = ({
   url,
+  documentUrlFactory,
   entry,
   postEntry,
   format,
@@ -22,14 +24,27 @@ export const documentFetch = ({
 }) => {
   return fetch({ url, error, fetcher })
     .then((parsedBody) => {
-      const resultCollection = get(parsedBody, entry, parsedBody)
+      const resultCollection = get(
+        parsedBody, entry, parsedBody
+      ).map((postOrId) => {
+        if (documentUrlFactory) {
+          return fetcher(
+            URL.format(documentUrlFactory(postOrId))
+          );
+        }
+
+        return postOrId;
+      });
+
       const filterer = (post) => {
         const unwrappedPost = get(post, postEntry, post)
 
-        return isFunction(filter) ? filter(unwrappedPost) : true
+        return isFunction(filter)
+          ? filter(unwrappedPost)
+          : true
       }
 
-      const formatter = (post) => {
+      const formatter = function (post) {
         const unwrappedPost = {
           ...get(post, postEntry, post), favorites
         };
@@ -49,11 +64,13 @@ export const documentFetch = ({
         }
       }
 
-      return Promise.all(
-          resultCollection
+      return Promise
+        .all(resultCollection)
+        .then((documents) => {
+          return documents
             .filter(filterer)
             .map(formatter)
-        )
+        })
         .then((documents) => {
           if (before) {
             const beforeObject = new Date(before)

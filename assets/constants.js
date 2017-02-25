@@ -1,5 +1,3 @@
-console.log(process.env);
-
 export const DATA_TEMPLATE = "@RUNTIME_DATA@"
 export const FAVICON_TEMPLATE = "@FAVICON@"
 export const CSS_TEMPLATE = "@GLOBAL_CSS@"
@@ -138,15 +136,21 @@ export const VIMEO_FAVORITES = new Set([
 
 ]);
 
-export const VINE_API_HOST = "vine.co/api"
+export const VINE_API_HOST = "archive.vine.co"
 export const VINE_SOURCE = "VINE"
 export const VINE_TIMELINE = "1144912139522359296"
 
-export const VINE_TIMELINE_URL = {
+export const VINE_PROFILE_URL = {
   protocol: "https",
   hostname: VINE_API_HOST,
-  pathname: `/timelines/users/${VINE_TIMELINE}`,
+  pathname: `/profiles/${VINE_TIMELINE}.json`,
 }
+
+export const VINE_POST_URL_FACTORY = (id) => ({
+  protocol: "https",
+  hostname: VINE_API_HOST,
+  pathname: `/posts/${id}.json`
+})
 
 export const VINE_FAVORITES = new Set([
 

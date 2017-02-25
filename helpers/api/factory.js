@@ -3,7 +3,7 @@ import got from "got"
 
 import { documentFetch } from "./index"
 
-export const publicFetchFactory = (props) => {
+export const publicFetchFactory = (props = {}) => {
   return (url, options = {}) => documentFetch({
     url,
     ...props,
@@ -16,13 +16,13 @@ export const publicFetchFactory = (props) => {
   })
 }
 
-export const privateFetchFactory = (props) => {
+export const privateFetchFactory = (props = {}) => {
   const fetchConnector = new Connection.OAuth(
     null,
     null,
     process.env[`${props.source}_CONSUMER_KEY`],
     process.env[`${props.source}_CONSUMER_SECRET`],
-    "1.0A",
+    props.protocol || "1.0A",
     null,
     "HMAC-SHA1"
   )
