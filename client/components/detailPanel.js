@@ -8,7 +8,7 @@ const DETAIL_SHARE_BUTTON_ICON_ID = `${DETAIL_SHARE_BUTTON_ID}-icon`
 const DETAIL_PANEL_STYLE = {
   "width": "100%",
   "max-width": "720px",
-  "margin": "75px 0",
+  "margin": "30px 0",
   "position": "relative",
   "filter": "blur(0px)",
   "left": "50%",
