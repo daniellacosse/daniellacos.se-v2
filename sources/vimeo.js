@@ -8,6 +8,7 @@ import {
 
 const vimeoFetcher = privateFetchFactory({
   source: VIMEO_SOURCE,
+  protocol: "1.0",
   format: ({ uri, pictures, created_time, tags }) => ({
     id: uri.split("/")[1],
     type: "media",
