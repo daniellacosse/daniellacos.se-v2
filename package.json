@@ -38,8 +38,9 @@
     "gulp-notify": "^2.2.0",
     "gulp-open": "^2.0.0",
     "gulp-plumber": "^1.1.0",
+    "gulp-sftp": "git://github.com/daniellacosse/gulp-sftp.git",
+    "gulp-shell": "^0.6.1",
     "gulp-sourcemaps": "^2.2.0",
-    "gulp-ssh": "^0.6.0",
     "gulp-sync": "^0.1.4",
     "gulp-tar": "^1.9.0",
     "json-loader": "^0.5.4",
@@ -47,6 +48,7 @@
     "webpack-stream": "^3.2.0"
   },
   "dependencies": {
+    "babel-polyfill": "^6.23.0",
     "base-conversion": "^3.3.0",
     "compression": "^1.6.2",
     "connect-livereload": "^0.6.0",
