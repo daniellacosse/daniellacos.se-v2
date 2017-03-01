@@ -2,7 +2,11 @@ import { startCase, toLower, flow } from "lodash"
 
 import Document from "./index"
 
+// TODO: may have off by one error
 export default function collapseIntoGallaries(documents) {
+  if (documents.length === 1)
+    return documents;
+
   let cursor = 0
   let resultingDocuments = []
 
@@ -59,7 +63,6 @@ export default function collapseIntoGallaries(documents) {
       cursor++
     }
   }
-
 
   return resultingDocuments
 }

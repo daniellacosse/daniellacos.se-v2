@@ -1,30 +1,24 @@
-import { flow } from "lodash"
+require("babel-polyfill");
 
-import { sortByDate, collapseIntoGallaries } from "../document"
-import { whileInObject } from "../iterators"
-import * as sources from "sources"
+import { flow } from "lodash";
 
-export default (options = {}) => {
-  let fetchPromises = []
+import { sortByDate, collapseIntoGallaries } from "../document";
+import { whileInObject } from "../iterators";
+import * as sources from "sources";
 
-  whileInObject(sources, (key, source) => {
-    fetchPromises.push(
-      source(options)
-    )
-  })
+// TODO: ensure temporal concurrecy across sources
+// TODO: keep hitting all endpoints until you've gotten the proper # of records
 
-  // TODO: ensure temporal concurrecy across sources
-  // TODO: keep hitting all endpoints until you've gotten the proper # of records
-  return Promise.all(fetchPromises)
-    .then((documentSets) => {
-      let allDocuments = flow([
-        sortByDate,
-        collapseIntoGallaries
-      ])([].concat.apply([], documentSets))
+export default async function fetchAll (options = {}) {
+  let fetchPromises = [];
 
-      if (options.count)
-        allDocuments = allDocuments.slice(0, options.count)
+  whileInObject(sources,
+    (key, source) => fetchPromises.push(source(options))
+  );
 
-      return allDocuments
-    })
+  const allDocuments = flow([ sortByDate, collapseIntoGallaries ])([].concat.apply([], await Promise.all(fetchPromises))) // flatten;
+
+  return (options.count)
+    ? allDocuments.slice(0, options.count)
+    : allDocuments;
 }

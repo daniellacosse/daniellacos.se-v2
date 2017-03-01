@@ -18,7 +18,7 @@ const vineFetcher = publicFetchFactory({
       type: "media",
       source: VINE_SOURCE,
       picture: post.thumbnailUrl,
-      frame: `${post.permalinkUrl}/embed/wide`,
+      frame: `${post.permalinkUrl}/embed/simple`,
       date: post.created,
       tags: (post.entities || [])
         .filter(({ type }) => type === "tag")

@@ -11,7 +11,7 @@ export const DESCRIPTION_TEMPLATE = "@DESCRIPTION@"
 export const PREVIEW_IMAGE_TEMPLATE = "@PREVIEW_IMAGE@"
 export const URL_TEMPLATE = "@CANONICAL_URL@"
 
-export const CACHE_DIRECTORY = "_CACHE"
+export const CACHE_DIRECTORY = "./_CACHE"
 export const DAY_MS = 24 * 60 * 60 * 1000
 export const DEFAULT_DOCUMENT_COUNT = 15
 

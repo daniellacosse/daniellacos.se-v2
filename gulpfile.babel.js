@@ -273,7 +273,8 @@ gulp.task("launch-production-slug", shell.task(
 gulp.task("watch-files", () => {
   gulp.watch([
     get("helpers/**/*.js"),
-    get("routes/**/*.js")
+    get("routes/**/*.js"),
+    get("sources/**/*.js"),
   ], ["rebuild-server"]);
   gulp.watch([
     get("client/**/*.js"),

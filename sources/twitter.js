@@ -17,7 +17,8 @@ export default (options = {}) => {
       ...TWITTER_TIMELINE_URL,
       query: {
         ...TWITTER_TIMELINE_URL.query,
-        count: options.count
+        count: options.count * 5 // lame, but twitter doesn't actually gaurantee this count,
+        // so we boost it by a factor of 5 because usually that gets us closer to what we want :/
       }
     },
     favorites: TWITTER_FAVORITES,
