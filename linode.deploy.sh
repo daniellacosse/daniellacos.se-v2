@@ -28,13 +28,13 @@ current=`date +%s`
 echo -ne " ...restarting server ($((current-start))s elapsed)      \r"
 
 cp /home/daniel/app/.secrets /etc/environment
-pm2 restart server.js > ./_build.log 2>&1 || ( EC=$?; cat ./_build.log; exit $EC )
+sudo -E pm2 restart server.js > ./_build.log 2>&1 || ( EC=$?; cat ./_build.log; exit $EC )
 
 current=`date +%s`
 echo -ne " ...caching index ($((current-start))s elapsed)          \r"
 
 # pre-compile index
-curl -s daniellacos.se
+# curl -s localhost:80
 
 current=`date +%s`
 echo -ne " [[finished]] ($((current-start))s elapsed)              \r"
