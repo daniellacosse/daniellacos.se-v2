@@ -187,7 +187,9 @@ function setActiveVisibleDocument(documentIndex, { keepListOpen } = {}) {
 
 
 function setActiveDocument(documentId) {
-  collapseMasterList()
+  if (window.isMobile()) {
+    collapseMasterList();    
+  }
 
   addToStorage({
     [MASTER_LIST_ACTIVE_DOCUMENT_KEY]: documentId
