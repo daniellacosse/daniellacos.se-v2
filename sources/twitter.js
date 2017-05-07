@@ -33,7 +33,7 @@ export default (options = {}) => {
           type: "text",
           source: TWITTER_SOURCE,
           tags: entities.hashtags,
-          title: text,
+          description: text,
           body: JSON.parse(body)
             .html
         }));
