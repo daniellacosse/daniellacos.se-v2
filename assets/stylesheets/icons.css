@@ -21,26 +21,30 @@
 }
 
 
-.icon-code:before {
+.icon-arrow:before {
 	content: "\E001";
 }
 
-.icon-gallery:before {
+.icon-code:before {
 	content: "\E002";
 }
 
-.icon-media:before {
+.icon-gallery:before {
 	content: "\E003";
 }
 
-.icon-share:before {
+.icon-media:before {
 	content: "\E004";
 }
 
-.icon-star:before {
+.icon-share:before {
 	content: "\E005";
 }
 
-.icon-text:before {
+.icon-star:before {
 	content: "\E006";
+}
+
+.icon-text:before {
+	content: "\E007";
 }

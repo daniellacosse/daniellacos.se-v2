@@ -28,13 +28,6 @@ acorn@^3.0.0, acorn@^3.3.0:
   version "3.3.0"
   resolved "https://registry.yarnpkg.com/acorn/-/acorn-3.3.0.tgz#45e37fb39e8da3f25baee3ff5369e2bb5f22017a"
 
-ajv@5.0.1-beta.3:
-  version "5.0.1-beta.3"
-  resolved "https://registry.yarnpkg.com/ajv/-/ajv-5.0.1-beta.3.tgz#4eac3b28af93f001c9f3ea944df2386f12fa1fef"
-  dependencies:
-    co "^4.6.0"
-    json-stable-stringify "^1.0.1"
-
 ajv@^4.9.1:
   version "4.11.3"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-4.11.3.tgz#ce30bdb90d1254f762c75af915fb3a63e7183d22"
@@ -5374,6 +5367,10 @@ webpack-core@~0.6.9:
   dependencies:
     source-list-map "~0.1.7"
     source-map "~0.4.1"
+
+webpack-node-externals@^1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/webpack-node-externals/-/webpack-node-externals-1.5.4.tgz#ea05ba17108a23e776c35c42e7bb0e86c225be00"
 
 webpack-stream@^3.2.0:
   version "3.2.0"

@@ -13,6 +13,7 @@ import iconfontCSS from "gulp-iconfont-css";
 import minify_css from "gulp-minify-css";
 import minify_html from "gulp-minify-html";
 import notify from "gulp-notify";
+import node_externals from "webpack-node-externals";
 import open from "gulp-open";
 import packer from "webpack-stream";
 import plumber from "gulp-plumber";
@@ -305,6 +306,7 @@ gulp.task("cleanup", () => {
 function packer_settings({ minify, sourcemaps }) {
   return {
     target: "node",
+    externals: [ node_externals() ],
     devtool: sourcemaps ? "source-map" : "",
     output: {
       filename: "server.js"

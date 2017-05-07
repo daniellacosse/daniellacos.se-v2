@@ -28,7 +28,7 @@ current=`date +%s`
 echo -ne " ...restarting server ($((current-start))s elapsed)      \r"
 
 cp /home/daniel/app/.secrets /etc/environment
-sudo -E pm2 restart server.js > /dev/null 2>&1
+sudo -E pm2 restart server.js --env production > /dev/null 2>&1
 
 current=`date +%s`
 echo -ne " ...caching index ($((current-start))s elapsed)          \r"

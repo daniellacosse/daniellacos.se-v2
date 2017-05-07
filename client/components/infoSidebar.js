@@ -71,7 +71,7 @@ const FILTER_TOGGLE_TOOLTIP_STYLE = {
   "pointer-events": "none",
   "border-top-right-radius": "10px",
   "border-bottom-right-radius": "10px",
-  "padding": "0 15px 3px 5px",
+  "padding": "0 15px 3px 12px",
   "opacity": "0",
   "transform": "translateY(50%)",
   "transition": `all ${DASE_DURATION} ${DASE_BEZIER} 50ms`

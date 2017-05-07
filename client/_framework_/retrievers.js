@@ -1,15 +1,17 @@
-function retrieve(key) {
+function retrieve(key, fallback) {
   let result;
 
   try {
     result = JSON.parse(
       sessionStorage.getItem(key)
-    )
+    );
   } catch (error) {
-    result = _RUNTIME_DATA_[key]
+    result = _RUNTIME_DATA_[key];
   }
 
-  return result
+  return (typeof result !== "undefined")
+    ? result
+    : fallback;
 }
 
 function retrieveDocuments(documentOrder = retrieve("documentListOrder")) {

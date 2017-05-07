@@ -9,6 +9,7 @@ const DETAIL_PANEL_STYLE = {
   "width": "100%",
   "max-width": "720px",
   "margin": "30px 0",
+  "padding": "0 25px",
   "position": "relative",
   "filter": "blur(0px)",
   "left": "50%",
@@ -218,11 +219,13 @@ function $renderDocument({
   if (body && asSubdocument) {
     children.push($createElement({
       name: "p",
+      style: { "margin-bottom": "45px" },
       innerHTML: body
     }));
   } else if (body) {
     children.push($createElement({
       name: "section",
+      style: { "padding-bottom": "120px" },
       innerHTML: body
     }))
   }
@@ -235,6 +238,7 @@ function $renderDocument({
     children.push(
       $createElement({
         name: "section",
+        style: { "padding-bottom": "120px" },
         children: flattenedSubdocumentElements
       })
     )

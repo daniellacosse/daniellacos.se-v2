@@ -9,7 +9,7 @@ const MASTER_LIST_VISIBLE_DOCUMENTS_KEY =
   `${MASTER_LIST_ID}-visibleDocumentsList`
 
 ///\///\ MasterList - PROPERTIES ///\///\\
-const MASTER_LIST_STYLE = {
+const MASTER_LIST_STYLE$OPEN = {
   "flex-shrink": "1",
   "height": "100%",
   "max-width": "210px",
@@ -21,54 +21,67 @@ const MASTER_LIST_STYLE = {
 }
 
 const MASTER_LIST_STYLE$CLOSED = {
-  ...MASTER_LIST_STYLE,
-  ... {
+  ...MASTER_LIST_STYLE$OPEN,
+  ...{
     "max-width": "0px",
     "min-width": "0px"
   }
 }
 
-const MASTER_LIST_PROPERTIES$CLOSED = {
-  text: "▶",
-  onClick: "openMasterList()",
-  style: MASTER_LIST_COLLAPSE_BUTTON_STYLE,
-  onMouseOver: "$masterListCollapseButtonClosedMouseOver()",
-  onMouseOut: "$masterListCollapseButtonMouseOut()"
+const MASTER_LIST_COLLAPSE_BUTTON_PROPERTIES$OPEN = {
+  onClick: "collapseMasterList()",
+  style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$OPEN,
+  onMouseOver: "$masterListCollapseButtonOpenMouseOver()",
+  onMouseOut: "$masterListCollapseButtonOpenMouseOut()"
 }
 
-const MASTER_LIST_PROPERTIES$OPEN = {
-  text: "◀",
-  onClick: "collapseMasterList()",
-  style: MASTER_LIST_COLLAPSE_BUTTON_STYLE,
-  onMouseOver: "$masterListCollapseButtonOpenMouseOver()",
-  onMouseOut: "$masterListCollapseButtonMouseOut()"
+const MASTER_LIST_COLLAPSE_BUTTON_PROPERTIES$CLOSED = {
+  onClick: "openMasterList()",
+  style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$CLOSED,
+  onMouseOver: "$masterListCollapseButtonClosedMouseOver()",
+  onMouseOut: "$masterListCollapseButtonClosedMouseOut()"
 }
 
 const MASTER_LIST_COLLAPSE_BUTTON_STYLE = {
   "position": "sticky",
   "top": "0px",
   "left": "0px",
+  "display": "inline-block",
   "padding": "24px",
   "cursor": "pointer",
   "font-size": "18px",
-  "opacity": "0.25",
-  "color": DASE_GREEN,
-  "transition": `all ${DASE_DURATION} ${DASE_BEZIER}`
+  "color": "rgba(24, 99, 63, 0.25)",
+  "background": "rgba(255, 255, 255, 0.95)",
+  "border-top-right-radius": "50%",
+  "border-bottom-right-radius": "50%",
+  "z-index": "15",
+  "transition": `all 400ms ${DASE_BEZIER}`,
+}
+
+const MASTER_LIST_COLLAPSE_BUTTON_STYLE$OPEN = {
+  ...MASTER_LIST_COLLAPSE_BUTTON_STYLE,
+  "transform": "rotate(180deg)",
+}
+
+const MASTER_LIST_COLLAPSE_BUTTON_STYLE$CLOSED = {
+  ...MASTER_LIST_COLLAPSE_BUTTON_STYLE,
+  "transform": "rotate(0deg)",
 }
 
 const MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER = {
-  ...MASTER_LIST_COLLAPSE_BUTTON_STYLE,
-  "opacity": "1"
+  "color": "rgba(24, 99, 63, 1)",
 }
 
-const MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER$CLOSED = {
+const MASTER_LIST_COLLAPSE_BUTTON_STYLE$OPEN$HOVER = {
+  ...MASTER_LIST_COLLAPSE_BUTTON_STYLE$OPEN,
   ...MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER,
-  "padding": "24px 19px 24px 29px"
+  "padding": "24px 19px 24px 29px",
 }
 
-const MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER$OPEN = {
+const MASTER_LIST_COLLAPSE_BUTTON_STYLE$CLOSED$HOVER = {
+  ...MASTER_LIST_COLLAPSE_BUTTON_STYLE$CLOSED,
   ...MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER,
-  "padding": "24px 29px 24px 19px"
+  "padding": "24px 19px 24px 29px",
 }
 
 const LIST_ITEM_STYLE = {
@@ -91,7 +104,7 @@ const LIST_ITEM_STYLE = {
 
 const LIST_ITEM_STYLE$ACTIVE = {
   ...LIST_ITEM_STYLE,
-  ... {
+  ...{
     "background": DASE_GREEN,
     "color": "white",
     "cursor": "initial"
@@ -112,7 +125,15 @@ const LIST_ITEM_PROPERTIES$ACTIVE = {
 function $masterListCollapseButtonClosedMouseOver() {
   $changeElement(
     MASTER_LIST_COLLAPSE_BUTTON_ID, {
-      style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER$CLOSED
+      style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$CLOSED$HOVER
+    }
+  )
+}
+
+function $masterListCollapseButtonOpenMouseOut() {
+  $changeElement(
+    MASTER_LIST_COLLAPSE_BUTTON_ID, {
+      style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$OPEN
     }
   )
 }
@@ -120,15 +141,15 @@ function $masterListCollapseButtonClosedMouseOver() {
 function $masterListCollapseButtonOpenMouseOver() {
   $changeElement(
     MASTER_LIST_COLLAPSE_BUTTON_ID, {
-      style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER$OPEN
+      style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$OPEN$HOVER
     }
   )
 }
 
-function $masterListCollapseButtonMouseOut() {
+function $masterListCollapseButtonClosedMouseOut() {
   $changeElement(
     MASTER_LIST_COLLAPSE_BUTTON_ID, {
-      style: MASTER_LIST_COLLAPSE_BUTTON_STYLE
+      style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$CLOSED
     }
   )
 }
@@ -142,8 +163,10 @@ function collapseMasterList() {
     [MASTER_LIST_ID]: {
       style: MASTER_LIST_STYLE$CLOSED
     },
-    [MASTER_LIST_COLLAPSE_BUTTON_ID]: MASTER_LIST_PROPERTIES$CLOSED
+    [MASTER_LIST_COLLAPSE_BUTTON_ID]: MASTER_LIST_COLLAPSE_BUTTON_PROPERTIES$CLOSED
   })
+
+  $masterListCollapseButtonClosedMouseOut();
 }
 
 function openMasterList() {
@@ -153,10 +176,12 @@ function openMasterList() {
 
   $changeElements({
     [MASTER_LIST_ID]: {
-      style: MASTER_LIST_STYLE
+      style: MASTER_LIST_STYLE$OPEN
     },
-    [MASTER_LIST_COLLAPSE_BUTTON_ID]: MASTER_LIST_PROPERTIES$OPEN
+    [MASTER_LIST_COLLAPSE_BUTTON_ID]: MASTER_LIST_COLLAPSE_BUTTON_PROPERTIES$OPEN
   })
+
+  $masterListCollapseButtonOpenMouseOut();
 }
 
 function refreshListAndDetailContent() {
@@ -188,7 +213,7 @@ function setActiveVisibleDocument(documentIndex, { keepListOpen } = {}) {
 
 function setActiveDocument(documentId) {
   if (window.isMobile()) {
-    collapseMasterList();    
+    collapseMasterList();
   }
 
   addToStorage({
@@ -200,9 +225,9 @@ function setActiveDocument(documentId) {
 
 ///\\\////\\\ MasterList ///\\\///\\\
 function $renderMasterList() {
-  const style = retrieve(MASTER_LIST_IS_CLOSED_KEY) ?
-    MASTER_LIST_STYLE$CLOSED :
-    MASTER_LIST_STYLE
+  const style = retrieve(MASTER_LIST_IS_CLOSED_KEY, window.isMobile())
+    ? MASTER_LIST_STYLE$CLOSED
+    : MASTER_LIST_STYLE$OPEN
 
   return $createElement({
     name: "nav",
@@ -278,14 +303,15 @@ function $renderMasterListItem({ id, title, body, type, date }) {
 
 ///\\\///\\\ MasterList - CollapseButton ///\\\///\\\
 function $renderMasterListCollapseButton() {
-  const isClosedProperties = retrieve(MASTER_LIST_IS_CLOSED_KEY) ?
-    MASTER_LIST_PROPERTIES$CLOSED :
-    MASTER_LIST_PROPERTIES$OPEN
+  const isClosedProperties = retrieve(
+    MASTER_LIST_IS_CLOSED_KEY, window.isMobile()
+  ) ? MASTER_LIST_COLLAPSE_BUTTON_PROPERTIES$CLOSED
+    : MASTER_LIST_COLLAPSE_BUTTON_PROPERTIES$OPEN;
 
-  return $createElement({
+  return $createIcon("arrow", {
     ...isClosedProperties,
     name: "button",
     id: MASTER_LIST_COLLAPSE_BUTTON_ID,
     style: MASTER_LIST_COLLAPSE_BUTTON_STYLE
-  })
+  });
 }
