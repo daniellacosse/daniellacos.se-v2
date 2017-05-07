@@ -74,7 +74,8 @@ const FILTER_TOGGLE_TOOLTIP_STYLE = {
   "padding": "0 15px 3px 12px",
   "opacity": "0",
   "transform": "translateY(50%)",
-  "transition": `all ${DASE_DURATION} ${DASE_BEZIER} 50ms`
+  "transition": `all ${DASE_DURATION} ${DASE_BEZIER} 50ms`,
+  "box-shadow": "3px 3px 7px rgba(0, 0, 0, 0.5)"
 }
 
 const TOGGLE_TOOLTIP_TRIANGLE_SIZE = 11
@@ -87,7 +88,8 @@ const TOGGLE_TOOLTIP_TRIANGLE_STYLE = {
   "border-left": `${TOGGLE_TOOLTIP_TRIANGLE_SIZE}px solid transparent`,
   "border-top": `${TOGGLE_TOOLTIP_TRIANGLE_SIZE}px solid transparent`,
   "border-bottom": `${TOGGLE_TOOLTIP_TRIANGLE_SIZE}px solid transparent`,
-  "border-right": `${TOGGLE_TOOLTIP_TRIANGLE_SIZE}px solid #0d3622`
+  "border-right": `${TOGGLE_TOOLTIP_TRIANGLE_SIZE}px solid #0d3622`,
+  "filter": "drop-shadow(3px 3px 7px rgba(0, 0, 0, 0.5))"
 }
 
 const FILTER_TOGGLE_TOOLTIP_STYLE$HOVER = {
