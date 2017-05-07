@@ -89,6 +89,10 @@ function unfreezeDetailPanel() {
   $changeElement(DETAIL_PANEL_ID, { style: DETAIL_PANEL_STYLE })
 }
 
+function resetDetailScrollDepth() {
+  window._COMPONENT_REGISTRY_[DETAIL_CONTAINER_ID].scrollTop = 0;
+}
+
 ///\\\///\\\ DetailPanel ///\\\///\\\
 function $renderDetailPanel() {
   const detailPanel = $createElement({

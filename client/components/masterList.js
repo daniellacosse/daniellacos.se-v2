@@ -208,6 +208,7 @@ function setActiveVisibleDocument(documentIndex, { keepListOpen } = {}) {
   })
 
   refreshListAndDetailContent()
+  resetDetailScrollDepth()
 }
 
 
@@ -221,6 +222,7 @@ function setActiveDocument(documentId) {
   })
 
   refreshListAndDetailContent()
+  resetDetailScrollDepth()
 }
 
 ///\\\////\\\ MasterList ///\\\///\\\
