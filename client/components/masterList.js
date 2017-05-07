@@ -254,8 +254,8 @@ function $renderMasterListNavigation() {
 }
 
 ///\\\///\\\ MasterList - ListItem ///\\\///\\\
-function $renderMasterListItem({ id, title, body, type, date }) {
-  const availableText = title || body
+function $renderMasterListItem({ id, title, description, body, type, date }) {
+  const availableText = title || description || body
   const truncatedPreview = availableText.length > 50 ?
     `${availableText.slice(0, 50)}...` : availableText
 

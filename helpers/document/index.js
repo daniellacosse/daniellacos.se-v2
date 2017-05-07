@@ -34,6 +34,7 @@ export default class Document {
       `http://daniellacos.se/${source.slice(0, 2).toLowerCase()}/${this.id}`
 
     this.title = title || name;
+    this.description = description;
     this.date = new Date(date || created_at);
     this.frame = isObject(frame) ?
       URL.format(frame) :
@@ -70,6 +71,7 @@ export default class Document {
       picture,
       permalink,
       title,
+      description,
       date,
       frame,
       frameHeight,
@@ -96,6 +98,7 @@ export default class Document {
       result = {...result, subdocuments: subdocuments.map((doc) => doc.curate()) }
 
     if (body) result = {...result, body }
+    if (description) result = {...result, description }
     if (frame) result = {...result, frame, frameHeight }
 
     return result;
