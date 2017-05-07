@@ -28,20 +28,6 @@ const MASTER_LIST_STYLE$CLOSED = {
   }
 }
 
-const MASTER_LIST_COLLAPSE_BUTTON_PROPERTIES$OPEN = {
-  onClick: "collapseMasterList()",
-  style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$OPEN,
-  onMouseOver: "$masterListCollapseButtonOpenMouseOver()",
-  onMouseOut: "$masterListCollapseButtonOpenMouseOut()"
-}
-
-const MASTER_LIST_COLLAPSE_BUTTON_PROPERTIES$CLOSED = {
-  onClick: "openMasterList()",
-  style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$CLOSED,
-  onMouseOver: "$masterListCollapseButtonClosedMouseOver()",
-  onMouseOut: "$masterListCollapseButtonClosedMouseOut()"
-}
-
 const MASTER_LIST_COLLAPSE_BUTTON_STYLE = {
   "position": "sticky",
   "top": "0px",
@@ -82,6 +68,20 @@ const MASTER_LIST_COLLAPSE_BUTTON_STYLE$CLOSED$HOVER = {
   ...MASTER_LIST_COLLAPSE_BUTTON_STYLE$CLOSED,
   ...MASTER_LIST_COLLAPSE_BUTTON_STYLE$HOVER,
   "padding": "24px 19px 24px 29px",
+}
+
+const MASTER_LIST_COLLAPSE_BUTTON_PROPERTIES$OPEN = {
+  onClick: "collapseMasterList()",
+  style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$OPEN,
+  onMouseOver: "$masterListCollapseButtonOpenMouseOver()",
+  onMouseOut: "$masterListCollapseButtonOpenMouseOut()"
+}
+
+const MASTER_LIST_COLLAPSE_BUTTON_PROPERTIES$CLOSED = {
+  onClick: "openMasterList()",
+  style: MASTER_LIST_COLLAPSE_BUTTON_STYLE$CLOSED,
+  onMouseOver: "$masterListCollapseButtonClosedMouseOver()",
+  onMouseOut: "$masterListCollapseButtonClosedMouseOut()"
 }
 
 const LIST_ITEM_STYLE = {
@@ -314,7 +314,6 @@ function $renderMasterListCollapseButton() {
   return $createIcon("arrow", {
     ...isClosedProperties,
     name: "button",
-    id: MASTER_LIST_COLLAPSE_BUTTON_ID,
-    style: MASTER_LIST_COLLAPSE_BUTTON_STYLE
+    id: MASTER_LIST_COLLAPSE_BUTTON_ID
   });
 }
