@@ -22,7 +22,19 @@ const githubFetcher = publicFetchFactory({
         type: "code",
         source: GITHUB_SOURCE,
         markdown: body
-      }));
+      }))
+      .catch(() => {
+        return got(
+          URL.format({
+            ...GITHUB_RAW_URL,
+            pathname: `/${full_name}/master/README.md`
+          })
+        ).then(({ body }) => ({
+          type: "code",
+          source: GITHUB_SOURCE,
+          markdown: body
+        }))
+      })
   },
   favorites: GITHUB_FAVORITES,
   error: (response) => {
