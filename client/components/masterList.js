@@ -99,7 +99,8 @@ const LIST_ITEM_STYLE = {
   "border-bottom": "1px solid black",
   "font-size": "12px",
   "font-weight": "bold",
-  "text-overflow": "ellipsis"
+  "text-overflow": "ellipsis",
+  "transition": `all ${DASE_DURATION} ${DASE_BEZIER}`,
 }
 
 const LIST_ITEM_STYLE$ACTIVE = {
@@ -113,7 +114,7 @@ const LIST_ITEM_STYLE$ACTIVE = {
 
 const LIST_ITEM_PROPERTIES = {
   style: LIST_ITEM_STYLE,
-  onMouseOver: `this.style.background='${DASE_GREEN}'; this.style.color='white'`,
+  onMouseOver: `this.style.background='rgba(24, 99, 63, 0.25)'; this.style.color='rgba(255, 255, 255, 0.8)'`,
   onMouseOut: "this.style.background='transparent'; this.style.color='initial'",
 }
 
