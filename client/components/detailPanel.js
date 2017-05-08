@@ -8,7 +8,7 @@ const DETAIL_SHARE_BUTTON_ICON_ID = `${DETAIL_SHARE_BUTTON_ID}-icon`
 const DETAIL_PANEL_STYLE = {
   "width": "100%",
   "max-width": "720px",
-  "margin": "30px 0",
+  "margin": window.isMobile() ? "0" : "30px 0",
   "padding": "0 25px",
   "position": "relative",
   "filter": "blur(0px)",
@@ -46,12 +46,12 @@ const DETAIL_PANEL_STYLE$FROZEN = (width) => ({
 })
 
 const DETAIL_DOCUMENT_TIME_STYLE = {
-  "font-size": "18px",
+  "font-size": window.isMobile() ? "15px" : "18px",
   "opacity": "0.25",
   "display": "block",
-  "padding": "7px 0 18px 0",
+  "padding": window.isMobile() ? "1px 0 7px 0" : "7px 0 18px 0",
   "border-bottom": "1px solid black",
-  "margin-bottom": "32px"
+  "margin-bottom": window.isMobile() ? "12px" : "32px"
 }
 
 const DETAIL_SUBDOCUMENT_TIME_STYLE = {
