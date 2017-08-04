@@ -26,6 +26,7 @@ export default class IndexRoute extends Route {
         avatarURL: getJPEG("avatar")
       },
       scripts: [
+        "components/contactCard",
         "components/homeLink",
         "components/infoSidebar",
         "components/masterList",

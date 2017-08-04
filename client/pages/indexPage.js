@@ -14,11 +14,13 @@
   const infoSidebar = $renderInfoSidebar();
   const masterList = $renderMasterList();
   const detailPanel = $renderDetailPanel();
+  const contactCard = $renderContactCard();
 
   $renderApp([
     infoSidebar,
     masterList,
-    detailPanel
+    detailPanel,
+    contactCard
   ]);
 
   window.addEventListener("keydown", ({ keyCode }) => {

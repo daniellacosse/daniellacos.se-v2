@@ -21,12 +21,13 @@ const HOME_LINK_STYLE = {
 function $renderHomeLink() {
   return $createElement({
     name: "a",
-    href: "/",
+    href: "#",
     id: HOME_LINK_ID,
     style: {...HOME_LINK_STYLE,
       "background-image": `url(${retrieve("avatarURL")})`
     },
     onMouseOver: "this.style.opacity='1'",
-    onMouseOut: "this.style.opacity='0.7'"
+    onMouseOut: "this.style.opacity='0.7'",
+    onClick: "openContactCard()"
   })
 }
