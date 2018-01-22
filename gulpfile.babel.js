@@ -43,13 +43,17 @@ gulp.task("default", gulpsync.sync([
   ]
 ]));
 
-gulp.task("deploy", gulpsync.sync([
+gulp.task("build", gulpsync.sync([
   "cleanup",
   [
     "build-production-client", "build-production-server"
-  ],
+  ]
+]))
+
+gulp.task("deploy", gulpsync.sync([
+  "build",
   "rollout"
-]));
+]))
 
 ///\\\///\\\ SERVER TASKS ///\\\///\\\
 gulp.task("build-server", () => {
