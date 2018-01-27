@@ -17,7 +17,7 @@ export default class IndexRoute extends Route {
       meta: {
         type: "CreativeWork",
         title: "daniellacos.se",
-        description: "The Creative Works of Daniel LaCosse.",
+        description: "The Creative Workz of Daniel LaCosse.",
         previewImage: "http://daniellacos.se/banner.jpg",
         url: "http://daniellacos.se/"
       },
