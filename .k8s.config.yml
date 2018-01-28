@@ -1,0 +1,61 @@
+kind: Deployment
+apiVersion: apps/v1beta1
+metadata:
+  name: daniellacosse
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: daniellacosse
+    spec:
+      containers:
+        - name: daniellacosse
+          image: daniellacosse/daniellacos.se-v2:latest
+          ports:
+          - name: client
+            containerPort: 9999
+          resources:
+            limits:
+              cpu: 200m
+              memory: 128Mi
+---
+kind: HorizontalPodAutoscaler
+apiVersion: autoscaling/v1
+metadata:
+  name: daniellacosse-autoscaler
+spec:
+  minReplicas: 1
+  maxReplicas: 15
+  scaleTargetRef:
+    kind: Deployment
+    apiVersion: apps/v1beta1
+    name: daniellacosse
+  targetCPUUtilizationPercentage: 33
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: daniellacosse-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: daniellacosse
+  ports:
+    - name: client
+      port: 80
+      targetPort: 9999
+      protocol: TCP
+---
+kind: Ingress
+apiVersion: extensions/v1beta1
+metadata:
+  name: daniellacosse-entry
+spec:
+  rules:
+    - host: daniellacos.se
+      http:
+        paths:
+          - backend:
+              serviceName: daniellacosse-service
+              servicePort: 80

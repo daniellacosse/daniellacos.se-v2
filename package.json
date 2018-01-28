@@ -12,7 +12,8 @@
     "clear": "rm -rf _CACHE",
     "debug": "node-debug .dist/server.js",
     "deploy": "gulp deploy",
-    "container": "gulp build && docker build -t daniellacosse/da.se . && docker run -p 3000:9999 daniellacosse/da.se",
+    "container": "gulp build && docker build -t daniellacosse/daniellacos.se-v2:latest . && docker push daniellacosse/daniellacos.se-v2:latest",
+    "release": "yarn container && kubectl apply -f .k8s.config.yml",
     "secrets": "atom .secrets",
     "start": "gulp",
     "test": "ava"
